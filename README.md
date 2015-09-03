@@ -1,4 +1,4 @@
-# kaleidoscope
+# Kaleidoscope
 Kaleidoscope, an electronic work for laptop ensemble
 
 Kaleidoscope is an electronic piece for laptop ensemble (2+ players) based on ideas of symmetry and fragmentation. The piece may last as long as the performers choose within the range of 3-8 minutes. Each performer chooses a role, or “module,” that defines how they affect the creation, performance and visualization of the music.
