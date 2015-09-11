@@ -32,9 +32,9 @@ import netP5.*;
 /**********************/
 
 /******** Debugging ********/
-boolean debug = false;                  // Turn on / off debugging (prints to output window).
-boolean generateRandomNotes = false;    // For testing on a single machine
-  
+boolean debug = true;                  // Turn on / off debugging (prints to output window).
+boolean generateRandomNotes = true;    // For testing on a single machine
+
 /******** Networking ********/
 String ipAddress, serverIPAddress;
 OscP5 oscP5;
@@ -43,6 +43,8 @@ NetAddressList netAddressList;
 NetAddress remoteLocation;          // This machine's (remote) address
 NetAddress serverLocation;       // Address of the server
 KaleidoscopeModule  currentModule;    // The role of this performer in the ensemble (See KaleidoscopeModule.java file)
+KaleidoscopeProcess currentProcess;     // How the motive is played by the module
+
 boolean waitingForPerformers = true;
 boolean pieceStarted = false;
 boolean isServer;    
@@ -53,6 +55,7 @@ String disconnectPattern = "/server/disconnect";
 /******* Input *******/
 boolean navigationMode = false;          // Does keyboard navigate around the scene or move the sonification agent array?
 boolean shiftKey = false;
+boolean optionKey = false;
 
 /******* Graphics *******/
 Camera camera;
@@ -94,10 +97,13 @@ NoteField noteField;
 Chain3D vizField;
 SonificationArray sonificationArray;
 ArrayList<Note3D> currentMotive;
+int currentStep;
+int notesPerMeasure, motiveLength;
+
 boolean[] activeMeasures;
 boolean stopPiece = false, pieceStopped = false;
 int tempo;       
-int timbre;
+int timbre, droneTimbre;
 int tonicKey;
 int currentNote;
 int musicStartFrame = 0, musicEndFrame = 0, measureStartFrame = 0, measureEndFrame = 0;  
@@ -108,12 +114,15 @@ float droneLength;        // Length of drone in frames (POLYPHONIC module)
 
 int notesPlaying = 0;
 int dronesPlaying = 0;
+int maxNotesPlaying = 3;
+int maxDronesPlaying = 2;
+
 boolean recentNote = false;
 int recentNoteFrame = 0;
 
 ArrayList<Note3D> stored;
 int maxVelocity = 100;
-float maxVolume = 0.9;
+float maxVolume = 0.85;
 int curOctave;
 
 float arrayYaw = 0., arrayPitch = 0., arrayRoll = 0.;

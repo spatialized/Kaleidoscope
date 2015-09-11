@@ -33,13 +33,11 @@ void setupKaleidoscope()
     
     listeningPort = 2000;                                  // Client port the server listens to for incoming messages
     
-//    if( currentModule == KaleidoscopeModule.VISUALIZER )
-//      currentModule = KaleidoscopeModule.NOTE_GATHERER;
-      
     waitingForPerformers = false;
   }
 
-  if(debug)     println("Current module is: "+currentModule.getTitle());
+  if(debug)     
+    println("Current module is: "+currentModule.getTitle());
 
   oscP5 = new OscP5(this, listeningPort);        // Start listening for incoming messages
   remoteLocation = new NetAddress(ipAddress, broadcastPort);
@@ -62,16 +60,20 @@ void setupKaleidoscope()
   /****** Setup Music *******/
   currentMotive = new ArrayList();
   currentNote = 0;
+  currentStep = 0;
+  
   active = false;
   noteLength = int(tempo / (notesPerMeasure-1));
   droneLength = noteLength * 60;
+  motiveLength = 4;
+  notesPerMeasure = 4;
+  
+  curOctave = (currentModule.ordinal() + 1) % topOctave + 1;
   
   musicStartFrame = frameCount;
   musicEndFrame = musicStartFrame + tempo * notesPerMeasure;
   measureStartFrame = musicStartFrame + currentModule.ordinal() * tempo;
   measureEndFrame = measureStartFrame + tempo;
-  
-  curOctave = (currentModule.ordinal() + 1) % topOctave + 1;
   
   stored = new ArrayList();
   
@@ -82,7 +84,7 @@ void setupKaleidoscope()
   measureNoiseTime = 0.0;
  
   /****** Module-Specific Setup *******/
-  if(currentModule == KaleidoscopeModule.NOTE_GATHERER)
+  if(currentModule == KaleidoscopeModule.SONIFIER)
   {
     noteField = new NoteField();
     sonificationArray = new SonificationArray();

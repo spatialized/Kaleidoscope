@@ -82,7 +82,7 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
       }
    } 
      
-  if(currentModule != KaleidoscopeModule.NOTE_GATHERER)
+  if(currentModule != KaleidoscopeModule.SONIFIER)
   {
     if(oscMessage.checkAddrPattern("/play"))        // A motive to store for playing later (received from the note gatherer)
     {
@@ -93,7 +93,7 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
       
       int tagLength = -1;
       
-      for (int i = minNotesPerMeasure; i<=maxNotesPerMeasure; i++)
+      for (int i = minMotiveLength; i<=maxMotiveLength; i++)
       {
         String checkTag = "";
         
@@ -130,7 +130,6 @@ void sendTestMessage()
   if(debug) println("Sent test message as "+currentModule.toString());
   sendMessage(message);
 }
-
 
 /***** Client Methods ******/
 public void connectToServer()

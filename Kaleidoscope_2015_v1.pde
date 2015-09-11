@@ -10,7 +10,7 @@
 
 /**************************** Installation ************************/
 /*
-/* See Instructions.pdf for installation instructions for the following external libraries:
+/* See Instructions.pdf for installation instructions for the required external libraries:
 /* TheMidiBus, OscP5, Obsessive Camera Direction (OCD) Library
 /*
 /****************************************************************/
@@ -38,28 +38,44 @@ void setup()
   numPerformers = 3;     
   
   /*************** Network Setup *************
-  * Set ipAddress  to your computer's IP Address.  (Found under System Preferences > Network)
+  * Set ipAddress  to your computer's IP Address.  (under System Preferences > Network)
   * Set serverIPAddress to the IP address of the server:                     */
-  ipAddress = "192.168.1.138";  
-  serverIPAddress = "192.168.1.128";              
+  ipAddress = "192.168.1.138";   //  Mac Pro          
+  serverIPAddress = "192.168.1.128";                // Note: Must be same as "ipAddress" on server machine
 
-  /***************** Module Setup ***************
-  *                                                              List of Modules
+  //serverIPAddress = "192.168.1.138"; // Mac Pro
+  //serverIPAddress = "192.168.1.128";   // MacBook Pro     
+  //serverIPAddress = "192.168.1.126"; // MacBook   
+ // ipAddress = "192.168.1.138"; // Mac Pro
+  //ipAddress = "192.168.1.128";  // MacBook Pro     
+  //ipAddress = "192.168.1.126"; // MacBook   
+
+  /***************** Music Setup ***************
+  *                                                             Choose Module
   *                                                              
-  *           Name                                                 Description                                                                               Required?
-  * KaleidoscopeModule.VISUALIZER           This module controls a graphic visualization of the music. (Server Default)                                       YES            
-  * KaleidoscopeModule.NOTE_GATHERER        The performer "collects" notes from colored structures in a 3D environment using an array of sonification agents  YES             
-  * KaleidoscopeModule.ARPEGGIATOR          This module controls an arpeggiated version of the current motive                                                 NO                
-  * KaleidoscopeModule.PARAM_CONTROLLER     This module controls the parameters of the music in realtime (e.g. tonic key, scale mode, tempo, etc.)            NO                 
-  * KaleidoscopeModule.OSTINATO             This module controls a rhythmic ostinato (repeated figure) from the current motive                                NO                 
-  * KaleidoscopeModule.POLYPHONIC           This module outputs a polyphonic texture using the current motive                                                 NO                 
+  *           Name                                                 Description                                                                                      Required?
+  * KaleidoscopeModule.VISUALIZER                    This module controls a graphic visualization of the music. (Server Default)                                       YES            
+  * KaleidoscopeModule.SONIFIER                 The performer "collects" notes from colored structures in a 3D environment using an array of sonification agents  YES             
+  * KaleidoscopeModule.CONTROLLER              This module controls the parameters of the music in realtime (e.g. tonic key, scale mode, tempo, etc.)            NO                 
   * 
   * Select the current module:                                                                                                                                                 */                                                                                               
-  currentModule = KaleidoscopeModule.PARAM_CONTROLLER;      
+  currentModule = KaleidoscopeModule.CONTROLLER;      
+
+  /*                                                             Choose Process
+  *                                                              
+  *           Name                                                 Description                                                                                    
+  * KaleidoscopeProcess.ARPEGGIO                This module controls a graphic visualization of the music. (Server Default)                                                   
+  * KaleidoscopeProcess.OSTINATO                The performer "collects" notes from colored structures in a 3D environment using an array of sonification agents               
+  * KaleidoscopeProcess.ADDITIVE                This module controls the parameters of the music in realtime (e.g. tonic key, scale mode, tempo, etc.)                             
+  * KaleidoscopeProcess.SUBTRACTIVE             This module controls the parameters of the music in realtime (e.g. tonic key, scale mode, tempo, etc.)                             
+  * 
+  * Select the current module:                                                                                                                                                 */                                                                                               
+  currentProcess = KaleidoscopeProcess.OSTINATO;      
  
   /************** Music Settings *****************/
   tonicKey = 0;            // Initial tonic key (0=C, 1=C#, 2=D,...)
-  timbre = 1;              // Initial timbre (0=SINE, 1=TRIANGLE, 2=SQUARE)
+  timbre = 1;              // Initial timbre (0=SINE, 1=TRIANGLE, 2=SQUARE, 3=QUARTERPULSE)
+  droneTimbre = 2;        // Initial timbre (0=SINE, 1=TRIANGLE, 2=SQUARE, 3=QUARTERPULSE)
   scaleMode = 0;           // Inital scale mode (0 = Ionian, 1 = Dorian, 2 = Phrygian...)
   tempo = 26;  // Initial tempo in frames per beat 
   
@@ -98,7 +114,7 @@ void draw()
         camera.feed();
         break;
        
-      case NOTE_GATHERER:
+      case SONIFIER:
         noteField.update();
         noteField.display();
         
@@ -109,19 +125,7 @@ void draw()
         camera.feed();
         break;
         
-      case ARPEGGIATOR:
-        displayInfo(); 
-        break;
-        
-      case PARAM_CONTROLLER:
-        displayInfo(); 
-        break;
-        
-      case OSTINATO:
-        displayInfo(); 
-        break;
-
-      case POLYPHONIC:
+      case CONTROLLER:
         displayInfo(); 
         break;
     }
@@ -130,7 +134,7 @@ void draw()
     playMusic();
   }
   
-  if(currentModule == KaleidoscopeModule.VISUALIZER || currentModule == KaleidoscopeModule.NOTE_GATHERER)
+  if(currentModule == KaleidoscopeModule.VISUALIZER || currentModule == KaleidoscopeModule.SONIFIER)
   {
     updateCamera();
     camera.feed();

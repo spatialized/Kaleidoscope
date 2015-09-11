@@ -165,14 +165,15 @@ class Chain3D
   }
 }
 
-
 void displayInfo()
 {
   float x = 300, y = 0, z = -250;
   int hue = int(constrain(map(currentModule.ordinal(), 0, 5, 0, 255), 0, 255));
+  int textSpacing = 40;
+  
   fill(hue, 155, 255);
-  textSize(30);
-
+  textSize(28);
+  
   switch(currentModule.ordinal())
   {
   case 0:
@@ -180,47 +181,49 @@ void displayInfo()
     break;
 
   case 1:
-    text("'Note Gatherer' Module", x, y, z);
+    text("'Sonifier' Module", x, y, z);
     break;
 
   case 2:
-    text("'Arpeggiator' Module", x, y, z);
-    break;
-
-  case 3:
     text("'Parameter Controller' Module", x, y, z);
     x = -100;
     fill(hue, 100, 220);
-
-    text("[ ] Keys : Tempo   Up / Down", x, y+=75, z);
-    text("< > Keys : Avg. Notes per Motive   Up / Down", x, y+=50, z);
-    text("1-7 Keys : Select Scale Mode (1 = Ionian, 2 = Dorian, 3 = Phrygian, ... 7 = Locrian)", x, y+=50, z);
-    text("A-G Keys : Select Tonic Note - use SHIFT to access sharp notes", x, y+=50, z);
+    break;
+  }
+  
+  switch(currentProcess.ordinal())
+  {
+  case 0:
+    text("Process: 'Arpeggio'", x, y += textSpacing*1.2, z);
     break;
 
-  case 4:
-    text("'Ostinato' Module", x, y, z);
+  case 1:
+    text("Process: 'Ostinato'", x, y += textSpacing*1.2, z);
     break;
 
-  case 5:
-    text("'Polyphonic' Module", x, y, z);
+  case 2:
+    text("Process: 'Additive'", x, y += textSpacing*1.2, z);
+    break;
+
+  case 3:
+    text("Process: 'Subtractive'", x, y += textSpacing*1.2, z);
     break;
   }
 
   fill(hue, 100, 220);
   x = -100;
 
-  text("Current Motive:", x, y += 75, z);
+  text("Current Motive:", x, y += textSpacing * 1.2, z);
 
   for (int i = 0; i<currentMotive.size (); i++)
   {
     text(str(currentMotive.get(i).getScaleDegree()), x+220+(i+1)*50, y, z);
   }
 
-  text("Sequence Length: ", x, y += 50, z);
+  text("Sequence Length: ", x, y += textSpacing, z);
   text(str(notesPerMeasure), x+280, y, z);
 
-  text("Current Note: ", x, y += 50, z);
+  text("Current Note: ", x, y += textSpacing, z);
   if (active && currentMotive.size() >= notesPerMeasure)
     text(str(currentMotive.get(currentNote % notesPerMeasure).getScaleDegree()), x+250, y, z);
   else
@@ -232,13 +235,17 @@ void displayInfo()
   else
     text("-", x+750, y, z);
 
-  text("MIDI Pitch: ", x, y += 50, z);
+  text("MIDI Pitch: ", x, y += textSpacing, z);
+  
   if (active && currentMotive.size() >= notesPerMeasure)
     text(str(currentMotive.get(currentNote % notesPerMeasure).getPitch()), x+250, y, z);
   else
     text("-", x+250, y, z);
 
-  text("Timbre: ", x, y += 50, z);
+  text("Tempo: "+tempo, x, y += textSpacing, z);
+
+  text("Timbre: ", x, y += textSpacing, z);
+
   switch(timbre)
   {
   case 0:
@@ -251,7 +258,25 @@ void displayInfo()
     text("Square", x+150, y, z);
     break;
   }
+  
+  text("Scale Mode: "+(scaleMode+1), x, y += textSpacing, z);
 
-  text("Drone Timbre: Square", x, y += 50, z);
+  text("Drone Timbre: Square", x, y += textSpacing, z);
+  text("Keyboard Commands", x, y += textSpacing * 1.2, z);
+
+  textSize(24);
+//  text("Set Process: SHIFT+Num.  SHIFT+Num.", x, y += textSpacing * 0.75, z);
+//  text("Set Octave: SHIFT+COMMA  SHIFT+PERIOD", x, y += textSpacing * 0.75, z);
+//  text("Set Timbre: COMMA  PERIOD", x, y += textSpacing * 0.75, z);
+//  text("Change Tempo -/+: -   =", x, y += textSpacing * 0.75, z);
+  
+  text("SHIFT + 1-3 Keys : Set Process", x, y+=textSpacing * 0.75, z);
+  text("SHIFT + COMMA or PERIOD : Set Octave", x, y+=textSpacing * 0.75, z);
+  text("COMMA or PERIOD : Set Timbre", x, y+=textSpacing * 0.75, z);
+  text("- + Keys : Tempo   Up / Down", x, y+=textSpacing * 0.75, z);
+  text("< > Keys : Avg. Notes per Motive   Up / Down", x, y+=textSpacing * 0.75, z);
+  text("1-7 Keys : Select Scale Mode (1 = Ionian, 2 = Dorian, 3 = Phrygian, ... 7 = Locrian)", x, y+=textSpacing * 0.75, z);
+  text("A-G Keys : Select Tonic Note - use SHIFT to access sharp notes", x, y+=textSpacing * 0.75, z);
+
 }
 

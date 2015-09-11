@@ -8,11 +8,8 @@
 public enum KaleidoscopeModule
 {
     VISUALIZER("/visualizer"),
-    NOTE_GATHERER("/note_gatherer"),
-    ARPEGGIATOR("/arpeggiator"),
-    PARAM_CONTROLLER("/param_controller"),
-    OSTINATO("/ostinato"),
-    POLYPHONIC("/polyphonic");
+    SONIFIER("/sonifier"),
+    CONTROLLER("/controller");
     
     private final String text;
 
@@ -29,7 +26,7 @@ public enum KaleidoscopeModule
     public KaleidoscopeModule getPrev() {
      return this.ordinal() > 1
          ? KaleidoscopeModule.values()[this.ordinal() - 1]
-         : POLYPHONIC;
+         : CONTROLLER;
     }
     
     String getTitle() {
@@ -42,17 +39,8 @@ public enum KaleidoscopeModule
        return "Note Gatherer";
 
        case 3:
-       return "Arpeggiator";
+       return "Controller";
 
-       case 4:
-       return "Parameter Controller";
-
-       case 5:
-       return "Ostinato";
-
-       case 6:
-       return "Polyphonic";
-      
        default:
        return "Unknown";
       }

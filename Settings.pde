@@ -6,14 +6,14 @@ int broadcastPort = 2000;                           // Port the clients should l
   
 /****************** Graphics Settings ******************/
 float alpha = 180;
-float fieldSize = 10.;                                // Field Size in proportion to window (for NOTE_GATHERER module)
+float fieldSize = 10.;                                // Field Size in proportion to window (for SONIFIER module)
 float moveIncrement = 36. * fieldSize;
 float moveArrayIncrement = 10. * fieldSize;
 float rotateIncrement = PI/32;
 float rotateArrayIncrement = PI/1024;
 float noiseIncrement = 0.05;
 float measureNoiseIncrement = 0.333;
-int minNotesPerMeasure = 3, maxNotesPerMeasure = 8;
+int minMotiveLength = 3, maxMotiveLength = 8;
 int topOctave = 7;       
 
 float arrayNoiseIncrement = 0.025;
@@ -33,7 +33,6 @@ float timeInc = 1./30.;
 
 /****************** Music Parameters ******************/
 int numPerformers = 4;      // 1 main performer, 3 auxiliary performers
-int notesPerMeasure = 4;
 int scaleSteps = 7;
 int minTempo = 10, maxTempo = 60, tempoIncrement = 2;
 float velocityScalingFactor = 50.;
@@ -51,28 +50,45 @@ float fieldZOffset = -500.;
 
 void setCurrentModule(int newModule)
 {
+  /*
   switch(newModule)
  {
    case 1:
-//    currentModule = KaleidoscopeModule.VISUALIZER;
+    currentModule = KaleidoscopeModule.VISUALIZER;
     break;
    case 2:
-//    currentModule = KaleidoscopeModule.NOTE_GATHERER;
+    currentModule = KaleidoscopeModule.SONIFIER;
     break;
    case 3:
-    currentModule = KaleidoscopeModule.ARPEGGIATOR;
-    break;
-   case 4:
-    currentModule = KaleidoscopeModule.PARAM_CONTROLLER;
-    break;
-   case 5:
-    currentModule = KaleidoscopeModule.OSTINATO;
+    currentModule = KaleidoscopeModule.CONTROLLER;
     break;
  } 
- 
  
   if(debug) 
   {
     println("Set current module to: "+currentModule.getTitle());
   }
+  */
+}
+
+void setCurrentProcess(int newProcess)
+{
+  switch(newProcess)
+ {
+   case 1:
+    currentProcess = KaleidoscopeProcess.ARPEGGIO;
+    break;
+   case 2:
+    currentProcess = KaleidoscopeProcess.OSTINATO;
+    break;
+   case 3:
+    currentProcess = KaleidoscopeProcess.ADDITIVE;
+    break;
+   case 4:
+    currentProcess = KaleidoscopeProcess.SUBTRACTIVE;
+    break;
+ } 
+ 
+  if(debug)   
+    println("Set current process to: "+currentProcess.getTitle());
 }

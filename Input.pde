@@ -11,13 +11,13 @@ void keyPressed()
     if (timbre > 2) timbre = 0;
   }
 
-  if (key == '<' && currentModule != KaleidoscopeModule.ARPEGGIATOR)
+  if (key == '<' && currentProcess != KaleidoscopeProcess.ARPEGGIO)
   {
     if (curOctave > 2)
       curOctave -= 1;
   }
   
-  if (key == '>' && currentModule != KaleidoscopeModule.ARPEGGIATOR)
+  if (key == '>' && currentProcess != KaleidoscopeProcess.ARPEGGIO)
   {
     if (curOctave < topOctave)
       curOctave += 1;
@@ -58,7 +58,7 @@ void keyPressed()
     }
   }
 
-  if (currentModule != KaleidoscopeModule.VISUALIZER && currentModule !=KaleidoscopeModule.NOTE_GATHERER)
+  if (currentModule != KaleidoscopeModule.VISUALIZER && currentModule !=KaleidoscopeModule.SONIFIER)
   {
     switch(key) 
     {
@@ -71,15 +71,26 @@ void keyPressed()
     case '#':
       setCurrentModule(3);
       break;
-    case '$':
-      setCurrentModule(4);
-      break;
-    case '%':
-      setCurrentModule(5);
-      break;
-    case '^':
-      setCurrentModule(6);
-      break;
+    }
+  }
+  
+  if(optionKey)
+  {
+    println("Key:"+key);
+    switch(key)
+    {
+      case '¡':
+        setCurrentProcess(1);
+        break;
+      case '™':
+        setCurrentProcess(2);
+        break; 
+      case '£':
+        setCurrentProcess(3);
+        break; 
+      case '¢':
+        setCurrentProcess(4);
+        break;
     }
   }
 
@@ -153,7 +164,7 @@ void keyPressed()
     }
   
   }
-  if (currentModule == KaleidoscopeModule.PARAM_CONTROLLER)
+  if (currentModule == KaleidoscopeModule.CONTROLLER && !optionKey)
   {
     switch(key)
     {
@@ -239,9 +250,9 @@ void keyPressed()
     }
   }
 
-  if (currentModule == KaleidoscopeModule.NOTE_GATHERER)
+  if (currentModule == KaleidoscopeModule.SONIFIER)
   {
-    /* Key Commands for NOTE_GATHERER */
+    /* Key Commands for SONIFIER */
     switch(key)
     {
       case '[':
@@ -330,6 +341,7 @@ void keyPressed()
     }
   }
 
+
   /* Key Commands Common to Both User Modes */
   if (key == 't')
   {
@@ -339,6 +351,21 @@ void keyPressed()
   {
     navigationMode = !navigationMode;
   }
+
+  if ( key == CODED )
+  {
+   if (keyCode == SHIFT)
+    {
+      shiftKey = true;
+    }
+
+    if (keyCode == ALT)
+    {
+      optionKey = true;
+      println("option");
+    }
+  }
+    
 }
 
 void keyReleased() 
@@ -400,6 +427,11 @@ void keyReleased()
     {
       shiftKey = false;
     }
+    if (keyCode == ALT)
+    {
+      optionKey = false;
+       println("option off");
+   }
   }
 }
 

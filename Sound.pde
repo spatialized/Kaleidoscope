@@ -21,18 +21,26 @@ class ToneInstrument implements Instrument
     release = duration / 4.;
     
 //    adsr = new ADSR( 0.9/maxParticles, attack, decay, sustain, release ); /// maxAmp, attTime, decTime, susLv1, relTime
-    float volume = amplitude/(notesPlaying+1);
+   // float volume = amplitude/(notesPlaying+1);
+
+  //  print("Note frequency:"+frequency);
+//    print(" amplitude:"+amplitude);
+//    println(" duration:"+duration);
     
     if(wave == Waves.TRIANGLE)
     {
-       volume *= 0.88;
+       amplitude *= 0.88;
     }
     else if(wave == Waves.SQUARE)
     {
-       volume *= 0.24;
+       amplitude *= 0.24;
     }
-    
-    adsr = new ADSR( volume, attack, decay, sustain, release ); /// maxAmp, attTime, decTime, susLv1, relTime
+    else if(wave == Waves.QUARTERPULSE)
+    {
+       amplitude *= 0.22;
+    }
+
+    adsr = new ADSR( amplitude, attack, decay, sustain, release ); /// maxAmp, attTime, decTime, susLv1, relTime
     
     oscillator.patch( adsr );
   }
@@ -68,12 +76,25 @@ class DroneInstrument implements Instrument
     sustain = duration / 6.;
     release = duration / 6.;
     
-    println("frequency:"+frequency);
-    println("amplitude:"+amplitude);
-    println("duration:"+duration);
-    
+    print("Drone frequency:"+frequency);
+    print(" amplitude:"+amplitude);
+    println(" duration:"+duration);
+   
+   if(wave == Waves.TRIANGLE)
+    {
+       amplitude *= 0.88;
+    }
+    else if(wave == Waves.SQUARE)
+    {
+       amplitude *= 0.24;
+    }
+    else if(wave == Waves.QUARTERPULSE)
+    {
+       amplitude *= 0.22;
+    }
+     
     droneOsc = new Oscil( frequency, amplitude, wave );
-    adsr = new ADSR( amplitude/(dronesPlaying+1), 5, 10, 5, 7.5 ); /// maxAmp, attTime, decTime, susLv1, relTime
+    adsr = new ADSR( amplitude, 5, 10, 5, 7.5 ); /// maxAmp, attTime, decTime, susLv1, relTime
  
     droneOsc.patch( adsr );
   }
