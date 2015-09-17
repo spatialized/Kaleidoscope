@@ -19,7 +19,7 @@
 /*
 /* For each machine:
 /*    
-/* 1. Follow instructions under General Setup, Network Setup and Module Setup sections below.
+/* 1. Follow instructions under General Setup, Network Setup and Music Setup sections below.
 /* 2. Connect to WIFI 
 /* 3. If this machine is the server, turn on File Sharing. 
 /*      If this machine is a client, in the Finder, choose Go > "Connect to Server" and select the server's name.
@@ -59,18 +59,18 @@ void setup()
   * KaleidoscopeModule.CONTROLLER              This module controls the parameters of the music in realtime (e.g. tonic key, scale mode, tempo, etc.)            NO                 
   * 
   * Select the current module:                                                                                                                                                 */                                                                                               
-  currentModule = KaleidoscopeModule.CONTROLLER;      
+  currentModule = KaleidoscopeModule.VISUALIZER;      
 
   /*                                                             Choose Process
   *                                                              
   *           Name                                                 Description                                                                                    
-  * KaleidoscopeProcess.ARPEGGIO                This module controls a graphic visualization of the music. (Server Default)                                                   
-  * KaleidoscopeProcess.OSTINATO                The performer "collects" notes from colored structures in a 3D environment using an array of sonification agents               
-  * KaleidoscopeProcess.ADDITIVE                This module controls the parameters of the music in realtime (e.g. tonic key, scale mode, tempo, etc.)                             
-  * KaleidoscopeProcess.SUBTRACTIVE             This module controls the parameters of the music in realtime (e.g. tonic key, scale mode, tempo, etc.)                             
+  * KaleidoscopeProcess.ARPEGGIO                                                                  
+  * KaleidoscopeProcess.OSTINATO                     
+  * KaleidoscopeProcess.ADDITIVE                                        
+  * KaleidoscopeProcess.SUBTRACTIVE                                    
   * 
   * Select the current module:                                                                                                                                                 */                                                                                               
-  currentProcess = KaleidoscopeProcess.OSTINATO;      
+  currentProcess = KaleidoscopeProcess.ADDITIVE;      
  
   /************** Music Settings *****************/
   tonicKey = 0;            // Initial tonic key (0=C, 1=C#, 2=D,...)
@@ -94,6 +94,10 @@ void draw()
     }
     else
     {
+       fill(150, 155, 255);
+       textSize(28);
+       text("Waiting for performers", 100, 50, -250);
+
       if(debug && frameCount % 150 == 0)
       {
         println("Waiting for performers..."); 
@@ -132,6 +136,16 @@ void draw()
     
     updateMusic();
     playMusic();
+  }
+  else if(!pieceStarted)
+  {
+     fill(150, 155, 255);
+     textSize(320);
+     pushMatrix();
+     rotateY(radians(180));
+     text("Waiting to start...", 50, 50, -250);
+     text("Push '/' key to enter test mode...", 50, 350, -250);
+     popMatrix();
   }
   
   if(currentModule == KaleidoscopeModule.VISUALIZER || currentModule == KaleidoscopeModule.SONIFIER)

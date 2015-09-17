@@ -24,8 +24,8 @@ class ToneInstrument implements Instrument
    // float volume = amplitude/(notesPlaying+1);
 
   //  print("Note frequency:"+frequency);
-//    print(" amplitude:"+amplitude);
-//    println(" duration:"+duration);
+ // //  print(" amplitude:"+amplitude);
+ //   println(" duration:"+duration);
     
     if(wave == Waves.TRIANGLE)
     {
@@ -76,9 +76,9 @@ class DroneInstrument implements Instrument
     sustain = duration / 6.;
     release = duration / 6.;
     
-    print("Drone frequency:"+frequency);
-    print(" amplitude:"+amplitude);
-    println(" duration:"+duration);
+   // print("Drone frequency:"+frequency);
+  //  print(" amplitude:"+amplitude);
+  //  println(" duration:"+duration);
    
    if(wave == Waves.TRIANGLE)
     {

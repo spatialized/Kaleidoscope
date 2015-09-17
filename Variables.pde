@@ -33,7 +33,7 @@ import netP5.*;
 
 /******** Debugging ********/
 boolean debug = true;                  // Turn on / off debugging (prints to output window).
-boolean generateRandomNotes = true;    // For testing on a single machine
+boolean generateRandomNotes = false;    // For testing on a single machine
 
 /******** Networking ********/
 String ipAddress, serverIPAddress;
@@ -110,7 +110,7 @@ int musicStartFrame = 0, musicEndFrame = 0, measureStartFrame = 0, measureEndFra
 
 boolean active;        // Should this machine be playing now?
 float noteLength;        // Length of note in frames
-float droneLength;        // Length of drone in frames (POLYPHONIC module)
+float droneLength;        // Length of drone in frames
 
 int notesPlaying = 0;
 int dronesPlaying = 0;

@@ -13,7 +13,7 @@ float rotateIncrement = PI/32;
 float rotateArrayIncrement = PI/1024;
 float noiseIncrement = 0.05;
 float measureNoiseIncrement = 0.333;
-int minMotiveLength = 3, maxMotiveLength = 8;
+int minMotiveLength = 1, maxMotiveLength = 8;
 int topOctave = 7;       
 
 float arrayNoiseIncrement = 0.025;

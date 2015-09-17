@@ -37,7 +37,10 @@ void setupKaleidoscope()
   }
 
   if(debug)     
+  {
     println("Current module is: "+currentModule.getTitle());
+    println("Current process is: "+currentProcess.getTitle());
+  }
 
   oscP5 = new OscP5(this, listeningPort);        // Start listening for incoming messages
   remoteLocation = new NetAddress(ipAddress, broadcastPort);
@@ -68,7 +71,7 @@ void setupKaleidoscope()
   motiveLength = 4;
   notesPerMeasure = 4;
   
-  curOctave = (currentModule.ordinal() + 1) % topOctave + 1;
+  curOctave = (currentModule.ordinal() + 1) % topOctave + 2;
   
   musicStartFrame = frameCount;
   musicEndFrame = musicStartFrame + tempo * notesPerMeasure;

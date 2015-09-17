@@ -28,6 +28,7 @@ void keyPressed()
     if (key == '/')              // Bypass waiting for performers (for testing) 
     {
       waitingForPerformers = false;
+      generateRandomNotes = true;
     }
     if (key == ' ' && !waitingForPerformers)
     {
