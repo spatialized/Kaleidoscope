@@ -39,9 +39,24 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
     }
     if(oscMessage.checkAddrPattern("/draw"))        // A motive to be drawn by the visualizer (i.e. server)
     {
-        print("Received draw message");
-        recentNote = true;
-        recentNoteFrame = frameCount;
+      if(debug)
+      {
+        println("Received draw message with typeTag:"+oscMessage.typetag());
+      }
+      
+      int tagLength = -1;
+      tagLength = checkTagLength(oscMessage);
+      
+      for (int i = 0; i<tagLength; i+=2)
+      {
+         int pitch = oscMessage.get(i).intValue();
+         int velocity = oscMessage.get(i+1).intValue();
+         int hue = int(map(pitch % 12, 0, 11, 0, 255));
+         Note3D note = new Note3D(hue, 0, 0, 0, velocity, tonicKey, 0, 0, 0);
+         received.add(note);
+      }
+   
+      println("added to received.. new size:"+received.size());
     }
     
     if(oscMessage.checkAddrPattern("/test"))        // A test message
@@ -92,20 +107,8 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
       }
       
       int tagLength = -1;
-      
-      for (int i = minMotiveLength; i<=maxMotiveLength; i++)
-      {
-        String checkTag = "";
-        
-        for(int k = 0; k<i; k++) 
-          checkTag = checkTag + "ii"; 
-      
-        if(oscMessage.checkTypetag(checkTag))
-        {
-          tagLength = i;
-        }
-      }
-      
+      tagLength = checkTagLength(oscMessage);
+     
       for (int i = 0; i<tagLength; i+=2)
       {
          int pitch = oscMessage.get(i).intValue();
@@ -119,8 +122,28 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
       println("stored.size():"+stored.size());
       
       notesPerMeasure = tagLength/2;
-     } 
+     }
    }
+}
+
+int checkTagLength(OscMessage oscMessage)
+{
+  int tagLength = -1;
+  
+  for (int i = minMotiveLength; i<=maxMotiveLength; i++)
+    {
+      String checkTag = "";
+      
+      for(int k = 0; k<i; k++) 
+        checkTag = checkTag + "ii"; 
+    
+      if(oscMessage.checkTypetag(checkTag))
+      {
+        tagLength = i;
+      }
+    }
+    
+    return tagLength;
 }
 
 void sendTestMessage()
@@ -146,11 +169,6 @@ public void disconnectFromServer()
   println("Disconnecting from server...");
 }
 
-public void sendDraw()          
-{
-  OscMessage message = new OscMessage("/draw");
-  sendMessage(message);
-}
 
 /*****************************/
 
@@ -205,22 +223,26 @@ public void sendStop()        // Send stop message to all clients
   stopPiece = true;
 }
 
-/************** Note Gatherer Methods ***************/
+/************** Sonifier Methods ***************/
 public void sendMotive(ArrayList<Note3D> motive)          
 {
   String noteString = "";
-  OscMessage message = new OscMessage("/play");
+  OscMessage play = new OscMessage("/play");
+  OscMessage draw = new OscMessage("/draw");
 
   for( int i=0 ; i<motive.size() ; i++ )
   {
-     message.add(motive.get(i).getPitch()); 
-     message.add(motive.get(i).getVelocity()); 
+     play.add(motive.get(i).getPitch()); 
+     play.add(motive.get(i).getVelocity()); 
+     draw.add(motive.get(i).getPitch()); 
+     draw.add(motive.get(i).getVelocity()); 
   }
   
-  sendMessage(message);
+  sendMessage(play);
+  sendMessage(draw);
 }
 
-/************** Parameter Controller Methods ***************/
+/************** Controller Methods ***************/
 public void sendNewTonicKey(int newTonic)         // Send new tonic to server
 {
   OscMessage message = new OscMessage("/tonic");

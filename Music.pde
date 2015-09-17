@@ -6,6 +6,7 @@
 class Note3D
 {
   float time = 0.;
+
   int pitch, scaleDegree;
   float size, hue;
   PVector position = new PVector(0, 0, 0);
@@ -17,7 +18,10 @@ class Note3D
 
   float mass;
   float G;
-
+  // For visualization
+  float angle = 0.; 
+  float radius = 10.; 
+  
   Note3D(float h, float x, float y, float z, float newSize, int newTonic, float lx, float ly, float lz) 
   {
     hue = h;
@@ -90,24 +94,29 @@ class Note3D
     else
       fill(hue, 225, 200, alpha);
 
+    float displaySize = size;
+    if(!lineMode)
+      displaySize = size * 100.; 
+
+
     pushMatrix();
     translate(position.x, position.y, position.z);
-    sphere(size);
+    sphere(displaySize);
     popMatrix();
 
     pushMatrix();
     translate(-position.x, position.y, position.z);
-    sphere(size);
+    sphere(displaySize);
     popMatrix();
 
     pushMatrix();
     translate(position.x, -position.y, position.z);
-    sphere(size);
+    sphere(displaySize);
     popMatrix();
 
     pushMatrix();
     translate(-position.x, -position.y, position.z);
-    sphere(size);
+    sphere(displaySize);
     popMatrix();
 
     if (collided)
@@ -117,16 +126,24 @@ class Note3D
 
     strokeWeight(size * pow( 0.9, fieldSize ));
 
+    if(lineMode)
+    {
     line(position.x, position.y, position.z, previous.x, previous.y, previous.z);
     line(-position.x, position.y, position.z, -previous.x, previous.y, previous.z);
     line(position.x, -position.y, position.z, previous.x, -previous.y, previous.z);
     line(-position.x, -position.y, position.z, -previous.x, -previous.y, previous.z);
+    }
   }
 
   int getPitch()
   {
     pitch = scaleDegree + tonic + curOctave * 12;
     return pitch;
+  }
+ 
+  int getOctave()
+  {
+    return round(pitch / 12);
   }
 
   int getScaleDegree()
@@ -154,6 +171,11 @@ class Note3D
     default:
       return new PVector(0, 0, 0);
     }
+  }
+
+  void setPosition(PVector newPos)
+  {
+    position = newPos;
   }
 
   void setTonic(int newTonic)
@@ -396,6 +418,7 @@ void storeRandomNotes(int numberOfNotes)
   {
     Note3D note = new Note3D(random(255), 0, 0, 0, 1, 0, 0, 0, 0);
     stored.add(note);
+    received.add(note);      // For debugging
   }
 }
 

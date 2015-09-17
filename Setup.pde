@@ -79,6 +79,7 @@ void setupKaleidoscope()
   measureEndFrame = measureStartFrame + tempo;
   
   stored = new ArrayList();
+  received = new ArrayList();
   
   audio = new Minim(this); //initialize minim
   output= audio.getLineOut(Minim.STEREO, 1024, 44100, 16); 

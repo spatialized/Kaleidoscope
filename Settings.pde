@@ -9,12 +9,16 @@ float alpha = 180;
 float fieldSize = 10.;                                // Field Size in proportion to window (for SONIFIER module)
 float moveIncrement = 36. * fieldSize;
 float moveArrayIncrement = 10. * fieldSize;
+float vizRotateSpeed = 1, vizSize = 500;
+
 float rotateIncrement = PI/32;
 float rotateArrayIncrement = PI/1024;
 float noiseIncrement = 0.05;
 float measureNoiseIncrement = 0.333;
+
 int minMotiveLength = 1, maxMotiveLength = 8;
 int topOctave = 7;       
+
 
 float arrayNoiseIncrement = 0.025;
 int backgroundColor = 0;

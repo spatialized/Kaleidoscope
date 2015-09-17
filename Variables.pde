@@ -33,7 +33,7 @@ import netP5.*;
 
 /******** Debugging ********/
 boolean debug = true;                  // Turn on / off debugging (prints to output window).
-boolean generateRandomNotes = false;    // For testing on a single machine
+boolean generateRandomNotes = true;    // For testing on a single machine
 
 /******** Networking ********/
 String ipAddress, serverIPAddress;
@@ -60,6 +60,7 @@ boolean optionKey = false;
 /******* Graphics *******/
 Camera camera;
 boolean particleMode;
+boolean lineMode = false;
 
 float rotateXFadeStart, rotateXFadeLength = 12, rotateXDirection;
 boolean rotateXTransition = false;
@@ -121,6 +122,7 @@ boolean recentNote = false;
 int recentNoteFrame = 0;
 
 ArrayList<Note3D> stored;
+ArrayList<Note3D> received;
 int maxVelocity = 100;
 float maxVolume = 0.85;
 int curOctave;
