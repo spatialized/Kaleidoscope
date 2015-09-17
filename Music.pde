@@ -24,6 +24,7 @@ class Note3D
 
   float angle = 0.; 
   float speed = 0.;
+  float velocity = 0.;
   float radius = 10.; 
   float alpha = alphaMax;
   
@@ -32,6 +33,8 @@ class Note3D
     hue = h;
     position = new PVector(x, y, z);
     size = newSize;
+    velocity = size * velocityScalingFactor;
+    
     if (lx == -1000000 && ly == -1000000 && lz == -1000000)
       previous = position;
     else
@@ -96,9 +99,9 @@ class Note3D
     noStroke();
     
     if (collided)
-      fill(255-hue, saturation, 255, alpha * 0.25);
+      fill(255-hue, 5, 10, alpha * 0.25);
     else
-      fill(hue, 205, saturation, alpha);
+      fill(hue, saturation, 200, alpha);
     
     if(!lineMode)
     {
@@ -127,14 +130,14 @@ class Note3D
     else
     {
       if (collided)
-        stroke(hue, 5, saturation, alpha * 0.5);
+        stroke(hue, 5, 10, alpha * 0.5);
       else
-        stroke(hue, 155, saturation, alpha);
+        stroke(hue, saturation, 200, alpha);
   
       if(currentModule == KaleidoscopeModule.SONIFIER)
-        strokeWeight(size * 0.5);
+        strokeWeight(size * 0.33);
       else
-        strokeWeight(size * 0.005);
+        strokeWeight(size * 0.006);
 
       line(position.x, position.y, position.z, previous.x, previous.y, previous.z);
       line(-position.x, position.y, position.z, -previous.x, previous.y, previous.z);
@@ -171,7 +174,18 @@ class Note3D
 
   int getVelocity()
   {
-    return int(size * velocityScalingFactor);
+    return int(velocity);
+  }
+  
+  int getSize()
+  {
+    return int(size);
+  }
+  
+  void setSize(float newSize)
+  {
+     size = newSize;
+     velocity = size * velocityScalingFactor;
   }
 
   PVector getPosition(int which)
@@ -271,7 +285,7 @@ class NoteField
 
 void playCurrentNotes()            
 {
-  float duration = noteLength * stretchFactor;
+  float duration = noteLength;
   int velocity = -1, pitch = -1;
   int droneVelocity = -1, dronePitch = -1;
   
@@ -287,7 +301,7 @@ void playCurrentNotes()
           int last = currentMotive.get(currentNote-1).getScaleDegree();
           int cur = currentMotive.get(currentNote % currentMotive.size()).getScaleDegree();
   
-          if (last > cur) 
+          if (last >= cur) 
             curOctave++;
   
           if (curOctave >= topOctave)
@@ -309,7 +323,8 @@ void playCurrentNotes()
       {
         pitch = currentMotive.get(currentNote % currentMotive.size()).getPitch();
         velocity = currentMotive.get(currentNote % currentMotive.size()).getVelocity();
-      } else
+      } 
+      else
       {
         if (debug && frameCount % 100 == 0)
           println("Waiting for notes...");
@@ -321,7 +336,8 @@ void playCurrentNotes()
       {
         pitch = currentMotive.get(currentNote % currentMotive.size()).getPitch();
         velocity = currentMotive.get(currentNote % currentMotive.size()).getVelocity();
-      } else
+      } 
+      else
       {
         if (debug && frameCount % 100 == 0)
           println("Waiting for notes...");
@@ -333,7 +349,8 @@ void playCurrentNotes()
       {
         pitch = currentMotive.get(currentNote % currentMotive.size()).getPitch();
         velocity = currentMotive.get(currentNote % currentMotive.size()).getVelocity();
-      } else
+      } 
+      else
       {
         if (debug && frameCount % 100 == 0)
           println("Waiting for notes...");
@@ -357,6 +374,7 @@ void playCurrentNotes()
 
         Note3D note = currentMotive.get(currentNote);
         drawNote(note);                  // Broadcast current motive to other performers and draw
+        println("playing note.size:"+note.size);
         received.add(note);
       }
 
@@ -365,9 +383,9 @@ void playCurrentNotes()
         playDrone( dronePitch, droneLength + random(-5, 6), droneVelocity );
         int hue = int(map(dronePitch % 12, 0, 11, 0, 255));
         Note3D note = new Note3D(hue, 0, 0, 0, droneVelocity * 0.05, tonicKey, 0, 0, 0);
-        
         drawNote(note);                  // Broadcast current motive to other performers
         received.add(note);                 
+        println("playing drone.size:"+note.size);
       }
     }
   }
@@ -375,7 +393,7 @@ void playCurrentNotes()
 
 void playTone(int pitch, float duration, int velocity)
 {
-  float dur = duration / 30.;
+  float dur = duration / 30. * stretchFactor;
   Note note = new Note(1, pitch, velocity);  // channel, pitch, velocity
   float freq = pitchToFreq(pitch);
 
@@ -503,7 +521,8 @@ void updateMusic()
     }
 
     currentNote = 0;
-    noteLength = tempo / notesPerMeasure;
+    if(notesPerMeasure != 0)
+      noteLength = tempo / notesPerMeasure;
     droneLength = noteLength * 60;
   } 
 
@@ -527,11 +546,15 @@ void updateMusic()
     break;  
     
   case ADDITIVE:
-    noteLength = tempo / motiveLength;
+    if(motiveLength != 0)
+      noteLength = tempo / motiveLength;
+    else if(debug) println("Motive length == 0!");
     break;  
 
   case SUBTRACTIVE:
-    noteLength = tempo / motiveLength;
+    if(motiveLength != 0)
+      noteLength = tempo / motiveLength;
+    else if(debug) println("Motive length == 0!");
     break;
   }
 
@@ -606,7 +629,9 @@ void playMusic()
     if (currentNote == motiveLength)
       currentNote = 0;
 
-    playCurrentNotes();
+    if(currentMotive.size()>0)
+      playCurrentNotes();
+      
     currentNote++;
   }
 }

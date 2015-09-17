@@ -41,43 +41,32 @@ void setup()
   * Set ipAddress  to your computer's IP Address.  (under System Preferences > Network)
   * Set serverIPAddress to the IP address of the server:                     */
   ipAddress = "192.168.1.138";   //  Mac Pro          
-  serverIPAddress = "192.168.1.128";                // Note: Must be same as "ipAddress" on server machine
+  serverIPAddress = "192.168.1.128";                   // Note: Must be same as "ipAddress" on server machine
 
   //serverIPAddress = "192.168.1.138"; // Mac Pro
   //serverIPAddress = "192.168.1.128";   // MacBook Pro     
   //serverIPAddress = "192.168.1.126"; // MacBook   
- // ipAddress = "192.168.1.138"; // Mac Pro
-  //ipAddress = "192.168.1.128";  // MacBook Pro     
+  ipAddress = "192.168.1.138"; // Mac Pro
+ // ipAddress = "192.168.1.128";  // MacBook Pro     
   //ipAddress = "192.168.1.126"; // MacBook   
-
+ 
   /***************** Music Setup ***************
-  *                                                             Choose Module
-  *                                                              
-  *           Name                                                 Description                                                                                      Required?
-  * KaleidoscopeModule.VISUALIZER                    This module controls a graphic visualization of the music. (Server Default)                                       YES            
-  * KaleidoscopeModule.SONIFIER                 The performer "collects" notes from colored structures in a 3D environment using an array of sonification agents  YES             
-  * KaleidoscopeModule.CONTROLLER              This module controls the parameters of the music in realtime (e.g. tonic key, scale mode, tempo, etc.)            NO                 
-  * 
-  * Select the current module:                                                                                                                                                 */                                                                                               
-  currentModule = KaleidoscopeModule.CONTROLLER;      
+  *                                                             Choose Module:
+  * KaleidoscopeModule.VISUALIZER  (Server Default)    KaleidoscopeModule.SONIFIER         KaleidoscopeModule.CONTROLLER
+  *                                                                                                                                                */                                                                                               
+  currentModule = KaleidoscopeModule.SONIFIER;      
 
-  /*                                                             Choose Process
-  *                                                              
-  *           Name                                                 Description                                                                                    
-  * KaleidoscopeProcess.ARPEGGIO                                                                  
-  * KaleidoscopeProcess.OSTINATO                     
-  * KaleidoscopeProcess.ADDITIVE                                        
-  * KaleidoscopeProcess.SUBTRACTIVE                                    
-  * 
-  * Select the current module:                                                                                                                                                 */                                                                                               
-  currentProcess = KaleidoscopeProcess.ARPEGGIO;      
+  /*                                                             Choose Process:
+  * KaleidoscopeProcess.ARPEGGIO     KaleidoscopeProcess.OSTINATO       KaleidoscopeProcess.ADDITIVE      KaleidoscopeProcess.SUBTRACTIVE                                    
+  *                                                                                                                                                */                                                                                               
+  currentProcess = KaleidoscopeProcess.OSTINATO;      
  
   /************** Music Settings *****************/
   tonicKey = 0;            // Initial tonic key (0=C, 1=C#, 2=D,...)
   timbre = 1;              // Initial timbre (0=SINE, 1=TRIANGLE, 2=SQUARE, 3=QUARTERPULSE)
-  droneTimbre = 2;        // Initial timbre (0=SINE, 1=TRIANGLE, 2=SQUARE, 3=QUARTERPULSE)
+  droneTimbre = 2;         // Initial drone timbre (0=SINE, 1=TRIANGLE, 2=SQUARE, 3=QUARTERPULSE)
   scaleMode = 0;           // Inital scale mode (0 = Ionian, 1 = Dorian, 2 = Phrygian...)
-  tempo = 18;  // Initial tempo in frames per beat 
+  tempo = 18;  // Initial tempo (in frames per beat)
   
   setupKaleidoscope();        // Perform the setup functions
 }
@@ -87,11 +76,11 @@ void draw()
   if(currentModule != KaleidoscopeModule.SONIFIER)
   {
     background(backgroundColor);    // Set background color each frame
-    lineMode = true;
   }
   else
   {
     background(0);                  // Draw background each frame
+    lineMode = true;
   }
 
   if (isServer && waitingForPerformers)

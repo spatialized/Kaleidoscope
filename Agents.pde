@@ -49,10 +49,11 @@ class SonificationAgent
     popMatrix();
   }
   
-  void setSize(float newSize)
+  float setSize(float newSize)
   {
     size = newSize;
     mass = size*50;
+    return size;
   }
   
   void checkCollisions()
@@ -208,10 +209,6 @@ class SonificationArray
 
   void initialize()
   {
-    float storedSize = 120;
-    if(array.size()>0)  
-      storedSize = array.get(0).size;
-    
     array = new ArrayList();
     for(int i = 0; i<arraySize; i++)          // Create Perlin noise based initial configuration 
     {
@@ -227,7 +224,7 @@ class SonificationArray
       y = cos(arrayYaw) * y + sin(arrayYaw) * z; 
       z = sin(arrayPitch) * x + cos(arrayPitch) * -sin(arrayYaw) * y + cos(arrayPitch)*cos(arrayYaw)*z; 
        
-      array.add(new SonificationAgent(x,y,z,offsetX,offsetY,offsetZ,storedSize));
+      array.add(new SonificationAgent(x,y,z,offsetX,offsetY,offsetZ,agentSize));
     }
   }  
   
@@ -282,6 +279,12 @@ class SonificationArray
   
      if(rotateArrayZTransition)
         rotateArray(0, 0, rotateArrayIncrement * rotateArrayZDirection);
+        
+      if(decreasingSize)
+        changeAgentSize(0);
+
+      if(increasingSize)
+        changeAgentSize(1);
   }
   
   void centerAtOrigin()
@@ -303,7 +306,7 @@ void changeAgentSize(int up)
     for(SonificationAgent a : sonificationArray.array)
     {
       if(a.size > minAgentSize + agentSizeIncrement)
-        a.setSize(a.size - agentSizeIncrement); 
+        agentSize = a.setSize(a.size - agentSizeIncrement); 
     }
   }
   else
@@ -311,7 +314,7 @@ void changeAgentSize(int up)
     for(SonificationAgent a : sonificationArray.array)
     {
       if(a.size < maxAgentSize - agentSizeIncrement)
-        a.setSize(a.size + agentSizeIncrement); 
+        agentSize = a.setSize(a.size + agentSizeIncrement); 
     }
   } 
 }

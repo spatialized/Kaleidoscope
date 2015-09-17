@@ -3,6 +3,8 @@
 /************************/
 
 import java.util.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import ddf.minim.*;
 import ddf.minim.spi.*;
@@ -32,8 +34,8 @@ import netP5.*;
 /**********************/
 
 /******** Debugging ********/
-boolean debug = false;                  // Turn on / off debugging (prints to output window).
-boolean generateRandomNotes = true;    // For testing on a single machine
+boolean debug = true;                  // Turn on / off debugging (prints to output window).
+boolean generateRandomNotes = false;    // For testing on a single machine
 
 /******** Networking ********/
 String ipAddress, serverIPAddress;
@@ -61,7 +63,7 @@ boolean optionKey = false;
 Camera camera;
 boolean particleMode;
 boolean lineMode = false;
-
+boolean decreasingSize = false, increasingSize = false;
 float rotateXFadeStart, rotateXFadeLength = 12, rotateXDirection;
 boolean rotateXTransition = false;
 float rotateYFadeStart, rotateYFadeLength = 12, rotateYDirection;

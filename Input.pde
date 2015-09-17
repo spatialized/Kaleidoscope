@@ -310,10 +310,12 @@ void keyPressed()
         break;
         
       case '9':
+        decreasingSize = true;
         changeAgentSize(0);
         break;
         
       case '0':
+        increasingSize = true;
         changeAgentSize(1);
         break;
         
@@ -441,6 +443,12 @@ void keyReleased()
   } 
   if (key == 'f') {
     rotateZTransition = false;
+  }  
+  if (key == '9') {
+    decreasingSize = false;
+  } 
+  if (key == '0') {
+    increasingSize = false;
   }  
 
   if ( key == CODED )

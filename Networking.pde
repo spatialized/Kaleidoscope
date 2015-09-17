@@ -39,26 +39,38 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
     }
     if(oscMessage.checkAddrPattern("/draw"))        // A motive to be drawn by the visualizer (i.e. server)
     {
-      if(debug)
-      {
-        println("Received draw message with typeTag:"+oscMessage.typetag());
-      }
-      
-      int tagLength = -1;
-      tagLength = checkTagLength(oscMessage);
-      
-      for (int i = 0; i<tagLength; i+=2)
-      {
-         int pitch = oscMessage.get(i).intValue();
-         int velocity = oscMessage.get(i+1).intValue();
-         int hue = int(map(pitch % 12, 0, 11, 0, 255));
-         Note3D note = new Note3D(hue, 0, 0, 0, velocity, tonicKey, 0, 0, 0);
-         received.add(note);
-      }
-   
-      println("added to received.. new size:"+received.size());
+        if(debug)
+        {
+          println("Received draw message with typeTag:"+oscMessage.typetag());
+          println("Length:"+checkTagLength(oscMessage));
+           println("value1:"+oscMessage.get(0).intValue());
+          if(checkTagLength(oscMessage) == 2)
+             println("value2:"+oscMessage.get(1).intValue());
+       }
+        
+        int tagLength = -1;
+        tagLength = checkTagLength(oscMessage);
+
+        for (int i = 0; i<tagLength; i+=2)
+        {
+           int pitch, velocity, hue;
+           
+           if(i+1 < tagLength)
+           {
+             pitch = oscMessage.get(i).intValue();
+             velocity = oscMessage.get(i+1).intValue();
+             hue = int(map(pitch % 12, 0, 11, 0, 255));
+             Note3D note = new Note3D(hue, 0, 0, 0, velocity, tonicKey, 0, 0, 0);
+             println("adding to received from network -- size (velocity):"+velocity);
+             received.add(note);
+           }
+           else
+           {
+            println("Tag length error..."+tagLength); 
+           }
+        }
     }
-    
+
     if(oscMessage.checkAddrPattern("/test"))        // A test message
     {
       if(oscMessage.checkTypetag("s")) 
@@ -136,9 +148,6 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
          stored.add(note);
       }
    
-      println("notesPerMeasure:"+notesPerMeasure);
-      println("stored.size():"+stored.size());
-      
       notesPerMeasure = tagLength/2;
      }
    }
@@ -146,14 +155,14 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
 
 int checkTagLength(OscMessage oscMessage)
 {
-  int tagLength = -1;
+  int tagLength = 0;
   
-  for (int i = minMotiveLength; i<=maxMotiveLength; i++)
+  for (int i = 0; i<=maxMotiveLength; i++)
     {
       String checkTag = "";
       
       for(int k = 0; k<i; k++) 
-        checkTag = checkTag + "ii"; 
+        checkTag = checkTag + "i"; 
     
       if(oscMessage.checkTypetag(checkTag))
       {
@@ -251,15 +260,22 @@ public void sendMotive(ArrayList<Note3D> motive, boolean drawMotive)
   for( int i=0 ; i<motive.size() ; i++ )
   {
      play.add(motive.get(i).getPitch()); 
-     play.add(motive.get(i).getVelocity()); 
+     play.add(motive.get(i).getSize()); 
      draw.add(motive.get(i).getPitch()); 
-     draw.add(motive.get(i).getVelocity()); 
+     draw.add(motive.get(i).getSize()); 
+     
+     println("Draw Motive Length:"+checkTagLength(draw));
+     println("Motive.getPitch():"+motive.get(i).getPitch());
+     if(checkTagLength(draw) == 2)
+        println("Motive.getSize():"+motive.get(i).getSize());
   }
   
   sendMessage(play);
   
   if(drawMotive)
+  {
     sendMessage(draw);
+  }
 }
 
 /************** Controller Methods ***************/
@@ -296,11 +312,16 @@ public void drawNote(Note3D note)
   String noteString = "";
   OscMessage play = new OscMessage("/play");
   OscMessage draw = new OscMessage("/draw");
+ 
+  draw.add(note.getPitch()); 
+  draw.add(note.getSize()); 
 
- draw.add(note.getPitch()); 
- draw.add(note.getVelocity()); 
+   println("Draw Length:"+checkTagLength(draw));
+  println("Motive.getPitch():"+note.getPitch());
+  if(checkTagLength(draw) == 2)
+  println("Motive.getSize():"+note.getSize());
 
- sendMessage(draw);
+  sendMessage(draw);
 }
 
 

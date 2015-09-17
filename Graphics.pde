@@ -31,48 +31,8 @@ class Chain3D
 
   void update()
   {
-    /*
-    float lastX = x;
-     float lastY = y;
-     float lastZ = z;
-     
-     h = noise(ht) * 255;    // hue
-     x = noise(xt) * width * fieldSize - fieldSize * 60;  // x pos
-     y = noise(yt) * height * fieldSize - fieldSize * 60; // y pos
-     z = noise(zt) * height + fieldZOffset; // z pos
-     
-     if (recentNote)
-     {
-     ht+=noiseIncrement * 5.;
-     xt+=noiseIncrement * 5.;
-     yt+=noiseIncrement * 5.;
-     zt+=noiseIncrement * 5.;
-     }
-     else
-     {
-     ht+=noiseIncrement;
-     xt+=noiseIncrement;
-     yt+=noiseIncrement;
-     zt+=noiseIncrement;
-     }
-     
-     if (frameCount - recentNoteFrame > 10)
-     recentNote = false;
-     
-     curSize+=noiseIncrement*fieldSize;
-     
-     if (curSize>3*fieldSize) 
-     curSize=noiseIncrement*fieldSize;
-     
-     spheres.add(new Note3D(h, x, y, z, curSize, tonicKey, lastX, lastY, lastZ));
-     
-     if (spheres.size() > maxLength)  
-     spheres.remove(0);
-     */
-
     PVector last = new PVector(-1, -1, -1);
     
-    // If a note is received
     for (Note3D n : received)
     {
       float newX, newY, newZ;
@@ -83,7 +43,7 @@ class Chain3D
       n.angle = n.getScaleDegree() * 0.33;
       
       n.radius = n.getVelocity() * 0.01;
-      n.speed = 1/n.getVelocity() * 0.01;
+      n.speed = 1/(n.getVelocity()+0.001) * 0.01;
       n.isFading = true;
 
       if(last.x != -1)
@@ -91,23 +51,13 @@ class Chain3D
         
       last = n.position;
       
-     // println("radius:"+n.radius);
-    //  println("speed:"+n.speed);
-      
       spheres.add(n);
-      
-     // print("Note Position.x:"+n.position.x);
-     // print(" Position.y:"+n.position.y);
-     // print(" Position.z:"+n.position.z);
-     // println(" Size:"+n.size);
-      //      spheres.add(new Note3D(h, x, y, z, curSize, tonicKey, lastX, lastY, lastZ));
     }
 
     received = new ArrayList();
 
     for (Note3D n : spheres)          
     { 
-//      n.angle += (2.0/n.radius) * vizRotateSpeed;
       n.angle += (2.0/n.radius) * n.speed;
   
       n.position.x += n.radius*cos(n.angle);
@@ -197,18 +147,22 @@ void displayInfo()
   text(str(notesPerMeasure), x+780, y, z);
 
   text("Current Note: ", x+500, y += textSpacing, z);
+  if(notesPerMeasure > 0)
+  {
   if (active && currentMotive.size() >= notesPerMeasure)
     text(str(currentMotive.get(currentNote % notesPerMeasure).getScaleDegree()), x+750, y, z);
   else
     text("-", x+750, y, z);
-
+  }
   text("MIDI Pitch: ", x+500, y += textSpacing, z);
 
+  if(notesPerMeasure > 0)
+  {
   if (active && currentMotive.size() >= notesPerMeasure)
     text(str(currentMotive.get(currentNote % notesPerMeasure).getPitch()), x+750, y, z);
   else
     text("-", x+750, y, z);
-
+  }
 
   textSize(28);
   fill(hue, 200, 255);

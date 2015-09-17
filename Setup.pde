@@ -111,6 +111,7 @@ void setupKaleidoscope()
   }
 }
 
+
 void stopPiece()
 {
   pieceStopped = true; 

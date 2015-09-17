@@ -13,7 +13,7 @@ float vizRotateSpeed = 1, vizSize = 500;
 
 float rotateIncrement = PI/32;
 float rotateArrayIncrement = PI/1024;
-float noiseIncrement = 0.05;
+float noiseIncrement = 0.04;
 float measureNoiseIncrement = 0.333;
 
 int minMotiveLength = 1, maxMotiveLength = 8;
@@ -44,11 +44,11 @@ float stretchFactor = 2.5;      // How much to stretch notes from their noteLeng
 
 /****************** Misc. Settings ******************/
 int maxLength = 120;
-float collisionDistance = 120.;
-float arraySpacing = 0.2;
-int arraySize = 20;
+float collisionDistance = 180.;
+float arraySpacing = 0.28;
+int arraySize = 36;
 float minArraySpacing = 0.1, maxArraySpacing = 1., arraySpacingIncrement = 0.025;
-float minAgentSize = 20., maxAgentSize = 500., agentSizeIncrement = 5.;
+float agentSize = 150., minAgentSize = 20., maxAgentSize = 500., agentSizeIncrement = 5.;
 float fieldZOffset = -500.;
 
 
