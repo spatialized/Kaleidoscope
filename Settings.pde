@@ -5,7 +5,7 @@ int serverPort = 12000;                             // Server's broadcast port a
 int broadcastPort = 2000;                           // Port the clients should listen to 
   
 /****************** Graphics Settings ******************/
-float alpha = 180;
+float alphaMax = 190.;
 float fieldSize = 10.;                                // Field Size in proportion to window (for SONIFIER module)
 float moveIncrement = 36. * fieldSize;
 float moveArrayIncrement = 10. * fieldSize;
@@ -19,9 +19,8 @@ float measureNoiseIncrement = 0.333;
 int minMotiveLength = 1, maxMotiveLength = 8;
 int topOctave = 7;       
 
-
 float arrayNoiseIncrement = 0.025;
-int backgroundColor = 0;
+int backgroundColor = 50;
 int noteWidth = 28;
 int noteHeight = 12;
 int barlineWidth = 2;
@@ -38,9 +37,10 @@ float timeInc = 1./30.;
 /****************** Music Parameters ******************/
 int numPerformers = 4;      // 1 main performer, 3 auxiliary performers
 int scaleSteps = 7;
-int minTempo = 10, maxTempo = 60, tempoIncrement = 2;
+int minTempo = 8, maxTempo = 60, tempoIncrement = 2;
 float velocityScalingFactor = 50.;
 int droneVelocity = 24;
+float stretchFactor = 2.5;      // How much to stretch notes from their noteLength
 
 /****************** Misc. Settings ******************/
 int maxLength = 120;

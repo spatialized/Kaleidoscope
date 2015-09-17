@@ -10,6 +10,8 @@ void setupKaleidoscope()
   println("* * * * * * * * * * * * * * * * * * * *");
   println("");
 
+  PFont font = loadFont("DialogInput-48.vlw");
+  textFont(font, 32);
 
   if (ipAddress.equals(serverIPAddress))          // Check if this machine is the OSC server
     isServer = true;
@@ -53,8 +55,12 @@ void setupKaleidoscope()
   /******* Setup Graphics *******/
   colorMode(HSB);
   background(190);
-
-  camera = new Camera(this, 0, 0, -1000 * fieldSize, 0,0,0, PI / 3, float(width)/float(height), 200, 2000 * fieldSize);
+  
+  float zoomFactor = -1000;
+  if(currentModule == KaleidoscopeModule.VISUALIZER)
+    zoomFactor = -500;
+  
+  camera = new Camera(this, 0, 0, zoomFactor * fieldSize, 0,0,0, PI / 3, float(width)/float(height), 200, 2000 * fieldSize);
   particleMode = false;
 
   /******* Setup Sound *******/

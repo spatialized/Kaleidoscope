@@ -3,12 +3,36 @@ void keyPressed()
   if (key == ',')
   {
     timbre -= 1;
-    if (timbre < 0) timbre = 2;
+    if (timbre < 0) timbre = 3;
+    
+    if(debug)
+      println("timbre:"+timbre);
   }
+  
   if (key == '.')
   {
     timbre += 1;
-    if (timbre > 2) timbre = 0;
+    if (timbre > 3) timbre = 0;
+
+    if(debug)
+      println("timbre:"+timbre);
+  }
+
+  if (key == ';')
+  {
+    droneTimbre -= 1;
+    if (droneTimbre < 0) droneTimbre = 3;
+
+    if(debug)
+      println("drone timbre:"+droneTimbre);
+  }
+  if (key == '\'')
+  {
+    droneTimbre += 1;
+    if (droneTimbre > 3) droneTimbre = 0;
+
+    if(debug)
+      println("drone timbre:"+droneTimbre);
   }
 
   if (key == '<' && currentProcess != KaleidoscopeProcess.ARPEGGIO)
@@ -28,7 +52,7 @@ void keyPressed()
     if (key == '/')              // Bypass waiting for performers (for testing) 
     {
       waitingForPerformers = false;
-      generateRandomNotes = true;
+      //generateRandomNotes = true;
     }
     if (key == ' ' && !waitingForPerformers)
     {
@@ -99,7 +123,11 @@ void keyPressed()
   {
     switch(key)
     {
-       case 'w':
+      case 'l':
+        lineMode = !lineMode;
+        break; 
+/*
+      case 'w':
         moveZTransition = true;
         moveZDirection = -1;
         break; 
@@ -128,6 +156,7 @@ void keyPressed()
         moveYTransition = true;
         moveYDirection = 1;
         break;
+*/
         
       case 'r':
         rotateZTransition = true;
@@ -139,7 +168,7 @@ void keyPressed()
         rotateZDirection = -1;
         break; 
     }
-        
+    /*
     if ( key == CODED )
     {
       if (keyCode == LEFT)
@@ -163,7 +192,7 @@ void keyPressed()
         rotateYDirection = 1;
       }
     }
-  
+    */
   }
   if (currentModule == KaleidoscopeModule.CONTROLLER && !optionKey)
   {
@@ -248,6 +277,18 @@ void keyPressed()
     case 'G':
       setTonicKey(8);
       break;
+      
+     case 'j':
+        if(stretchFactor > 1.1)
+          stretchFactor -= 0.1;
+       if(debug) println("stretchFactor:"+stretchFactor);
+        break;
+        
+     case 'k':
+       if(stretchFactor < 4.9)
+         stretchFactor += 0.1;
+       if(debug) println("stretchFactor:"+stretchFactor);
+       break;
     }
   }
 

@@ -86,6 +86,16 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
       if(oscMessage.checkTypetag("i"))
       {
         tempo = oscMessage.get(0).intValue();
+        println("Set tempo from message:"+tempo);
+      }
+   }
+   
+   if(oscMessage.checkAddrPattern("/stretchFactor"))        // A message to change tempo
+   {
+      if(oscMessage.checkTypetag("i"))
+      {
+        stretchFactor = oscMessage.get(0).intValue();
+        println("Set stretchFactor from message:"+stretchFactor);
       }
    }
 
@@ -94,6 +104,14 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
       if(oscMessage.checkTypetag("i"))
       {
         setTonicKey( oscMessage.get(0).intValue() );
+      }
+   } 
+   
+   if(oscMessage.checkAddrPattern("/scaleMode"))        // A message to change the tonic key
+   {
+      if(oscMessage.checkTypetag("i"))
+      {
+        scaleMode = oscMessage.get(0).intValue();
       }
    } 
      
@@ -224,7 +242,7 @@ public void sendStop()        // Send stop message to all clients
 }
 
 /************** Sonifier Methods ***************/
-public void sendMotive(ArrayList<Note3D> motive)          
+public void sendMotive(ArrayList<Note3D> motive, boolean drawMotive)          
 {
   String noteString = "";
   OscMessage play = new OscMessage("/play");
@@ -239,7 +257,9 @@ public void sendMotive(ArrayList<Note3D> motive)
   }
   
   sendMessage(play);
-  sendMessage(draw);
+  
+  if(drawMotive)
+    sendMessage(draw);
 }
 
 /************** Controller Methods ***************/
@@ -250,10 +270,38 @@ public void sendNewTonicKey(int newTonic)         // Send new tonic to server
   sendMessage(message); 
 }
 
+public void sendNewScaleMode(int newScaleMode)         // Send new tonic to server
+{
+  OscMessage message = new OscMessage("/scaleMode");
+  message.add(newScaleMode);
+  sendMessage(message); 
+}
+
 public void sendNewTempo(int newTempo)            // Send new tempo to server
 {
   OscMessage message = new OscMessage("/tempo");
-  message.add();
+  message.add(newTempo);
   sendMessage(message); 
 }
+
+public void sendNewStretchFactor(int newStretchFactor)            // Send new tempo to server
+{
+  OscMessage message = new OscMessage("/stretchFactor");
+  message.add(newStretchFactor);
+  sendMessage(message); 
+}
+
+public void drawNote(Note3D note)
+{
+  String noteString = "";
+  OscMessage play = new OscMessage("/play");
+  OscMessage draw = new OscMessage("/draw");
+
+ draw.add(note.getPitch()); 
+ draw.add(note.getVelocity()); 
+
+ sendMessage(draw);
+}
+
+
 

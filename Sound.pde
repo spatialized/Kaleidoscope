@@ -39,6 +39,8 @@ class ToneInstrument implements Instrument
     {
        amplitude *= 0.22;
     }
+    
+    amplitude *= gain;
 
     adsr = new ADSR( amplitude, attack, decay, sustain, release ); /// maxAmp, attTime, decTime, susLv1, relTime
     
@@ -79,7 +81,7 @@ class DroneInstrument implements Instrument
    // print("Drone frequency:"+frequency);
   //  print(" amplitude:"+amplitude);
   //  println(" duration:"+duration);
-   
+
    if(wave == Waves.TRIANGLE)
     {
        amplitude *= 0.88;
@@ -93,6 +95,8 @@ class DroneInstrument implements Instrument
        amplitude *= 0.22;
     }
      
+    amplitude *= gain;
+  
     droneOsc = new Oscil( frequency, amplitude, wave );
     adsr = new ADSR( amplitude, 5, 10, 5, 7.5 ); /// maxAmp, attTime, decTime, susLv1, relTime
  

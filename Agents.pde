@@ -36,7 +36,7 @@ class SonificationAgent
     noStroke();
     float fadeFactor = (1.-constrain(map(centerZDist, 0., 8000., 0., 1.), 0., 1.));
    
-    float alphaVal = alpha * fadeFactor * fadeFactor;
+    float alphaVal = alphaMax * fadeFactor * fadeFactor;
     fill(255, 0, 255, alphaVal);
     
     pushMatrix();
@@ -89,7 +89,10 @@ class SonificationAgent
          int curScaleDegree = n.getScaleDegree();
          
          if(curScaleDegree != lastScaleDegree) 
+         {
            storeNote(n); 
+           playTone( n.pitch, noteLength, n.getVelocity() );    
+         }
 
          lastScaleDegree = curScaleDegree;
          collided = false;

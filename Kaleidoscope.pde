@@ -59,7 +59,7 @@ void setup()
   * KaleidoscopeModule.CONTROLLER              This module controls the parameters of the music in realtime (e.g. tonic key, scale mode, tempo, etc.)            NO                 
   * 
   * Select the current module:                                                                                                                                                 */                                                                                               
-  currentModule = KaleidoscopeModule.VISUALIZER;      
+  currentModule = KaleidoscopeModule.CONTROLLER;      
 
   /*                                                             Choose Process
   *                                                              
@@ -70,21 +70,29 @@ void setup()
   * KaleidoscopeProcess.SUBTRACTIVE                                    
   * 
   * Select the current module:                                                                                                                                                 */                                                                                               
-  currentProcess = KaleidoscopeProcess.ADDITIVE;      
+  currentProcess = KaleidoscopeProcess.ARPEGGIO;      
  
   /************** Music Settings *****************/
   tonicKey = 0;            // Initial tonic key (0=C, 1=C#, 2=D,...)
   timbre = 1;              // Initial timbre (0=SINE, 1=TRIANGLE, 2=SQUARE, 3=QUARTERPULSE)
   droneTimbre = 2;        // Initial timbre (0=SINE, 1=TRIANGLE, 2=SQUARE, 3=QUARTERPULSE)
   scaleMode = 0;           // Inital scale mode (0 = Ionian, 1 = Dorian, 2 = Phrygian...)
-  tempo = 26;  // Initial tempo in frames per beat 
+  tempo = 18;  // Initial tempo in frames per beat 
   
   setupKaleidoscope();        // Perform the setup functions
 }
 
 void draw()
 {
-  background(backgroundColor);    // Set background color each frame
+  if(currentModule != KaleidoscopeModule.SONIFIER)
+  {
+    background(backgroundColor);    // Set background color each frame
+    lineMode = true;
+  }
+  else
+  {
+    background(0);                  // Draw background each frame
+  }
 
   if (isServer && waitingForPerformers)
   {
@@ -143,8 +151,12 @@ void draw()
      textSize(320);
      pushMatrix();
      rotateY(radians(180));
-     text("Waiting to start...", 50, 50, -250);
-     text("Push '/' key to enter test mode...", 50, 350, -250);
+     if(debug)
+     {
+      text("Debug Mode:", 50, -150, -250);
+      text("Waiting to start...", 50, 50, -250);
+      text("Push '/' key to enter test mode...", 50, 350, -250);
+     }
      popMatrix();
   }
   

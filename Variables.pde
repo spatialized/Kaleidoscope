@@ -32,8 +32,8 @@ import netP5.*;
 /**********************/
 
 /******** Debugging ********/
-boolean debug = true;                  // Turn on / off debugging (prints to output window).
-boolean generateRandomNotes = false;    // For testing on a single machine
+boolean debug = false;                  // Turn on / off debugging (prints to output window).
+boolean generateRandomNotes = true;    // For testing on a single machine
 
 /******** Networking ********/
 String ipAddress, serverIPAddress;
@@ -92,6 +92,7 @@ boolean moveArrayZTransition = false;
 Minim audio;
 AudioOutput output;  // Minim audio output
 MidiBus midiOut; // The MidiBus
+float gain = 1.;
 
 /************* Music *************/
 NoteField noteField;
@@ -131,6 +132,8 @@ float arrayYaw = 0., arrayPitch = 0., arrayRoll = 0.;
 float centerZDist = 0.;
 
 String[] Modes = {"Ionian", "Dorian", "Phrygian", "Lydian", "Mixolydian", "Aeolian", "Locrian"};
+String[] Keys = {"C Major", "C# Major", "D Major", "D# Major", "E Major", "F Major", "F# Major", "G Major", "G# Major", "A Major", "A# Major", "B Major"};
+String[] Timbres = {"Sine", "Triangle", "Square", "Quarterpulse"};
 int scaleMode;          // 0: Ionian  1: Dorian  2: Phrygian  3: Lydian  4: Mixolydian  5: Aeolian  6: Phrygian
 
 float measureNoiseTime;
