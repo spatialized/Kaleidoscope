@@ -40,15 +40,9 @@ void setup()
   /*************** Network Setup *************
   * Set ipAddress  to your computer's IP Address.  (under System Preferences > Network)
   * Set serverIPAddress to the IP address of the server:                     */
-  ipAddress = "192.168.1.138";   //  Mac Pro          
+  ipAddress = "192.168.1.138";            
   serverIPAddress = "192.168.1.128";                // Note: Must be same as "ipAddress" on server machine
 
-  //serverIPAddress = "192.168.1.138"; // Mac Pro
-  //serverIPAddress = "192.168.1.128";   // MacBook Pro     
-  //serverIPAddress = "192.168.1.126"; // MacBook   
- // ipAddress = "192.168.1.138"; // Mac Pro
-  //ipAddress = "192.168.1.128";  // MacBook Pro     
-  //ipAddress = "192.168.1.126"; // MacBook   
 
   /***************** Music Setup ***************
   *                                                             Choose Module
