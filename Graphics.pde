@@ -251,7 +251,7 @@ void displayInfo()
      
      fill(145, 155, 255);
      textSize(textSize * 1.8);
-     text("Kaleidoscope for Laptop Ensemble", x, y, z);
+     text("Kaleidoscope for Laptop Ensemble v1.0", x, y, z);
 
      //if(currentModule != KaleidoscopeModule.CONTROLLER)
      //{

@@ -44,10 +44,10 @@ void setup()
   //ipAddress = "192.168.1.126"; // MacBook   
  
   /***************** Music Setup ***************/
-  // Set module (performer role): KaleidoscopeModule.VISUALIZER  (Server Default) KaleidoscopeModule.SONIFIER   KaleidoscopeModule.CONTROLLER                         */ 
+  // Set module (performer role): VISUALIZER  (Server Default) SONIFIER   CONTROLLER                              
   currentModule = KaleidoscopeModule.CONTROLLER;      
 
-  // Set process (how musical material develops): KaleidoscopeProcess.ARPEGGIO  KaleidoscopeProcess.OSTINATO   KaleidoscopeProcess.ADDITIVE KaleidoscopeProcess.SUBTRACTIVE          */                                    
+  // Set process (how musical material develops): ARPEGGIO  OSTINATO   ADDITIVE SUBTRACTIVE                                               
   currentProcess = KaleidoscopeProcess.ADDITIVE;      
  
   /************** Music Settings *****************/

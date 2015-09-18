@@ -574,7 +574,8 @@ void updateMusic()
     {
       recentNote = true;
       recentNoteFrame = frameCount;
-    } else
+    } 
+    else
     {
       if (debug && frameCount % 100 == 0)  println("Waiting for notes...");
     }
@@ -605,23 +606,21 @@ void updateMotiveLength()
   switch(currentProcess)
   {
   case ADDITIVE:
-    // motiveLength = constrain(currentStep+1, minMotiveLength, maxMotiveLength);  // x pos
     break;
 
   case SUBTRACTIVE:
-    // motiveLength = constrain(currentStep+1, minMotiveLength, maxMotiveLength);  // x pos
     break;
 
   default:  
     motiveLength = constrain(round(noise(measureNoiseTime) * maxMotiveLength), minMotiveLength, maxMotiveLength);  // x pos
     break;
   }
+  
   if (motiveLength < minMotiveLength)
   {
     motiveLength += random(1, 4);
   }
 
-  //println("new motiveLength:"+motiveLength);
   measureNoiseTime += measureNoiseIncrement;
 }
 
@@ -677,13 +676,11 @@ void startMeasure()        // Begin a measure
   musicStartFrame = frameCount + 1;
   musicEndFrame = musicStartFrame + int(tempo) * 4;
 
-//  if(int(random(0,3))==1)
-  
-    if (generateRandomNotes)      // Debugging
-    {
-      storeRandomNotes(motiveLength);
-    }
-  
+  if (generateRandomNotes)      // Debugging
+  {
+    storeRandomNotes(motiveLength);
+  }
+
 
   switch(currentProcess)
   {
@@ -691,12 +688,12 @@ void startMeasure()        // Begin a measure
   
       if (curPhrase != lastPhrase)
       {
-        notesPerMeasure = currentStep+1;
         currentStep += 1;
         if (currentStep > currentMotive.size())
         {
           currentStep = 0;
         }
+        notesPerMeasure = currentStep+1;
         lastPhrase = curPhrase;
   
         if (motiveLength > 0 && notesPerMeasure > 0)
@@ -709,12 +706,14 @@ void startMeasure()        // Begin a measure
   
       if (curPhrase != lastPhrase)
       {
-       notesPerMeasure = currentStep+1;
+        println("NEW PHRASE:"+currentStep);
         currentStep -= 1;
         if (currentStep <= 0)
         {
-          currentStep = currentMotive.size()-1;
-        }
+         currentStep = currentMotive.size()-1;
+          println("  reset currentStep:"+currentStep);
+      }
+        notesPerMeasure = currentStep+1;
         lastPhrase = curPhrase;
   
         if (motiveLength > 0 && notesPerMeasure > 0)

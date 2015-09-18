@@ -1,20 +1,44 @@
 void setupKaleidoscope()
 {
-  frameRate(60);
-  
   println("* * * * * * * * * * * * * * * * * * * *");
   println("Kaleidoscope for Laptop Ensemble, 2015");
   println("Software v1.0, August 2015");
   println("by David Gordon");
   println("http://www.spatializedmusic.com/");
   println("");
-  println("Software Version 0.9");
+  println("Software Version 1.0");
   println("* * * * * * * * * * * * * * * * * * * *");
   println("");
 
-  PFont font = loadFont("DialogInput-48.vlw");
-  textFont(font, 32);
+  /******* Setup Networking *******/
+  setupNetworking();
+  
+  /******* Setup Graphics *******/
+  setupGraphics();
 
+  /****** Setup Music *******/
+  setupMusic();
+  
+  /****** Setup Module *******/
+  if(currentModule == KaleidoscopeModule.SONIFIER)
+  {
+    noteField = new NoteField();
+    sonificationArray = new SonificationArray();
+  }
+  if(currentModule == KaleidoscopeModule.VISUALIZER)
+  {
+    vizField = new Chain3D();
+  }
+  
+  if(!isServer)
+  {
+    connectToServer();                // Attempt to connect to server
+    waitingForPerformers = false;
+  }
+}
+
+void setupNetworking()
+{
   if (ipAddress.equals(serverIPAddress))          // Check if this machine is the OSC server
     isServer = true;
   else
@@ -58,10 +82,18 @@ void setupKaleidoscope()
     println("Invalid IP address or broadcast port.  Won't be able to send messages...");
 
   serverLocation = new NetAddress(serverIPAddress, serverPort);
+ 
+}
 
-  /******* Setup Graphics *******/
+void setupGraphics()
+{
+    frameRate(60);
+ 
   colorMode(HSB);
   background(190);
+ 
+  PFont font = loadFont("DialogInput-48.vlw");
+  textFont(font, 32);
   
   float zoomFactor = -1000;
   if(currentModule == KaleidoscopeModule.VISUALIZER)
@@ -70,10 +102,12 @@ void setupKaleidoscope()
   camera = new Camera(this, 0, 0, zoomFactor * fieldSize, 0,0,0, PI / 3, float(width)/float(height), 200, 2000 * fieldSize);
   particleMode = false;
 
-  /******* Setup Sound *******/
-  midiOut = new MidiBus(this, -1, 1);           // Create a new MidiBus with no input device and the default Java Sound Synthesizer as the output device.
-  
-  /****** Setup Music *******/
+}
+
+void setupMusic()
+{
+   midiOut = new MidiBus(this, -1, 1);           // Create a new MidiBus with no input device and the default Java Sound Synthesizer as the output device.
+
   currentMotive = new ArrayList();
   currentNote = 0;
   currentStep = 0;
@@ -88,9 +122,12 @@ void setupKaleidoscope()
     case ADDITIVE:
      notesPerMeasure = 1;
      break; 
+
     case SUBTRACTIVE:
-     notesPerMeasure = 8;
+     notesPerMeasure = 6;
+     currentStep = 5;
      break; 
+
     default:
      notesPerMeasure = 4;
      break; 
@@ -113,25 +150,7 @@ void setupKaleidoscope()
   activeMeasures = new boolean[numPerformers];
   measureNoiseTime = 0.0;
  
-  /****** Module-Specific Setup *******/
-  if(currentModule == KaleidoscopeModule.SONIFIER)
-  {
-    noteField = new NoteField();
-    sonificationArray = new SonificationArray();
-  }
-  if(currentModule == KaleidoscopeModule.VISUALIZER)
-  {
-    vizField = new Chain3D();
-  }
-  
-  if(!isServer)
-  {
-    connectToServer();                // Attempt to connect to server
-    waitingForPerformers = false;
-  }
 }
-
-
 void stopPiece()
 {
   pieceStopped = true; 
