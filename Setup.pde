@@ -1,5 +1,7 @@
 void setupKaleidoscope()
 {
+  frameRate(60);
+  
   println("* * * * * * * * * * * * * * * * * * * *");
   println("Kaleidoscope for Laptop Ensemble, 2015");
   println("Software v1.0, August 2015");
@@ -32,8 +34,13 @@ void setupKaleidoscope()
   else
   {
     if(debug)  println("This machine is a client.");
-    
+
     listeningPort = 2000;                                  // Client port the server listens to for incoming messages
+
+    if(currentModule == KaleidoscopeModule.VISUALIZER)
+    {
+      currentModule = KaleidoscopeModule.CONTROLLER;
+    }
     
     waitingForPerformers = false;
   }
@@ -58,7 +65,7 @@ void setupKaleidoscope()
   
   float zoomFactor = -1000;
   if(currentModule == KaleidoscopeModule.VISUALIZER)
-    zoomFactor = -500;
+    zoomFactor = -350;
   
   camera = new Camera(this, 0, 0, zoomFactor * fieldSize, 0,0,0, PI / 3, float(width)/float(height), 200, 2000 * fieldSize);
   particleMode = false;
@@ -70,19 +77,32 @@ void setupKaleidoscope()
   currentMotive = new ArrayList();
   currentNote = 0;
   currentStep = 0;
+  tempo = maxTempo;                                // Tempo (in frames per beat)
+  lastTempo = int(tempo);
   
-  active = false;
-  noteLength = int(tempo / (notesPerMeasure-1));
+  active = false;                             // Is this machine playing?
   droneLength = noteLength * 60;
   motiveLength = 4;
-  notesPerMeasure = 4;
+  switch(currentProcess)
+  {
+    case ADDITIVE:
+     notesPerMeasure = 1;
+     break; 
+    case SUBTRACTIVE:
+     notesPerMeasure = 8;
+     break; 
+    default:
+     notesPerMeasure = 4;
+     break; 
+  }
+  noteLength = int(tempo) / notesPerMeasure;
   
+  curPhrase = 0;
+  lastPhrase = 0;
   curOctave = (currentModule.ordinal() + 1) % topOctave + 2;
   
-  musicStartFrame = frameCount;
-  musicEndFrame = musicStartFrame + tempo * notesPerMeasure;
-  measureStartFrame = musicStartFrame + currentModule.ordinal() * tempo;
-  measureEndFrame = measureStartFrame + tempo;
+  musicStartFrame = frameCount + 1;
+  musicEndFrame = musicStartFrame + int(tempo) * notesPerMeasure;
   
   stored = new ArrayList();
   received = new ArrayList();

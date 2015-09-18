@@ -13,7 +13,7 @@ float vizRotateSpeed = 1, vizSize = 500;
 
 float rotateIncrement = PI/32;
 float rotateArrayIncrement = PI/1024;
-float noiseIncrement = 0.04;
+float noiseIncrement = 0.015;
 float measureNoiseIncrement = 0.333;
 
 int minMotiveLength = 1, maxMotiveLength = 8;
@@ -36,12 +36,17 @@ float timeInc = 1./30.;
 
 /****************** Music Parameters ******************/
 int numPerformers = 4;      // 1 main performer, 3 auxiliary performers
+int phraseLength = 4;      // How many measures in a phrase?
+int noteRemovalRate = 15;
+
 int scaleSteps = 7;
-int minTempo = 8, maxTempo = 60, tempoIncrement = 2;
+int minTempo = 10, maxTempo = 30;
+float tempoIncrement = 0.01;
 float velocityScalingFactor = 50.;
 int droneVelocity = 24;
-float stretchFactor = 2.5;      // How much to stretch notes from their noteLength
-
+int droneLengthFactor = 50;
+float stretchFactor = 1.5;      // How much to stretch notes from their noteLength
+float stretchFactorMin = 1., stretchFactorMax = 6.;
 /****************** Misc. Settings ******************/
 int maxLength = 120;
 float collisionDistance = 180.;
@@ -96,3 +101,24 @@ void setCurrentProcess(int newProcess)
   if(debug)   
     println("Set current process to: "+currentProcess.getTitle());
 }
+
+
+void setVisualMode(int newVizMode)
+{
+  switch(newVizMode)  
+  {
+     case 1:
+       visualMode = newVizMode;
+       break;
+      
+      case 2:
+       visualMode = newVizMode;
+       break;
+      
+      default:
+       break; 
+  }
+}
+
+
+

@@ -1,6 +1,6 @@
 /**************************************/
 /*  SonificationAgent
-/*  
+/*   
 /*  Sphere that collides with notes in 3d space
 /**************************************/
 

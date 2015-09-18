@@ -35,7 +35,7 @@ import netP5.*;
 
 /******** Debugging ********/
 boolean debug = true;                  // Turn on / off debugging (prints to output window).
-boolean generateRandomNotes = false;    // For testing on a single machine
+boolean generateRandomNotes = true;    // For testing on a single machine
 
 /******** Networking ********/
 String ipAddress, serverIPAddress;
@@ -102,15 +102,26 @@ Chain3D vizField;
 SonificationArray sonificationArray;
 ArrayList<Note3D> currentMotive;
 int currentStep;
+int curSection = 0;
 int notesPerMeasure, motiveLength;
+int lastTempo;
 
 boolean[] activeMeasures;
 boolean stopPiece = false, pieceStopped = false;
-int tempo;       
+float tempo;       
 int timbre, droneTimbre;
 int tonicKey;
 int currentNote;
 int musicStartFrame = 0, musicEndFrame = 0, measureStartFrame = 0, measureEndFrame = 0;  
+
+int curMeasure;
+int curPhrase, lastPhrase;
+
+boolean tempoFading, rotationFading, zoomFading, stretchFactorFading;
+int  zoomDirection;
+float  zoomIncrement;
+float  stretchFactorIncrement;
+int visualMode;
 
 boolean active;        // Should this machine be playing now?
 float noteLength;        // Length of note in frames
@@ -118,7 +129,7 @@ float droneLength;        // Length of drone in frames
 
 int notesPlaying = 0;
 int dronesPlaying = 0;
-int maxNotesPlaying = 3;
+int maxNotesPlaying = 4;
 int maxDronesPlaying = 2;
 
 boolean recentNote = false;

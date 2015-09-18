@@ -9,64 +9,53 @@
   /*********************************************************************/
 
 /**************************** Installation ************************/
-/*
 /* See Instructions.pdf for installation instructions for the required external libraries:
 /* TheMidiBus, OscP5, Obsessive Camera Direction (OCD) Library
-/*
 /****************************************************************/
 
 /**************************** Quick Setup ****************************/
-/*
 /* For each machine:
 /*    
 /* 1. Follow instructions under General Setup, Network Setup and Music Setup sections below.
 /* 2. Connect to WIFI 
 /* 3. If this machine is the server, turn on File Sharing. 
 /*      If this machine is a client, in the Finder, choose Go > "Connect to Server" and select the server's name.
+/* 4. Run in Present Mode
 /*
 /*  See Instructions.pdf for full setup instructions.
-/*
 /*********************************************************************/
 
 void setup()
 {
-  size(1080, 720, P3D);      // Sets size of window and renderer to use (P3D)
-  frameRate(25);             // Sets frame rate
-  
-  /************* General Setup ***************
-  * Set numPerformers to the number of performers in the ensemble:    */
+  /************* General Setup ***************/
+  // Set width, height of window (for server, set to screen size):
+  size(1080, 720, P3D);      
+  // Set required number of performers:
   numPerformers = 3;     
   
-  /*************** Network Setup *************
-  * Set ipAddress  to your computer's IP Address.  (under System Preferences > Network)
-  * Set serverIPAddress to the IP address of the server:                     */
-  ipAddress = "192.168.1.138";   //  Mac Pro          
-  serverIPAddress = "192.168.1.128";                   // Note: Must be same as "ipAddress" on server machine
+  /*************** Network Setup *************/
+  // Set to the IP address of this machine:
+  ipAddress = "192.168.1.138";     
+  // Set to IP address of the server    (Same as ipAddress: designates this machine as the server)
+  serverIPAddress = "192.168.1.128";          
 
-  //serverIPAddress = "192.168.1.138"; // Mac Pro
-  //serverIPAddress = "192.168.1.128";   // MacBook Pro     
-  //serverIPAddress = "192.168.1.126"; // MacBook   
   ipAddress = "192.168.1.138"; // Mac Pro
  // ipAddress = "192.168.1.128";  // MacBook Pro     
   //ipAddress = "192.168.1.126"; // MacBook   
  
-  /***************** Music Setup ***************
-  *                                                             Choose Module:
-  * KaleidoscopeModule.VISUALIZER  (Server Default)    KaleidoscopeModule.SONIFIER         KaleidoscopeModule.CONTROLLER
-  *                                                                                                                                                */                                                                                               
-  currentModule = KaleidoscopeModule.SONIFIER;      
+  /***************** Music Setup ***************/
+  // Set module (performer role): KaleidoscopeModule.VISUALIZER  (Server Default) KaleidoscopeModule.SONIFIER   KaleidoscopeModule.CONTROLLER                         */ 
+  currentModule = KaleidoscopeModule.CONTROLLER;      
 
-  /*                                                             Choose Process:
-  * KaleidoscopeProcess.ARPEGGIO     KaleidoscopeProcess.OSTINATO       KaleidoscopeProcess.ADDITIVE      KaleidoscopeProcess.SUBTRACTIVE                                    
-  *                                                                                                                                                */                                                                                               
-  currentProcess = KaleidoscopeProcess.OSTINATO;      
+  // Set process (how musical material develops): KaleidoscopeProcess.ARPEGGIO  KaleidoscopeProcess.OSTINATO   KaleidoscopeProcess.ADDITIVE KaleidoscopeProcess.SUBTRACTIVE          */                                    
+  currentProcess = KaleidoscopeProcess.ADDITIVE;      
  
   /************** Music Settings *****************/
-  tonicKey = 0;            // Initial tonic key (0=C, 1=C#, 2=D,...)
-  timbre = 1;              // Initial timbre (0=SINE, 1=TRIANGLE, 2=SQUARE, 3=QUARTERPULSE)
-  droneTimbre = 2;         // Initial drone timbre (0=SINE, 1=TRIANGLE, 2=SQUARE, 3=QUARTERPULSE)
-  scaleMode = 0;           // Inital scale mode (0 = Ionian, 1 = Dorian, 2 = Phrygian...)
-  tempo = 18;  // Initial tempo (in frames per beat)
+  // Set initial parameters of music 
+  tonicKey = 0;            // Tonic key (0=C, 1=C#, 2=D,...)
+  timbre = 2;              // Timbre (0=SINE, 1=TRIANGLE, 2=SQUARE, 3=QUARTERPULSE)
+  droneTimbre = 1;         // Drone timbre (0=SINE, 1=TRIANGLE, 2=SQUARE, 3=QUARTERPULSE)
+  scaleMode = 0;           // Scale mode (0 = Ionian, 1 = Dorian, 2 = Phrygian...)
   
   setupKaleidoscope();        // Perform the setup functions
 }
@@ -133,20 +122,11 @@ void draw()
     
     updateMusic();
     playMusic();
+    updateParams();
   }
   else if(!pieceStarted)
   {
-     fill(150, 155, 255);
-     textSize(320);
-     pushMatrix();
-     rotateY(radians(180));
-     if(debug)
-     {
-      text("Debug Mode:", 50, -150, -250);
-      text("Waiting to start...", 50, 50, -250);
-      text("Push '/' key to enter test mode...", 50, 350, -250);
-     }
-     popMatrix();
+     displayIntro();
   }
   
   if(currentModule == KaleidoscopeModule.VISUALIZER || currentModule == KaleidoscopeModule.SONIFIER)
@@ -166,6 +146,11 @@ void draw()
   }
 }
 
+void startPiece()
+{
+  pieceStarted = true;
+  goToSection(1); 
+}
 void stop()
 {
   super.stop();

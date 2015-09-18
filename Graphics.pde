@@ -1,5 +1,5 @@
 /***************
- *  Chain3D 
+ *  Chain3D  
  *
  *  Represents visualized Note3D objects  
  ****************/
@@ -132,9 +132,8 @@ void displayInfo()
   text("1-7 Keys : Select Scale Mode (1 = Ionian, 2 = Dorian, 3 = Phrygian, ... 7 = Locrian)", x, y+=textSpacing * 0.75, z);
   text("A-G Keys : Select Tonic Note - use SHIFT to access sharp notes", x, y+=textSpacing * 0.75, z);
 */
-  x = -100;
 
-    fill(hue, 20, 250);
+  fill(hue, 20, 250);
 
   text("Current Motive:", x+500, y += textSpacing * 2., z);
 
@@ -183,8 +182,8 @@ void displayInfo()
   text("A-G", x, y += textSpacing, z);
   text("Tonic Key:  "+Keys[tonicKey], x+500, y, z);
 
-  text("- / =", x, y += textSpacing, z);
-  text("Tempo:  "+tempo, x + 500, y, z);
+  //text("- / =", x, y += textSpacing, z);
+  text("Tempo:  "+tempo, x + 500, y += textSpacing, z);
 
   text("COMMA / PERIOD", x, y += textSpacing, z);
   text("Timbre:  "+Timbres[timbre], x + 500, y, z);
@@ -196,6 +195,148 @@ void displayInfo()
   text("Note Stretching:  "+stretchFactor, x+500, y, z);
   text("; / '", x, y += textSpacing, z);
   text("Drone Timbre:  "+Timbres[droneTimbre], x+500, y, z);
+  text("Current Phrase:  "+curPhrase, x + 500, y += textSpacing, z);
+  text("Current Measure:  "+curMeasure, x + 500, y += textSpacing, z);
+  text("Notes Per Measure:  "+notesPerMeasure, x + 500, y += textSpacing * 2, z);
+//  println(" phraseLength:"+phraseLength);
+  text("Notes Length:  "+noteLength, x + 500, y += textSpacing, z);
 
+ }
+ 
+ void displayIntro()
+ {
+     int x,y,z;
+     x = 0;
+     y = 0;
+     z = 0;
+
+     int textSpacing = 20;
+     int textSize = height/40;
+     
+     switch(currentModule)
+     {
+      case SONIFIER:
+       textSize = 300;
+       textSize(textSize);
+       textSpacing = 320;
+       x = -15 * textSpacing;
+       y = -13 * textSpacing;
+       z = -textSpacing;
+       pushMatrix();
+       rotateY(radians(180));
+       break;
+       
+      case CONTROLLER:
+       textSize = height/30;
+       textSize(textSize);
+       textSpacing = int(textSize * 1.44);
+       x = 300;
+       y = -50;
+       z = -250;
+       break;
+       
+      case VISUALIZER:
+       textSize = 140;
+       textSize(textSize);
+       textSpacing = 180;
+       x = -10 * textSpacing;
+       y = -8 * textSpacing;
+       z = -textSpacing;
+       pushMatrix();
+       rotateY(radians(180));
+       break;
+     }
+    
+     
+     
+     fill(145, 155, 255);
+     textSize(textSize * 1.8);
+     text("Kaleidoscope for Laptop Ensemble", x, y, z);
+
+     //if(currentModule != KaleidoscopeModule.CONTROLLER)
+     //{
+     //  x = -6 * textSpacing;
+     //  y = -10 * textSpacing;
+     //}
+     textSize(textSize * 1.5);
+
+    switch(currentModule.ordinal())
+    {
+    case 0:
+      text("Module: Visualizer", x, y += textSpacing*2., z);
+      break;
+  
+    case 1:
+      text("Module: Sonifier", x, y += textSpacing*2., z);
+      break;
+  
+    case 2:
+      text("Module: Controller", x, y += textSpacing*2., z);
+      break;
+    }
+  
+    switch(currentProcess.ordinal())
+    {
+    case 0:
+      text("Process: Arpeggio", x, y += textSpacing*1.33, z);
+      break;
+  
+    case 1:
+      text("Process: Ostinato", x, y += textSpacing*1.33, z);
+      break;
+  
+    case 2:
+      text("Process: Additive", x, y += textSpacing*1.33, z);
+      break;
+  
+    case 3:
+      text("Process: Subtractive", x, y += textSpacing*1.33, z);
+      break;
+    }
+  
+      textSize(textSize * 1.2);
+
+     if(debug)
+     {
+      fill(15, 155, 255);
+      text("Debug Mode", x, y += textSpacing * 3, z);
+      y += textSpacing * 2;
+     }
+
+    // if(currentModule != KaleidoscopeModule.CONTROLLER)
+    // {
+    //   x = -5 * textSpacing;
+    //   y = -6 * textSpacing;
+    // }
+     fill(150, 155, 255);
+ 
+    //  text("Messages", x,  y += textSpacing * 4, -250);
+    //  text("--------", x,  y+=textSpacing, -250);
+       
+       
+    // if(currentModule != KaleidoscopeModule.CONTROLLER)
+    //    x = -8 * textSpacing;
+      
+     fill(255, 255, 255);
+
+      text("Waiting to start...", x,  y+=textSpacing*3, -250);
+      
+      if(waitingForPerformers)
+      {
+        text("Waiting for performers...", x, y+=textSpacing, -250); 
+        text("Currently are "+(numConnected-1)+" performers connected...", x,  y+=textSpacing, -250); 
+      }
+      else if (currentModule == KaleidoscopeModule.VISUALIZER)
+      {
+         text("Push SPACEBAR to begin...", x, y+=textSpacing, -250); 
+      }
+
+      textSize(textSize);
+      
+      fill(15, 155, 255);
+      text("Push '/' key to enter test mode...", x, y+=textSpacing * 3, -250);
+     
+     if(currentModule != KaleidoscopeModule.CONTROLLER)
+       popMatrix(); 
  }
 

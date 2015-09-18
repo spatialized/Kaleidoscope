@@ -1,5 +1,16 @@
 void keyPressed()
-{
+{ 
+  
+  if (key == 'n')      // DELETE
+  {
+     if(pieceStarted)
+     curSection++;
+     println("Go To Section");
+
+     goToSection(curSection);
+  }
+  
+  
   if (key == ',')
   {
     timbre -= 1;
@@ -17,7 +28,6 @@ void keyPressed()
     if(debug)
       println("timbre:"+timbre);
   }
-
   if (key == ';')
   {
     droneTimbre -= 1;
@@ -52,12 +62,12 @@ void keyPressed()
     if (key == '/')              // Bypass waiting for performers (for testing) 
     {
       waitingForPerformers = false;
-      //generateRandomNotes = true;
+      startPiece();
     }
     if (key == ' ' && !waitingForPerformers)
     {
       sendStart();               // Forward "start" message to all clients
-      pieceStarted = true;
+      startPiece();
     }
     if (key == '|' && pieceStarted)
     {
@@ -75,7 +85,7 @@ void keyPressed()
       disconnectFromServer();
       break;
     case '/':                  // Bypass waiting for piece to start (for testing)
-      pieceStarted = true;
+      startPiece();
       break;
     case '\\':
       sendTestMessage();
@@ -159,13 +169,13 @@ void keyPressed()
 */
         
       case 'r':
-        rotateZTransition = true;
-        rotateZDirection = 1;
+       // rotateZTransition = true;
+       // rotateZDirection = 1;
         break;
         
       case 'f':
-        rotateZTransition = true;
-        rotateZDirection = -1;
+      //  rotateZTransition = true;
+      //  rotateZDirection = -1;
         break; 
     }
     /*
@@ -277,7 +287,7 @@ void keyPressed()
     case 'G':
       setTonicKey(8);
       break;
-      
+     /* 
      case 'j':
         if(stretchFactor > 1.1)
           stretchFactor -= 0.1;
@@ -288,6 +298,14 @@ void keyPressed()
        if(stretchFactor < 4.9)
          stretchFactor += 0.1;
        if(debug) println("stretchFactor:"+stretchFactor);
+       break;
+     */
+     case 'n':
+       if(pieceStarted)
+         curSection++;
+         println("Call go To Section");
+
+         goToSection(curSection);
        break;
     }
   }
@@ -439,10 +457,10 @@ void keyReleased()
     moveArrayYTransition = false;
   }  
   if (key == 'r') {
-    rotateZTransition = false;
+   // rotateZTransition = false;
   } 
   if (key == 'f') {
-    rotateZTransition = false;
+   // rotateZTransition = false;
   }  
   if (key == '9') {
     decreasingSize = false;

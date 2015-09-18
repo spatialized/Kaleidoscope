@@ -4,14 +4,14 @@ public void sendMessage(OscMessage message)        // Sends a message to clients
   if(isServer)
   {
     oscP5.send(message, netAddressList);  
-    if(debug) println("Sent message to clients...");
+  //  if(debug) println("Sent message to clients...");
   }
   else
   {
     OscP5.flush(message,serverLocation);  
     
   //  oscP5.send(message, serverLocation); 
-    if(debug) println("Sent message to server...");
+  //  if(debug) println("Sent message to server...");
   } 
 }
 
@@ -25,6 +25,17 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
     if (oscMessage.addrPattern().equals(connectPattern))      // Connect a client to server
     {
       connect(oscMessage.netAddress().address());
+      int tagLength = checkTagLength(oscMessage);
+      if(tagLength == 0)
+      {
+        println("connect message no value");
+      }
+      else if(tagLength == 1)
+      {
+        int value = oscMessage.get(0).intValue();
+
+        println("connect message value:"+value);
+      }
     }
     else if (oscMessage.addrPattern().equals(disconnectPattern))      // Disconnect a client from server
     {
@@ -81,13 +92,13 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
     }
   }
   
-  if(oscMessage.checkAddrPattern("/start"))         // Message indicating beginning of piece
+  if(oscMessage.checkAddrPattern("/start"))         // Message received indicating beginning of piece
   {
     if(debug) println("Starting piece...");
-     pieceStarted = true;
+    startPiece();
   }
 
-  if(oscMessage.checkAddrPattern("/stop"))         // Message indicating beginning of piece
+  if(oscMessage.checkAddrPattern("/stop"))         // Message received indicating beginning of piece
   {
     if(debug) println("Stopping piece...");
      stopPiece = true;
@@ -116,6 +127,15 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
       if(oscMessage.checkTypetag("i"))
       {
         setTonicKey( oscMessage.get(0).intValue() );
+      }
+   } 
+   
+   
+   if(oscMessage.checkAddrPattern("/section"))        // A message to change the tonic key
+   {
+      if(oscMessage.checkTypetag("i"))
+      {
+        goToSection( oscMessage.get(0).intValue() );
       }
    } 
    
@@ -185,6 +205,10 @@ void sendTestMessage()
 public void connectToServer()
 {
   OscMessage m = new OscMessage("/server/connect",new Object[0]);
+  
+  if(currentModule == KaleidoscopeModule.SONIFIER)
+    m.add(1);
+  
   OscP5.flush(m,serverLocation);  
   println("Connecting to server...");
 }
@@ -264,10 +288,10 @@ public void sendMotive(ArrayList<Note3D> motive, boolean drawMotive)
      draw.add(motive.get(i).getPitch()); 
      draw.add(motive.get(i).getSize()); 
      
-     println("Draw Motive Length:"+checkTagLength(draw));
-     println("Motive.getPitch():"+motive.get(i).getPitch());
-     if(checkTagLength(draw) == 2)
-        println("Motive.getSize():"+motive.get(i).getSize());
+    // println("Draw Motive Length:"+checkTagLength(draw));
+   //  println("Motive.getPitch():"+motive.get(i).getPitch());
+    // if(checkTagLength(draw) == 2)
+    //    println("Motive.getSize():"+motive.get(i).getSize());
   }
   
   sendMessage(play);
@@ -279,6 +303,13 @@ public void sendMotive(ArrayList<Note3D> motive, boolean drawMotive)
 }
 
 /************** Controller Methods ***************/
+public void sendNewSection(int newSection)         // Send new tonic to server
+{
+  OscMessage message = new OscMessage("/section");
+  message.add(newSection);
+  sendMessage(message); 
+}
+
 public void sendNewTonicKey(int newTonic)         // Send new tonic to server
 {
   OscMessage message = new OscMessage("/tonic");
@@ -316,10 +347,10 @@ public void drawNote(Note3D note)
   draw.add(note.getPitch()); 
   draw.add(note.getSize()); 
 
-   println("Draw Length:"+checkTagLength(draw));
-  println("Motive.getPitch():"+note.getPitch());
-  if(checkTagLength(draw) == 2)
-  println("Motive.getSize():"+note.getSize());
+ //  println("Draw Length:"+checkTagLength(draw));
+ // println("Motive.getPitch():"+note.getPitch());
+//  if(checkTagLength(draw) == 2)
+//  println("Motive.getSize():"+note.getSize());
 
   sendMessage(draw);
 }

@@ -18,7 +18,7 @@ class Note3D
   int id;
 
   int saturation = 225;
-  
+
   float mass;
   float G;
 
@@ -27,14 +27,14 @@ class Note3D
   float velocity = 0.;
   float radius = 10.; 
   float alpha = alphaMax;
-  
+
   Note3D(float h, float x, float y, float z, float newSize, int newTonic, float lx, float ly, float lz) 
   {
     hue = h;
     position = new PVector(x, y, z);
     size = newSize;
     velocity = size * velocityScalingFactor;
-    
+
     if (lx == -1000000 && ly == -1000000 && lz == -1000000)
       previous = position;
     else
@@ -97,44 +97,43 @@ class Note3D
   void display()
   {
     noStroke();
-    
+
     if (collided)
       fill(255-hue, 5, 10, alpha * 0.25);
     else
       fill(hue, saturation, 200, alpha);
-    
-    if(!lineMode)
+
+    if (!lineMode)
     {
-     float displaySize = size * 0.5;
-  
+      float displaySize = size * 0.5;
+
       pushMatrix();
       translate(position.x, position.y, position.z);
       sphere(displaySize);
       popMatrix();
-  
+
       pushMatrix();
       translate(-position.x, position.y, position.z);
       sphere(displaySize);
       popMatrix();
-  
+
       pushMatrix();
       translate(position.x, -position.y, position.z);
       sphere(displaySize);
       popMatrix();
-  
+
       pushMatrix();
       translate(-position.x, -position.y, position.z);
       sphere(displaySize);
       popMatrix();
-    }
-    else
+    } else
     {
       if (collided)
         stroke(hue, 5, 10, alpha * 0.5);
       else
         stroke(hue, saturation, 200, alpha);
-  
-      if(currentModule == KaleidoscopeModule.SONIFIER)
+
+      if (currentModule == KaleidoscopeModule.SONIFIER)
         strokeWeight(size * 0.33);
       else
         strokeWeight(size * 0.006);
@@ -145,10 +144,10 @@ class Note3D
       line(-position.x, -position.y, position.z, -previous.x, -previous.y, previous.z);
     }
   }
-  
+
   void update()
   {
-    if(isFading)
+    if (isFading)
     {
       alpha -= 0.33; 
       size -= 0.1;
@@ -161,7 +160,7 @@ class Note3D
     pitch = scaleDegree + tonic + curOctave * 12;
     return pitch;
   }
- 
+
   int getOctave()
   {
     return round(pitch / 12);
@@ -176,16 +175,16 @@ class Note3D
   {
     return int(velocity);
   }
-  
+
   int getSize()
   {
     return int(size);
   }
-  
+
   void setSize(float newSize)
   {
-     size = newSize;
-     velocity = size * velocityScalingFactor;
+    size = newSize;
+    velocity = size * velocityScalingFactor;
   }
 
   PVector getPosition(int which)
@@ -252,10 +251,21 @@ class NoteField
     float lastX = x;
     float lastY = y;
     float lastZ = z;
+    /*
+    h = noise(ht) * 255;    // hue
+     x = noise(xt) * width * fieldSize - fieldSize * 60;  // x pos
+     y = noise(yt) * height * fieldSize - fieldSize * 60; // y pos
+     z = noise(zt) * height + fieldZOffset; // z pos
+     
+     ht+=noiseIncrement;
+     xt+=noiseIncrement;
+     yt+=noiseIncrement;
+     zt+=noiseIncrement;
+     */
 
     h = noise(ht) * 255;    // hue
-    x = noise(xt) * width * fieldSize - fieldSize * 60;  // x pos
-    y = noise(yt) * height * fieldSize - fieldSize * 60; // y pos
+    x = noise(xt) * width * fieldSize - fieldSize * 20;  // x pos
+    y = noise(yt) * height * fieldSize - fieldSize * 20; // y pos
     z = noise(zt) * height + fieldZOffset; // z pos
 
     ht+=noiseIncrement;
@@ -288,74 +298,71 @@ void playCurrentNotes()
   float duration = noteLength;
   int velocity = -1, pitch = -1;
   int droneVelocity = -1, dronePitch = -1;
-  
+
   switch(currentProcess)
   {
-    case ARPEGGIO:
-      if (currentMotive.size() >= notesPerMeasure && currentMotive.get(currentNote).getScaleDegree() != -1)
+  case ARPEGGIO:
+    if (currentMotive.size() >= notesPerMeasure && currentMotive.get(currentNote).getScaleDegree() != -1)
+    {
+      velocity = currentMotive.get(currentNote).getVelocity();
+
+      if (currentNote > 0)
       {
-        velocity = currentMotive.get(currentNote).getVelocity();
-  
-        if (currentNote > 0)
+        int last = currentMotive.get(currentNote-1).getScaleDegree();
+        int cur = currentMotive.get(currentNote % currentMotive.size()).getScaleDegree();
+
+        if (last >= cur) 
+          curOctave++;
+
+        if (curOctave >= topOctave)
         {
-          int last = currentMotive.get(currentNote-1).getScaleDegree();
-          int cur = currentMotive.get(currentNote % currentMotive.size()).getScaleDegree();
-  
-          if (last >= cur) 
-            curOctave++;
-  
-          if (curOctave >= topOctave)
-          {
-            curOctave = 2;
-          }
+          curOctave = 2;
         }
-  
-        pitch = currentMotive.get(currentNote % currentMotive.size()).getScaleDegree() + curOctave * 12;
-      } else
-      {
-        if (debug && frameCount % 100 == 0)
-          println("Waiting for notes...");
-      }  
-      break;
-  
-    case OSTINATO:
-      if (currentMotive.size() >= notesPerMeasure)
-      {
-        pitch = currentMotive.get(currentNote % currentMotive.size()).getPitch();
-        velocity = currentMotive.get(currentNote % currentMotive.size()).getVelocity();
-      } 
-      else
-      {
-        if (debug && frameCount % 100 == 0)
-          println("Waiting for notes...");
-      }  
-      break;
-  
-    case ADDITIVE:                                       
-      if (currentMotive.size() >= 0)
-      {
-        pitch = currentMotive.get(currentNote % currentMotive.size()).getPitch();
-        velocity = currentMotive.get(currentNote % currentMotive.size()).getVelocity();
-      } 
-      else
-      {
-        if (debug && frameCount % 100 == 0)
-          println("Waiting for notes...");
       }
-      break;
-  
-    case SUBTRACTIVE:                                       
-      if (currentMotive.size() >= 0)
-      {
-        pitch = currentMotive.get(currentNote % currentMotive.size()).getPitch();
-        velocity = currentMotive.get(currentNote % currentMotive.size()).getVelocity();
-      } 
-      else
-      {
-        if (debug && frameCount % 100 == 0)
-          println("Waiting for notes...");
-      }  
-      break;
+
+      pitch = currentMotive.get(currentNote % currentMotive.size()).getScaleDegree() + curOctave * 12;
+    } else
+    {
+      if (debug && frameCount % 100 == 0)
+        println("Waiting for notes...");
+    }  
+    break;
+
+  case OSTINATO:
+    if (currentMotive.size() >= notesPerMeasure)
+    {
+      pitch = currentMotive.get(currentNote % currentMotive.size()).getPitch();
+      velocity = currentMotive.get(currentNote % currentMotive.size()).getVelocity();
+    } else
+    {
+      if (debug && frameCount % 100 == 0)
+        println("Waiting for notes...");
+    }  
+    break;
+
+  case ADDITIVE:                                       
+    if (currentMotive.size() >= 0)
+    {
+      pitch = currentMotive.get(currentNote % currentMotive.size()).getPitch();
+      velocity = currentMotive.get(currentNote % notesPerMeasure).getVelocity();
+    } else
+    {
+      if (debug && frameCount % 100 == 0)
+        println("Waiting for notes...");
+    }
+    break;
+
+  case SUBTRACTIVE:                                       
+    if (currentMotive.size() >= 0)
+    {
+      pitch = currentMotive.get(currentNote % currentMotive.size()).getPitch();
+      velocity = currentMotive.get(currentNote % notesPerMeasure).getVelocity();
+    } else
+    {
+      if (debug && frameCount % 100 == 0)
+        println("Waiting for notes...");
+    }  
+    break;
   }
 
   if (currentMotive.size() > 0)
@@ -374,7 +381,6 @@ void playCurrentNotes()
 
         Note3D note = currentMotive.get(currentNote);
         drawNote(note);                  // Broadcast current motive to other performers and draw
-        println("playing note.size:"+note.size);
         received.add(note);
       }
 
@@ -384,8 +390,7 @@ void playCurrentNotes()
         int hue = int(map(dronePitch % 12, 0, 11, 0, 255));
         Note3D note = new Note3D(hue, 0, 0, 0, droneVelocity * 0.05, tonicKey, 0, 0, 0);
         drawNote(note);                  // Broadcast current motive to other performers
-        received.add(note);                 
-        println("playing drone.size:"+note.size);
+        received.add(note);
       }
     }
   }
@@ -400,9 +405,11 @@ void playTone(int pitch, float duration, int velocity)
   int soundsPlaying = notesPlaying + dronesPlaying;
   int maxSoundsPlaying = maxNotesPlaying + maxDronesPlaying;
 
-  float curMaxVolume = maxVolume-constrain(map(soundsPlaying, 0, maxSoundsPlaying, 0., maxVolume), 0., maxVolume);
-  float volume = constrain(map(velocity, 0, 127, 0., curMaxVolume), 0., curMaxVolume);
+ // float curMaxVolume = maxVolume-constrain(map(soundsPlaying, 0, maxSoundsPlaying, 0., maxVolume), 0., maxVolume);
+ // float volume = constrain(map(velocity, 0, 127, 0., curMaxVolume), 0., curMaxVolume);
 
+  float volume = maxVolume / maxNotesPlaying;
+  
   switch(timbre)
   {
   case 0:
@@ -432,9 +439,9 @@ void playDrone(int pitch, float duration, int velocity)
   int soundsPlaying = notesPlaying + dronesPlaying;
   int maxSoundsPlaying = maxNotesPlaying + maxDronesPlaying;
 
-  float curMaxVolume = maxVolume-constrain(map(soundsPlaying, 0, maxSoundsPlaying, 0., maxVolume), 0., maxVolume);
-  float volume = constrain(map(velocity, 0, 127, 0., curMaxVolume), 0., curMaxVolume);
-  volume *= 0.35;
+  //float curMaxVolume = maxVolume-constrain(map(soundsPlaying, 0, maxSoundsPlaying, 0., maxVolume), 0., maxVolume);
+  //float volume = constrain(map(velocity, 0, 127, 0., curMaxVolume), 0., curMaxVolume);
+  float volume = maxVolume / maxNotesPlaying / maxDronesPlaying;
 
   switch(droneTimbre)
   {
@@ -467,6 +474,8 @@ void storeRandomNotes(int numberOfNotes)
   {
     Note3D note = new Note3D(random(255), 0, 0, 0, 60, 0, 0, 0, 0);
     storeNote(note);
+          println("added to stored:"+note.getScaleDegree());
+
     received.add(note);      // For debugging
   }
 }
@@ -480,33 +489,27 @@ void selectNextMotive()
     if (stored.size() > 0)
     {
       currentMotive.add(stored.get(0));
-
       if (motiveLength < stored.size())
+      {
         stored.remove(0);
-    } else
+      }
+        
+      if (frameCount % (tempo * noteRemovalRate) == 0)    // Remove one note every few seconds
+        stored.remove(0);
+    } 
+    else
     {
       if (debug && frameCount % 100 == 0)
         println("No stored notes.");
     }
   }
-
-  //println("currentMotive.size():"+currentMotive.size());
 }
 
 void updateMusic()
 {
-  int numBeats = numPerformers-1;
-
-//    println("measureStartFrame:"+measureStartFrame);
-//    println("frameCount:"+frameCount);
-  if (frameCount == measureStartFrame)      // If at start of this performer's active measure, broadcast and start playing current motive
+  if (frameCount == musicStartFrame)      // If at start of this performer's active measure, broadcast and start playing current motive
   {
     updateMotiveLength();
-
-    if (generateRandomNotes)
-    {
-      storeRandomNotes(motiveLength);
-    }
 
     selectNextMotive();     // Get next motive from collected notes
 
@@ -521,12 +524,20 @@ void updateMusic()
     }
 
     currentNote = 0;
+
+    /*
     if(notesPerMeasure != 0)
-      noteLength = tempo / notesPerMeasure;
-    droneLength = noteLength * 60;
+     {
+     noteLength = tempo / notesPerMeasure;
+     println("noteLength:"+noteLength);
+     }
+     */
+    println("noteLength:"+noteLength);
+
+    droneLength = noteLength * droneLengthFactor;
   } 
 
-  if (frameCount < measureStartFrame || frameCount > measureEndFrame)    // Is this performer active?
+  if (frameCount < musicStartFrame || frameCount > musicEndFrame)    // Is this performer active?
   { 
     active = false;
   }
@@ -539,71 +550,22 @@ void updateMusic()
 
   case OSTINATO:
     active = true;        // Always active
-    
-    if(gain >= 0.01)
+
+      if (gain >= 0.01)
       gain -= 0.01;
-    
+
     break;  
-    
+
   case ADDITIVE:
-    if(motiveLength != 0)
-      noteLength = tempo / motiveLength;
-    else if(debug) println("Motive length == 0!");
     break;  
 
   case SUBTRACTIVE:
-    if(motiveLength != 0)
-      noteLength = tempo / motiveLength;
-    else if(debug) println("Motive length == 0!");
     break;
   }
 
   if (frameCount >= musicEndFrame)          // If this is the end of current system, start next system
   {
-    switch(currentProcess)
-    {
-      case ADDITIVE:
-      currentStep += 1;
-      if (currentStep > currentMotive.size())
-      {
-        currentStep = 0;
-      }
-      break;
-
-    case SUBTRACTIVE:
-      currentStep -= 1;
-      if (currentStep <= 0)
-      {
-        currentStep = currentMotive.size()-1;
-      }
-      break;
-
-    case OSTINATO:
-      gain = 1.;  
-      break;
-    
-    default:
-      break;
-    }
-
-    musicStartFrame = frameCount;
-    musicEndFrame = musicStartFrame + tempo * notesPerMeasure;
-//    measureStartFrame = musicStartFrame + (musicEndFrame - musicStartFrame) / numBeats;      // During what measure of this phrase should the music play?
-    measureStartFrame = musicStartFrame + 1;      // During what measure of this phrase should the music play?
-    measureEndFrame = measureStartFrame + numBeats * tempo;                            
-    int measureLength = numBeats * tempo;
-//    measureStartFrame = musicStartFrame + numBeats * tempo;
-    
-   // println("musicStartFrame:"+musicStartFrame);
-  //  println(" notesPerMeasure:"+notesPerMeasure);
-   // println("musicEndFrame:"+musicEndFrame);
-    //println("measureStartFrame:"+measureStartFrame);
-    //println("stored.size():"+stored.size());
-//    println(" numBeats:"+numBeats);
-   // println("measureEndFrame:"+measureEndFrame);
-    println("noteLength:"+noteLength);
-    println("measureLength:"+measureLength);
-    //println("Motive length:"+currentMotive.size());
+    startMeasure();
   }
 
   if (currentModule == KaleidoscopeModule.VISUALIZER)
@@ -612,8 +574,7 @@ void updateMusic()
     {
       recentNote = true;
       recentNoteFrame = frameCount;
-    } 
-    else
+    } else
     {
       if (debug && frameCount % 100 == 0)  println("Waiting for notes...");
     }
@@ -629,10 +590,13 @@ void playMusic()
     if (currentNote == motiveLength)
       currentNote = 0;
 
-    if(currentMotive.size()>0)
+    if (currentMotive.size()>0)
       playCurrentNotes();
-      
+
     currentNote++;
+
+    if (currentNote > notesPerMeasure)
+      currentNote = 0;
   }
 }
 
@@ -640,24 +604,24 @@ void updateMotiveLength()
 {
   switch(currentProcess)
   {
-    case ADDITIVE:
-      motiveLength = constrain(currentStep+1, minMotiveLength, maxMotiveLength);  // x pos
-      break;
-    
-    case SUBTRACTIVE:
-      motiveLength = constrain(currentStep+1, minMotiveLength, maxMotiveLength);  // x pos
-      break;
-    
-    default:  
-      motiveLength = constrain(round(noise(measureNoiseTime) * maxMotiveLength), minMotiveLength, maxMotiveLength);  // x pos
-      break;
+  case ADDITIVE:
+    // motiveLength = constrain(currentStep+1, minMotiveLength, maxMotiveLength);  // x pos
+    break;
+
+  case SUBTRACTIVE:
+    // motiveLength = constrain(currentStep+1, minMotiveLength, maxMotiveLength);  // x pos
+    break;
+
+  default:  
+    motiveLength = constrain(round(noise(measureNoiseTime) * maxMotiveLength), minMotiveLength, maxMotiveLength);  // x pos
+    break;
   }
   if (motiveLength < minMotiveLength)
   {
     motiveLength += random(1, 4);
   }
 
-  println("new motiveLength:"+motiveLength);
+  //println("new motiveLength:"+motiveLength);
   measureNoiseTime += measureNoiseIncrement;
 }
 
@@ -708,6 +672,84 @@ IntList generateRandomMotive(int motiveLen)
   return noteList;
 }
 
+void startMeasure()        // Begin a measure
+{
+  musicStartFrame = frameCount + 1;
+  musicEndFrame = musicStartFrame + int(tempo) * 4;
+
+//  if(int(random(0,3))==1)
+  
+    if (generateRandomNotes)      // Debugging
+    {
+      storeRandomNotes(motiveLength);
+    }
+  
+
+  switch(currentProcess)
+  {
+    case ADDITIVE:
+  
+      if (curPhrase != lastPhrase)
+      {
+        notesPerMeasure = currentStep+1;
+        currentStep += 1;
+        if (currentStep > currentMotive.size())
+        {
+          currentStep = 0;
+        }
+        lastPhrase = curPhrase;
+  
+        if (motiveLength > 0 && notesPerMeasure > 0)
+          noteLength = constrain( int(tempo) / notesPerMeasure, 2, 1000);
+        //  noteLength = constrain( (int(tempo*2) / motiveLength / notesPerMeasure), 2, 1000);
+      }
+      break;
+  
+    case SUBTRACTIVE:
+  
+      if (curPhrase != lastPhrase)
+      {
+       notesPerMeasure = currentStep+1;
+        currentStep -= 1;
+        if (currentStep <= 0)
+        {
+          currentStep = currentMotive.size()-1;
+        }
+        lastPhrase = curPhrase;
+  
+        if (motiveLength > 0 && notesPerMeasure > 0)
+          noteLength = constrain( int(tempo) / notesPerMeasure, 2, 1000);
+        //  noteLength = constrain( (int(tempo*2) / motiveLength / notesPerMeasure), 2, 1000);
+      }
+  
+      break;
+  
+    case OSTINATO:
+      gain = 1.;  
+      break;
+  
+    default:
+      break;
+  }
+
+  curMeasure ++;
+
+  if (curMeasure > phraseLength)
+  {
+    curPhrase ++;
+    curMeasure = 0;
+  }
+
+  print("frameCount:"+frameCount);
+  print("   musicStartFrame:"+musicStartFrame);
+  print(" notesPerMeasure:"+notesPerMeasure);
+  print("  musicEndFrame:"+musicEndFrame);
+  print(" noteLength:"+noteLength);
+  print("curMeasure:"+curMeasure);
+  print(" curPhrase:"+curPhrase);
+  println(" phraseLength:"+phraseLength);
+  //println("Motive length:"+currentMotive.size());
+}
 
 int getOctave(int previousScaleDegree, int previousOctave, int scaleDegree)        // Return in what octave the closest (within P4) given pitch is 
 {
@@ -983,24 +1025,15 @@ void setScaleMode(int newScaleMode)
 
 void changeTempo(int up)
 {
-  if (up == 0)
-  {
-    if (tempo > minTempo + tempoIncrement)
-      tempo -= tempoIncrement;
-    sendNewTempo(tempo);
-    
-    if (debug)  
-      println("Changed tempo:"+tempo);
-  } 
-  else
-  {
-    if (tempo < maxTempo - tempoIncrement)
-      tempo += tempoIncrement;
-    sendNewTempo(tempo);
-   
-    if (debug) 
-      println("Changed tempo:"+tempo);
-  }
+  if (up == 0 && tempo > minTempo + tempoIncrement)
+    tempo -= tempoIncrement;
+  else if (tempo < maxTempo - tempoIncrement)
+    tempo += tempoIncrement;
+
+  sendNewTempo(int(tempo));
+
+  if (debug)  
+    println("Changed tempo:"+tempo);
 }
 
 float pitchToFreq(float midiNote)
