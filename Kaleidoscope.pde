@@ -2,10 +2,8 @@
   /*              Kaleidoscope, for Laptop Ensemble                    */
   /*                                                                   */
   /* Version 1.0                                                       */
-  /*                                                                   */
   /* David Gordon                                                      */
   /* http://www.spatializedmusic.com/                                  */
-  /*                                                                   */
   /*********************************************************************/
 
 /**************************** Installation ************************/
@@ -38,14 +36,14 @@ void setup()
   ipAddress = "192.168.1.138";     
   // Set to IP address of the server    (Same as ipAddress: designates this machine as the server)
   serverIPAddress = "192.168.1.128";          
+  serverIPAddress = ipAddress;          
 
-  ipAddress = "192.168.1.138"; // Mac Pro
  // ipAddress = "192.168.1.128";  // MacBook Pro     
   //ipAddress = "192.168.1.126"; // MacBook   
  
   /***************** Music Setup ***************/
-  // Set module (performer role): VISUALIZER  (Server Default) SONIFIER   CONTROLLER                              
-  currentModule = KaleidoscopeModule.CONTROLLER;      
+  // Set module (performer role): VISUALIZER  (Server Default)  SONIFIER   CONTROLLER                              
+  currentModule = KaleidoscopeModule.VISUALIZER;      
 
   // Set process (how musical material develops): ARPEGGIO  OSTINATO   ADDITIVE SUBTRACTIVE                                               
   currentProcess = KaleidoscopeProcess.ADDITIVE;      

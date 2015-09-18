@@ -6,18 +6,21 @@ int broadcastPort = 2000;                           // Port the clients should l
   
 /****************** Graphics Settings ******************/
 float alphaMax = 190.;
+float alphaIncrement = 1.;
 float fieldSize = 10.;                                // Field Size in proportion to window (for SONIFIER module)
 float moveIncrement = 36. * fieldSize;
 float moveArrayIncrement = 10. * fieldSize;
 float vizRotateSpeed = 1, vizSize = 500;
+float lineWidthFactor = 0.033;
 
-float rotateIncrement = PI/32;
+boolean rotateFading = false;
+float rotateIncrement = PI/64, rotateAcceleration = 0;
 float rotateArrayIncrement = PI/1024;
 float noiseIncrement = 0.015;
 float measureNoiseIncrement = 0.333;
 
 int minMotiveLength = 1, maxMotiveLength = 8;
-int topOctave = 7;       
+int bottomOctave = 2, topOctave = 8;       
 
 float arrayNoiseIncrement = 0.025;
 int backgroundColor = 50;
@@ -34,10 +37,12 @@ boolean velocityMode = true;
 int minVelocity = 60;
 float timeInc = 1./30.;
 
-/****************** Music Parameters ******************/
+/****************** Music Settings ******************/
 int numPerformers = 4;      // 1 main performer, 3 auxiliary performers
 int phraseLength = 4;      // How many measures in a phrase?
 int noteRemovalRate = 15;
+int maxNotesPlaying = 5;
+int maxDronesPlaying = 1;
 
 int scaleSteps = 7;
 int minTempo = 10, maxTempo = 30;
@@ -47,6 +52,7 @@ int droneVelocity = 24;
 int droneLengthFactor = 50;
 float stretchFactor = 1.5;      // How much to stretch notes from their noteLength
 float stretchFactorMin = 1., stretchFactorMax = 6.;
+
 /****************** Misc. Settings ******************/
 int maxLength = 120;
 float collisionDistance = 180.;

@@ -13,23 +13,27 @@ public enum KaleidoscopeProcess
     
     private final String text;
 
-    private KaleidoscopeProcess(final String text) {
+    private KaleidoscopeProcess(final String text) 
+    {
         this.text = text;
     }
 
-    public KaleidoscopeProcess getNext() {
+    public KaleidoscopeProcess getNext() 
+    {
      return this.ordinal() < KaleidoscopeProcess.values().length - 1
          ? KaleidoscopeProcess.values()[this.ordinal() + 1]
          : ARPEGGIO;
     }
     
-    public KaleidoscopeProcess getPrev() {
+    public KaleidoscopeProcess getPrev() 
+    {
      return this.ordinal() > 1
          ? KaleidoscopeProcess.values()[this.ordinal() - 1]
          : SUBTRACTIVE;
     }
     
-    String getTitle() {
+    String getTitle() 
+    {
       switch(this.ordinal()+1)
       {     
        case 1:
@@ -50,7 +54,8 @@ public enum KaleidoscopeProcess
     }
 
     @Override
-    public String toString() {
+    public String toString() 
+    {
         return text;
     }
 }

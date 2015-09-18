@@ -34,8 +34,8 @@ import netP5.*;
 /**********************/
 
 /******** Debugging ********/
-boolean debug = true;                  // Turn on / off debugging (prints to output window).
-boolean generateRandomNotes = true;    // For testing on a single machine
+boolean debug = false;                  // Turn on / off debugging (prints to output window).
+boolean generateRandomNotes = false;    // For testing on a single machine
 
 /******** Networking ********/
 String ipAddress, serverIPAddress;
@@ -47,7 +47,7 @@ NetAddress serverLocation;       // Address of the server
 KaleidoscopeModule  currentModule;    // The role of this performer in the ensemble (See KaleidoscopeModule.java file)
 KaleidoscopeProcess currentProcess;     // How the motive is played by the module
 
-boolean waitingForPerformers = true;
+boolean waitingForPerformers = true, sonifierConnected = false;
 boolean pieceStarted = false;
 boolean isServer;    
 int numConnected = 1;      // Number of connected machines (includes this one)
@@ -63,7 +63,11 @@ boolean optionKey = false;
 Camera camera;
 boolean particleMode;
 boolean lineMode = false;
+boolean strokeWeightFading = false, alphaFading = false;
+float strokeWeightIncrement = 0.;
+
 boolean decreasingSize = false, increasingSize = false;
+
 float rotateXFadeStart, rotateXFadeLength = 12, rotateXDirection;
 boolean rotateXTransition = false;
 float rotateYFadeStart, rotateYFadeLength = 12, rotateYDirection;
@@ -129,8 +133,6 @@ float droneLength;        // Length of drone in frames
 
 int notesPlaying = 0;
 int dronesPlaying = 0;
-int maxNotesPlaying = 4;
-int maxDronesPlaying = 2;
 
 boolean recentNote = false;
 int recentNoteFrame = 0;
@@ -138,7 +140,7 @@ int recentNoteFrame = 0;
 ArrayList<Note3D> stored;
 ArrayList<Note3D> received;
 int maxVelocity = 100;
-float maxVolume = 0.85;
+float maxVolume = 0.9;
 int curOctave;
 
 float arrayYaw = 0., arrayPitch = 0., arrayRoll = 0.;

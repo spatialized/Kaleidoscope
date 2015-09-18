@@ -134,9 +134,9 @@ class Note3D
         stroke(hue, saturation, 200, alpha);
 
       if (currentModule == KaleidoscopeModule.SONIFIER)
-        strokeWeight(size * 0.33);
+        strokeWeight(size * lineWidthFactor * 5.);
       else
-        strokeWeight(size * 0.006);
+        strokeWeight(size * lineWidthFactor);
 
       line(position.x, position.y, position.z, previous.x, previous.y, previous.z);
       line(-position.x, position.y, position.z, -previous.x, previous.y, previous.z);
@@ -301,68 +301,72 @@ void playCurrentNotes()
 
   switch(currentProcess)
   {
-  case ARPEGGIO:
-    if (currentMotive.size() >= notesPerMeasure && currentMotive.get(currentNote).getScaleDegree() != -1)
-    {
-      velocity = currentMotive.get(currentNote).getVelocity();
-
-      if (currentNote > 0)
+    case ARPEGGIO:
+      if (currentMotive.size() >= notesPerMeasure && currentMotive.get(currentNote).getScaleDegree() != -1)
       {
-        int last = currentMotive.get(currentNote-1).getScaleDegree();
-        int cur = currentMotive.get(currentNote % currentMotive.size()).getScaleDegree();
-
-        if (last >= cur) 
-          curOctave++;
-
-        if (curOctave >= topOctave)
+        velocity = currentMotive.get(currentNote).getVelocity();
+  
+        if (currentNote > 0)
         {
-          curOctave = 2;
+          int last = currentMotive.get(currentNote-1).getScaleDegree();
+          int cur = currentMotive.get(currentNote % currentMotive.size()).getScaleDegree();
+  
+          if (last >= cur) 
+            curOctave++;
+  
+          if (curOctave >= topOctave)
+          {
+            curOctave = 2;
+          }
         }
+  
+        pitch = currentMotive.get(currentNote % currentMotive.size()).getScaleDegree() + curOctave * 12;
+      } 
+      else
+      {
+        if (debug && frameCount % 100 == 0)
+          println("Waiting for notes...");
+      }  
+      break;
+  
+    case OSTINATO:
+      if (currentMotive.size() >= notesPerMeasure)
+      {
+        pitch = currentMotive.get(currentNote % currentMotive.size()).getPitch();
+        velocity = currentMotive.get(currentNote % currentMotive.size()).getVelocity();
       }
-
-      pitch = currentMotive.get(currentNote % currentMotive.size()).getScaleDegree() + curOctave * 12;
-    } else
-    {
-      if (debug && frameCount % 100 == 0)
-        println("Waiting for notes...");
-    }  
-    break;
-
-  case OSTINATO:
-    if (currentMotive.size() >= notesPerMeasure)
-    {
-      pitch = currentMotive.get(currentNote % currentMotive.size()).getPitch();
-      velocity = currentMotive.get(currentNote % currentMotive.size()).getVelocity();
-    } else
-    {
-      if (debug && frameCount % 100 == 0)
-        println("Waiting for notes...");
-    }  
-    break;
-
-  case ADDITIVE:                                       
-    if (currentMotive.size() >= 0)
-    {
-      pitch = currentMotive.get(currentNote % currentMotive.size()).getPitch();
-      velocity = currentMotive.get(currentNote % notesPerMeasure).getVelocity();
-    } else
-    {
-      if (debug && frameCount % 100 == 0)
-        println("Waiting for notes...");
-    }
-    break;
-
-  case SUBTRACTIVE:                                       
-    if (currentMotive.size() >= 0)
-    {
-      pitch = currentMotive.get(currentNote % currentMotive.size()).getPitch();
-      velocity = currentMotive.get(currentNote % notesPerMeasure).getVelocity();
-    } else
-    {
-      if (debug && frameCount % 100 == 0)
-        println("Waiting for notes...");
-    }  
-    break;
+      else
+      {
+        if (debug && frameCount % 100 == 0)
+          println("Waiting for notes...");
+      }  
+      break;
+  
+    case ADDITIVE:                                       
+      if (currentMotive.size() > 0)
+      {
+        pitch = currentMotive.get(currentNote % currentMotive.size()).getPitch();
+        velocity = currentMotive.get(currentNote % notesPerMeasure).getVelocity();
+      } 
+      else
+      {
+        if (debug && frameCount % 100 == 0)
+          println("Waiting for notes...");
+      }
+      break;
+  
+    case SUBTRACTIVE:                                       
+      if (currentMotive.size() > 0)
+      {
+        pitch = currentMotive.get(currentNote % currentMotive.size()).getPitch();
+        velocity = currentMotive.get(currentNote % notesPerMeasure).getVelocity();
+      } 
+      else
+      {
+        if (debug && frameCount % 100 == 0)
+          println("Waiting for notes...");
+      }  
+      break;
   }
 
   if (currentMotive.size() > 0)
@@ -412,21 +416,21 @@ void playTone(int pitch, float duration, int velocity)
   
   switch(timbre)
   {
-  case 0:
-    output.playNote( 0., dur, new ToneInstrument( freq, dur, volume, Waves.SINE, output ) );
-    break;
-
-  case 1:
-    output.playNote( 0., dur, new ToneInstrument( freq, dur, volume, Waves.TRIANGLE, output ) );
-    break;
-
-  case 2:
-    output.playNote( 0., dur, new ToneInstrument( freq, dur, volume, Waves.SQUARE, output ) );
-    break;
-
-  case 3:
-    output.playNote( 0., dur, new DroneInstrument( freq, dur, volume, Waves.QUARTERPULSE, output ) );
-    break;
+    case 0:
+      output.playNote( 0., dur, new ToneInstrument( freq, dur, volume, Waves.SINE, output ) );
+      break;
+  
+    case 1:
+      output.playNote( 0., dur, new ToneInstrument( freq, dur, volume, Waves.TRIANGLE, output ) );
+      break;
+  
+    case 2:
+      output.playNote( 0., dur, new ToneInstrument( freq, dur, volume, Waves.SQUARE, output ) );
+      break;
+  
+    case 3:
+      output.playNote( 0., dur, new DroneInstrument( freq, dur, volume, Waves.QUARTERPULSE, output ) );
+      break;
   }
 }
 
@@ -474,8 +478,6 @@ void storeRandomNotes(int numberOfNotes)
   {
     Note3D note = new Note3D(random(255), 0, 0, 0, 60, 0, 0, 0, 0);
     storeNote(note);
-          println("added to stored:"+note.getScaleDegree());
-
     received.add(note);      // For debugging
   }
 }
@@ -532,7 +534,6 @@ void updateMusic()
      println("noteLength:"+noteLength);
      }
      */
-    println("noteLength:"+noteLength);
 
     droneLength = noteLength * droneLengthFactor;
   } 
@@ -738,7 +739,7 @@ void startMeasure()        // Begin a measure
     curPhrase ++;
     curMeasure = 0;
   }
-
+/*
   print("frameCount:"+frameCount);
   print("   musicStartFrame:"+musicStartFrame);
   print(" notesPerMeasure:"+notesPerMeasure);
@@ -747,6 +748,7 @@ void startMeasure()        // Begin a measure
   print("curMeasure:"+curMeasure);
   print(" curPhrase:"+curPhrase);
   println(" phraseLength:"+phraseLength);
+  */
   //println("Motive length:"+currentMotive.size());
 }
 
@@ -755,7 +757,8 @@ int getOctave(int previousScaleDegree, int previousOctave, int scaleDegree)     
   if (scaleDegree - previousScaleDegree >= 4)
   {
     return previousOctave-1;
-  } else if (scaleDegree - previousScaleDegree <= -4)
+  } 
+  else if (scaleDegree - previousScaleDegree <= -4)
   {
     return previousOctave+1;
   }

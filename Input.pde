@@ -1,6 +1,5 @@
 void keyPressed()
 { 
-  
   if (key == 'n')      // DELETE
   {
      if(pieceStarted)
@@ -9,7 +8,6 @@ void keyPressed()
 
      goToSection(curSection);
   }
-  
   
   if (key == ',')
   {
@@ -62,9 +60,10 @@ void keyPressed()
     if (key == '/')              // Bypass waiting for performers (for testing) 
     {
       waitingForPerformers = false;
+      sonifierConnected = true;
       startPiece();
     }
-    if (key == ' ' && !waitingForPerformers)
+    if (key == ' ' && !waitingForPerformers && sonifierConnected)
     {
       sendStart();               // Forward "start" message to all clients
       startPiece();

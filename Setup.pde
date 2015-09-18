@@ -136,7 +136,8 @@ void setupMusic()
   
   curPhrase = 0;
   lastPhrase = 0;
-  curOctave = (currentModule.ordinal() + 1) % topOctave + 2;
+  //curOctave = (currentModule.ordinal() + 1) % topOctave + 2;
+  curOctave = int(random(bottomOctave + 1, topOctave-3));
   
   musicStartFrame = frameCount + 1;
   musicEndFrame = musicStartFrame + int(tempo) * notesPerMeasure;

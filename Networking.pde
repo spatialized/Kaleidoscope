@@ -33,8 +33,10 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
       else if(tagLength == 1)
       {
         int value = oscMessage.get(0).intValue();
-
-        println("connect message value:"+value);
+        if(value == 1)
+        {
+          sonifierConnected = true; 
+        }
       }
     }
     else if (oscMessage.addrPattern().equals(disconnectPattern))      // Disconnect a client from server

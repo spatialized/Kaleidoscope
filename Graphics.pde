@@ -328,7 +328,10 @@ void displayInfo()
       }
       else if (currentModule == KaleidoscopeModule.VISUALIZER)
       {
-         text("Push SPACEBAR to begin...", x, y+=textSpacing, -250); 
+         if(sonifierConnected)
+            text("Push SPACEBAR to begin...", x, y+=textSpacing, -250);
+          else
+            text("No Sonifier module connected...", x, y+=textSpacing, -250);
       }
 
       textSize(textSize);

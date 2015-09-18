@@ -13,23 +13,27 @@ public enum KaleidoscopeModule
     
     private final String text;
 
-    private KaleidoscopeModule(final String text) {
+    private KaleidoscopeModule(final String text) 
+    {
         this.text = text;
     }
 
-    public KaleidoscopeModule getNext() {
+    public KaleidoscopeModule getNext() 
+    {
      return this.ordinal() < KaleidoscopeModule.values().length - 1
          ? KaleidoscopeModule.values()[this.ordinal() + 1]
          : VISUALIZER;
     }
     
-    public KaleidoscopeModule getPrev() {
+    public KaleidoscopeModule getPrev() 
+    {
      return this.ordinal() > 1
          ? KaleidoscopeModule.values()[this.ordinal() - 1]
          : CONTROLLER;
     }
     
-    String getTitle() {
+    String getTitle() 
+    {
       switch(this.ordinal()+1)
       {     
        case 1:
@@ -47,7 +51,8 @@ public enum KaleidoscopeModule
     }
 
     @Override
-    public String toString() {
+    public String toString() 
+    {
         return text;
     }
 }
