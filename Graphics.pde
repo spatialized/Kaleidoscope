@@ -201,6 +201,12 @@ void displayInfo()
 //  println(" phraseLength:"+phraseLength);
   text("Notes Length:  "+noteLength, x + 500, y += textSpacing, z);
 
+  if(!serverConnection)
+  {
+    textSize(26); 
+    fill(5, 250, 250);
+    text("Currently NO server connection.  Press Shift+C to try to connect.  Press 'n' to move to Section 2."+noteLength, x, y += textSpacing, z);
+  }
  }
  
  void displayIntro()
@@ -320,6 +326,7 @@ void displayInfo()
      fill(255, 255, 255);
 
       text("Waiting to start...", x,  y+=textSpacing*3, -250);
+      text("Press '/' to force start...", x,  y+=textSpacing, -250);
       
       if(waitingForPerformers)
       {
@@ -337,7 +344,6 @@ void displayInfo()
       textSize(textSize);
       
       fill(15, 155, 255);
-      text("Push '/' key to enter test mode...", x, y+=textSpacing * 3, -250);
      
      if(currentModule != KaleidoscopeModule.CONTROLLER)
        popMatrix(); 

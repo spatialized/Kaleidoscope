@@ -1,11 +1,9 @@
 void keyPressed()
 { 
-  if (key == 'n')      // DELETE
+  if (key == 'n')  
   {
      if(pieceStarted)
      curSection++;
-     println("Go To Section");
-
      goToSection(curSection);
   }
   
@@ -57,7 +55,7 @@ void keyPressed()
 
   if (isServer)
   {
-    if (key == '/')              // Bypass waiting for performers (for testing) 
+    if (key == '/')              // Bypass waiting for performers 
     {
       waitingForPerformers = false;
       sonifierConnected = true;
@@ -135,37 +133,6 @@ void keyPressed()
       case 'l':
         lineMode = !lineMode;
         break; 
-/*
-      case 'w':
-        moveZTransition = true;
-        moveZDirection = -1;
-        break; 
-
-      case  'a': 
-        moveXTransition = true;
-        moveXDirection = -1;
-        break; 
-
-      case  'd': 
-        moveXTransition = true;
-        moveXDirection = 1;
-        break; 
-
-      case  's': 
-        moveZTransition = true;
-        moveZDirection = 1;
-        break; 
-
-      case  'e': 
-        moveYTransition = true;
-        moveYDirection = -1;
-        break; 
-
-      case  'c': 
-        moveYTransition = true;
-        moveYDirection = 1;
-        break;
-*/
         
       case 'r':
        // rotateZTransition = true;
@@ -177,36 +144,13 @@ void keyPressed()
       //  rotateZDirection = -1;
         break; 
     }
-    /*
-    if ( key == CODED )
-    {
-      if (keyCode == LEFT)
-      {
-        rotateXTransition = true;
-        rotateXDirection = -1;
-      }
-      if (keyCode == RIGHT)
-      {
-        rotateXTransition = true;
-        rotateXDirection = 1;
-      }
-      if (keyCode == UP)
-      {
-        rotateYTransition = true;
-        rotateYDirection = -1;
-      }
-      if (keyCode == DOWN)
-      {
-        rotateYTransition = true;
-        rotateYDirection = 1;
-      }
-    }
-    */
+    
   }
   if (currentModule == KaleidoscopeModule.CONTROLLER && !optionKey)
   {
     switch(key)
     {
+      /*
     case '-':
       changeTempo(0);
       break;
@@ -214,7 +158,7 @@ void keyPressed()
     case '=':
       changeTempo(1);
       break;
-
+*/
     case '1':
       scaleMode = 0;
       break;
@@ -298,14 +242,15 @@ void keyPressed()
          stretchFactor += 0.1;
        if(debug) println("stretchFactor:"+stretchFactor);
        break;
-     */
+
      case 'n':
+         println("Here...");
        if(pieceStarted)
          curSection++;
-         println("Call go To Section");
-
+         println("Moved ahead a section.  curSection:"+curSection);
          goToSection(curSection);
        break;
+     */
     }
   }
 

@@ -146,6 +146,7 @@ void draw()
 
 void startPiece()
 {
+  sendTestMessage();
   pieceStarted = true;
   goToSection(1); 
 }

@@ -51,8 +51,10 @@ boolean waitingForPerformers = true, sonifierConnected = false;
 boolean pieceStarted = false;
 boolean isServer;    
 int numConnected = 1;      // Number of connected machines (includes this one)
+
 String connectPattern = "/server/connect";
 String disconnectPattern = "/server/disconnect";
+boolean serverConnection = false;
 
 /******* Input *******/
 boolean navigationMode = false;          // Does keyboard navigate around the scene or move the sonification agent array?

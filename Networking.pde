@@ -66,21 +66,21 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
 
         for (int i = 0; i<tagLength; i+=2)
         {
-           int pitch, velocity, hue;
-           
-           if(i+1 < tagLength)
-           {
-             pitch = oscMessage.get(i).intValue();
-             velocity = oscMessage.get(i+1).intValue();
-             hue = int(map(pitch % 12, 0, 11, 0, 255));
-             Note3D note = new Note3D(hue, 0, 0, 0, velocity, tonicKey, 0, 0, 0);
-             println("adding to received from network -- size (velocity):"+velocity);
-             received.add(note);
-           }
-           else
-           {
-            println("Tag length error..."+tagLength); 
-           }
+         int pitch, velocity, hue;
+         
+         if(i+1 < tagLength)
+         {
+           pitch = oscMessage.get(i).intValue();
+           velocity = oscMessage.get(i+1).intValue();
+           hue = int(map(pitch % 12, 0, 11, 0, 255));
+           Note3D note = new Note3D(hue, 0, 0, 0, velocity, tonicKey, 0, 0, 0);
+           //println("adding to received from network -- size (velocity):"+velocity);
+           received.add(note);
+         }
+         else
+         {
+          println("Tag length error..."+tagLength); 
+         }
         }
     }
 
@@ -89,7 +89,8 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
       if(oscMessage.checkTypetag("s")) 
       {
         String value = oscMessage.get(0).stringValue();
-        print("Received test message:"+value);
+        print("Received test message. Server connection exists.");
+        serverConnection = true;
       }
     }
   }
@@ -199,7 +200,7 @@ void sendTestMessage()
 {
   OscMessage message = new OscMessage("/test");
   message.add(currentModule.toString());  // test
-  if(debug) println("Sent test message as "+currentModule.toString());
+  if(debug) println("Sent test message:"+currentModule.toString());
   sendMessage(message);
 }
 
