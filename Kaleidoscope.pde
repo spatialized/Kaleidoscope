@@ -148,6 +148,10 @@ void startPiece()
 {
   sendTestMessage();
   pieceStarted = true;
+  
+  if(!serverConnection)
+    generateRandomNotes = true;
+  
   goToSection(1); 
 }
 void stop()
