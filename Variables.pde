@@ -61,7 +61,6 @@ int numConnected = 1;      // Number of connected machines (includes this one)
 
 String connectPattern = "/server/connect";
 String disconnectPattern = "/server/disconnect";
-boolean serverConnection = false;
 boolean connected = false;
 
 /******* Input *******/

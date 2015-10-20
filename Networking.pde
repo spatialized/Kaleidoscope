@@ -76,7 +76,6 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
       {
         String value = oscMessage.get(0).stringValue();
         print("Received test message. Server connection exists.");
-        serverConnection = true;
       }
     }
   }

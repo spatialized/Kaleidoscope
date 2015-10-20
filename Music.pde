@@ -1009,6 +1009,7 @@ void setTonicKey(int newTonic)
   {
     n.setTonic(newTonic);
   }
+  tonicKey = newTonic;
 }
 
 void setScaleMode(int newScaleMode)

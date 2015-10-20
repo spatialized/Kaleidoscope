@@ -33,25 +33,35 @@ class Chain3D
   {
     PVector last = new PVector(-1, -1, -1);
     
-    for (Note3D n : received)
-    {
-      float newX, newY, newZ;
-      newX = constrain(map(n.getScaleDegree(), 1, 7, -vizSize, vizSize), -vizSize, vizSize);
-      newY = constrain(map(n.getOctave(), 2, topOctave, -vizSize, vizSize), -vizSize, vizSize);
-      newZ = -100;//constrain(map(n.getScaleDegree(), 1, 7, -250, 250))
-      n.setPosition(new PVector(newX, newY, newZ));
-      n.angle = n.getScaleDegree() * 0.33;
-      
-      n.radius = n.getVelocity() * 0.01;
-      n.speed = 1/(n.getVelocity()+0.001) * 0.01;
-      n.isFading = true;
-
-      if(last.x != -1)
-        n.previous = last;
+    try {
+      for (Note3D n : received)
+      {
+        float newX, newY, newZ;
+        newX = constrain(map(n.getScaleDegree(), 1, 7, -vizSize, vizSize), -vizSize, vizSize);
+        newY = constrain(map(n.getOctave(), 2, topOctave, -vizSize, vizSize), -vizSize, vizSize);
+        newZ = -100;//constrain(map(n.getScaleDegree(), 1, 7, -250, 250))
+        n.setPosition(new PVector(newX, newY, newZ));
+        n.angle = n.getScaleDegree() * 0.33;
         
-      last = n.position;
-      
-      spheres.add(n);
+        n.radius = n.getVelocity() * 0.01;
+        n.speed = 1/(n.getVelocity()+0.001) * 0.01;
+        n.isFading = true;
+  
+        if(last.x != -1)
+          n.previous = last;
+          
+        last = n.position;
+        
+        spheres.add(n);
+      }
+    }
+    catch(NullPointerException e)
+    {
+      println("NullPointerException:"+e); 
+    }
+    catch( ConcurrentModificationException ce)
+   {
+     println("ConcurrentModificationException:"+ce); 
     }
 
     received = new ArrayList();
@@ -225,7 +235,7 @@ void displayInfo()
 //  println(" phraseLength:"+phraseLength);
   text("Notes Length:  "+noteLength, x + 500, y += textSpacing, z);
 
-  if(!serverConnection)
+  if(!connected)
   {
     textSize(26); 
     fill(5, 250, 250);
