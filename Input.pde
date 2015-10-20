@@ -69,6 +69,7 @@ void keyPressed()
     }
     if (key == '|' && pieceStarted)
     {
+      stopPiece = true;
       sendStop();               // Forward "start" message to all clients
     }
   } 
@@ -136,27 +137,35 @@ void keyPressed()
         break; 
 
       case '[':
+        /*
         vizField.setNoteMass(noteMass - massIncrement);
         if(debug)
         println("noteMass:"+noteMass);
+        */
         break;
 
       case ']':
+      /*
         vizField.setNoteMass(noteMass + massIncrement);
         if(debug)
         println("noteMass:"+noteMass);
+        */
         break;
 
       case '-':
+      /*
         vizField.setNoteMass(noteGravity - gravityIncrement);
         if(debug)
         println("noteGravity:"+noteGravity);
+        /*
         break;
 
       case '=':
+        /*
         vizField.setNoteGravity(noteGravity + gravityIncrement);
         if(debug)
         println("noteGravity:"+noteGravity);
+        */
         break;
 
       case 'r':

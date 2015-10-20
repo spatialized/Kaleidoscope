@@ -102,8 +102,9 @@ void setupGraphics()
   textFont(font, 32);
   
   float zoomFactor = -1000;
+
   if(currentModule == KaleidoscopeModule.VISUALIZER)
-    zoomFactor = -350;
+    zoomFactor = -250;
   
   camera = new Camera(this, 0, 0, zoomFactor * fieldSize, 0,0,0, PI / 3, float(width)/float(height), 200, 2000 * fieldSize);
   particleMode = false;
@@ -158,6 +159,7 @@ void setupMusic()
   measureNoiseTime = 0.0;
  
 }
+
 void stopPiece()
 {
   pieceStopped = true; 
