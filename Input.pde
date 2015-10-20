@@ -6,6 +6,22 @@ void keyPressed()
      curSection++;
      goToSection(curSection);
   }
+  if (key == 'k')  
+  {
+     if(gain - gainIncrement > minGain)
+        gain -= gainIncrement;
+        
+    if(debug)
+      println("gain:"+gain);
+  }
+  if (key == 'l')  
+  {
+     if(gain + gainIncrement < maxGain)
+        gain += gainIncrement;
+    if(debug)
+      println("gain:"+gain);
+
+  }
   
   if (key == ',')
   {
@@ -132,9 +148,6 @@ void keyPressed()
   {
     switch(key)
     {
-      case 'l':
-        lineMode = !lineMode;
-        break; 
 
       case '[':
         /*

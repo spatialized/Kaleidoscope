@@ -3,6 +3,7 @@ void updateParams()
   if(curSection == 2 && tempo > 35.)
   {
     stopPiece = true;
+    sendStop();
   }
   
   if( tempoFading )
@@ -98,6 +99,9 @@ void goToSection(int newSection)
        rotateAcceleration = 0;
        
        setRotationFading(true, 1, 0, 0.9999);
+       zoomFactor = -160;
+       camera = new Camera(this, 0, 0, zoomFactor * fieldSize, 0,0,0, PI / 3, float(width)/float(height), 200, 2000 * fieldSize);
+
        setZoomFading(true, -0.000085);
      }
   

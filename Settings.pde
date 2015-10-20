@@ -13,6 +13,7 @@ float moveArrayIncrement = 10. * fieldSize;
 float vizRotateSpeed = 1, vizSize = 500;
 float lineWidthFactor = 0.033;
 float  zoomSpeed = 0., zoomIncrement = 0.1;
+float zoomFactor = -1000;
 
 int maxSpheres = 80;
 
@@ -48,9 +49,10 @@ float minGravity = 0.1, maxGravity = 30.;
 /****************** Music Settings ******************/
 int numPerformers = 4;      // 1 main performer, 3 auxiliary performers
 int phraseLength = 4;      // How many measures in a phrase?
-int noteRemovalRate = 22;
+int noteRemovalRate = 30;
 int maxNotesPlaying = 5;
 int maxDronesPlaying = 1;
+float gainIncrement = 0.025, minGain = 0., maxGain = 1.8;
 
 int scaleSteps = 7;
 int minTempo = 12, maxTempo = 30;

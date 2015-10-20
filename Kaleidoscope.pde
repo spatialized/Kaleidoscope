@@ -131,8 +131,9 @@ void draw()
     camera.feed();
   }
   
-  if(stopPiece && notesPlaying == 0 && dronesPlaying == 0)
+  if(stopPiece)
   {
+    output.shiftGain(gain,0.,3000);
     stopPiece();
   }
   

@@ -101,10 +101,8 @@ void setupGraphics()
   PFont font = loadFont("DialogInput-48.vlw");
   textFont(font, 32);
   
-  float zoomFactor = -1000;
-
   if(currentModule == KaleidoscopeModule.VISUALIZER)
-    zoomFactor = -250;
+    zoomFactor = -260;
   
   camera = new Camera(this, 0, 0, zoomFactor * fieldSize, 0,0,0, PI / 3, float(width)/float(height), 200, 2000 * fieldSize);
   particleMode = false;

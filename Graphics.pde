@@ -265,8 +265,8 @@ void displayInfo()
       case SONIFIER:
        textSize = 300;
        textSize(textSize);
-       textSpacing = 320;
-       x = -15 * textSpacing;
+       textSpacing = 330;
+       x = -24 * textSpacing;
        y = -13 * textSpacing;
        z = -textSpacing;
        pushMatrix();
@@ -277,24 +277,23 @@ void displayInfo()
        textSize = height/30;
        textSize(textSize);
        textSpacing = int(textSize * 1.44);
-       x = 300;
+       x = 200;
        y = -50;
        z = -250;
        break;
        
       case VISUALIZER:
-       textSize = 140;
+       textSize = 120;
        textSize(textSize);
-       textSpacing = 180;
+       textSpacing = 190;
        x = -10 * textSpacing;
-       y = -8 * textSpacing;
+       y = -9 * textSpacing;
        z = -textSpacing;
        pushMatrix();
        rotateY(radians(180));
        break;
      }
     
-     
      
      fill(145, 155, 255);
      textSize(textSize * 1.8);
@@ -394,6 +393,27 @@ void displayInfo()
           else
             text("No Sonifier module connected...", x, y+=textSpacing, -250);
       }
+      
+     if(currentModule != KaleidoscopeModule.CONTROLLER)
+     {
+       fill(100, 144, 255);
+
+       if(currentModule == KaleidoscopeModule.SONIFIER)
+       {
+        text("KEYBOARD COMMANDS", x, y+=textSpacing*3, -250); 
+        text("k l     Change Volume", x,  y+=textSpacing, -250); 
+        text("a d w s Move Grid", x,  y+=textSpacing, -250); 
+        text("[ ]     Change Grid Spacing", x,  y+=textSpacing, -250); 
+        text("9 0     Change Sphere Size", x,  y+=textSpacing, -250); 
+       }
+       if(currentModule == KaleidoscopeModule.VISUALIZER)
+       {
+        text("KEYBOARD COMMANDS", x, y+=textSpacing*3, -250); 
+        text("- =     Change Gravity", x,  y+=textSpacing, -250); 
+        text("[ ]     Change Mass", x,  y+=textSpacing, -250); 
+        text("SHIFT \\     Stop Piece", x,  y+=textSpacing, -250); 
+       }
+     }
 
       textSize(textSize);
       

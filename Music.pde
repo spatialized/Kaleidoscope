@@ -394,7 +394,7 @@ void playCurrentNotes()
 
       if (dronesPlaying < maxDronesPlaying)      
       {
-        playDrone( dronePitch, droneLength + random(-5, 6), round(droneVelocity * 0.05) );
+        playDrone( dronePitch, droneLength + random(-5, 6), round(droneVelocity * 0.06) );
         int hue = int(map(dronePitch % 12, 0, 11, 0, 255));
         Note3D note = new Note3D(hue, 0, 0, 0, droneVelocity * 0.05, tonicKey, 0, 0, 0);
         drawNote(note);                  // Broadcast current motive to other performers
