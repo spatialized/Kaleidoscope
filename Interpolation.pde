@@ -9,15 +9,12 @@ void updateParams()
   if( tempoFading )
   {
     tempo += tempoIncrement;      // Increment tempo
-    println("Float tempo:"+tempo+" ");
+
     if(currentModule == KaleidoscopeModule.CONTROLLER)
       if(round(tempo) != round(lastTempo))
       {
           sendNewTempo(round(tempo));
           lastTempo = round(tempo);
-          
-          if(debug)
-            println("Int Tempo:"+round(tempo));
       }
     
     if(int(tempo) == minTempo)
