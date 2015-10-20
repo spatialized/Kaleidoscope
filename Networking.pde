@@ -104,6 +104,7 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
     if (oscMessage.checkTypetag("i"))
     {
       tempo = oscMessage.get(0).intValue();
+      if(debug)
       println("Set tempo from message:"+tempo);
     }
   }
