@@ -64,6 +64,11 @@ class Chain3D
      println("ConcurrentModificationException:"+ce); 
     }
 
+   while(spheres.size() > maxSpheres)
+   {
+      spheres.remove(0);
+   }
+
     received = new ArrayList();
 
     for (Note3D n : spheres)          
@@ -235,12 +240,14 @@ void displayInfo()
 //  println(" phraseLength:"+phraseLength);
   text("Notes Length:  "+noteLength, x + 500, y += textSpacing, z);
 
+  textSize(26); 
+  fill(5, 250, 250);
+
+  if(isServer)
+    text("Press SHIFT + \\  to end piece..."+noteLength, x, y += textSpacing, z);
+
   if(!connected)
-  {
-    textSize(26); 
-    fill(5, 250, 250);
-    text("Currently NO server connection.  Press Shift+C to try to connect.  Press 'n' to move to Section 2."+noteLength, x, y += textSpacing, z);
-  }
+    text("Currently NO server connection.  Press Shift+C to try to connect.  >>Press 'n' to move to Section 2.<<"+noteLength, x, y += textSpacing, z);
  }
  
  void displayIntro()

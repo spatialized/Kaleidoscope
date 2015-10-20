@@ -3,7 +3,7 @@
 /****************** Network Settings ******************/
 int serverPort = 12000;                             // Server's broadcast port address
 int broadcastPort = 2000;                           // Port the clients should listen to 
-  
+
 /****************** Graphics Settings ******************/
 float alphaMax = 190.;
 float alphaIncrement = 1.;
@@ -13,6 +13,8 @@ float moveArrayIncrement = 10. * fieldSize;
 float vizRotateSpeed = 1, vizSize = 500;
 float lineWidthFactor = 0.033;
 float  zoomSpeed = 0., zoomIncrement = 0.1;
+
+int maxSpheres = 80;
 
 boolean rotateFading = false;
 float rotateIncrement = PI/64, rotateAcceleration = 0;
@@ -46,12 +48,12 @@ float minGravity = 0.1, maxGravity = 30.;
 /****************** Music Settings ******************/
 int numPerformers = 4;      // 1 main performer, 3 auxiliary performers
 int phraseLength = 4;      // How many measures in a phrase?
-int noteRemovalRate = 15;
+int noteRemovalRate = 22;
 int maxNotesPlaying = 5;
 int maxDronesPlaying = 1;
 
 int scaleSteps = 7;
-int minTempo = 6, maxTempo = 30;
+int minTempo = 12, maxTempo = 30;
 float tempoIncrement = 0.;
 float velocityScalingFactor = 50.;
 int droneLengthFactor = 50;
@@ -72,44 +74,44 @@ void setCurrentModule(int newModule)
 {
   /*
   switch(newModule)
- {
+   {
    case 1:
-    currentModule = KaleidoscopeModule.VISUALIZER;
-    break;
+   currentModule = KaleidoscopeModule.VISUALIZER;
+   break;
    case 2:
-    currentModule = KaleidoscopeModule.SONIFIER;
-    break;
+   currentModule = KaleidoscopeModule.SONIFIER;
+   break;
    case 3:
-    currentModule = KaleidoscopeModule.CONTROLLER;
-    break;
- } 
- 
-  if(debug) 
-  {
-    println("Set current module to: "+currentModule.getTitle());
-  }
-  */
+   currentModule = KaleidoscopeModule.CONTROLLER;
+   break;
+   } 
+   
+   if(debug) 
+   {
+   println("Set current module to: "+currentModule.getTitle());
+   }
+   */
 }
 
 void setCurrentProcess(int newProcess)
 {
   switch(newProcess)
- {
-   case 1:
+  {
+  case 1:
     currentProcess = KaleidoscopeProcess.ARPEGGIO;
     break;
-   case 2:
+  case 2:
     currentProcess = KaleidoscopeProcess.OSTINATO;
     break;
-   case 3:
+  case 3:
     currentProcess = KaleidoscopeProcess.ADDITIVE;
     break;
-   case 4:
+  case 4:
     currentProcess = KaleidoscopeProcess.SUBTRACTIVE;
     break;
- } 
- 
-  if(debug)   
+  } 
+
+  if (debug)   
     println("Set current process to: "+currentProcess.getTitle());
 }
 
@@ -118,18 +120,17 @@ void setVisualMode(int newVizMode)
 {
   switch(newVizMode)  
   {
-     case 1:
-       visualMode = newVizMode;
-       break;
-      
-      case 2:
-       visualMode = newVizMode;
-       break;
-      
-      default:
-       break; 
+  case 1:
+    visualMode = newVizMode;
+    break;
+
+  case 2:
+    visualMode = newVizMode;
+    break;
+
+  default:
+    break;
   }
 }
-
 
 

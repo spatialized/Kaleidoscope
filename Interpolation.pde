@@ -1,5 +1,10 @@
 void updateParams()
 {
+  if(curSection == 2 && tempo > 35.)
+  {
+    stopPiece = true;
+  }
+  
   if( tempoFading )
   {
     tempo += tempoIncrement;      // Increment tempo
@@ -63,21 +68,21 @@ void goToSection(int newSection)
  {
    case 1:                  // First section
      lineMode = true;
-     setTempoFading(true, -0.0035);
+     setTempoFading(true, -0.0025);
      setVisualMode(1);
 
      if(currentModule == KaleidoscopeModule.VISUALIZER)
      {
        rotateAcceleration = 0;
 
-       setRotationFading(true, -1, PI/2048, 1.001);
-       setZoomFading(true, 0.000035);
+       setRotationFading(true, -1, PI/2048, 1.0005);
+       setZoomFading(true, 0.00002);
      }
      
      stretchFactor = stretchFactorMax;
      setStretchFactorFading(true, 0.9999);
        
-     setStrokeWeightFading(true, 1.001);
+     setStrokeWeightFading(true, 1.0002);
      setAlphaFading(true, 0.9998);
 
      maxLength = 120;
@@ -87,7 +92,7 @@ void goToSection(int newSection)
      lineMode = false;
      setTempoFading(true, 0.0075);
      setVisualMode(2);
-  
+     
      if(currentModule == KaleidoscopeModule.VISUALIZER)
      {
        rotateAcceleration = 0;

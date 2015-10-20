@@ -33,6 +33,7 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
         printNetAddressList();
       }
 
+      if(debug)
       println("Sent message with pattern:"+oscMessage.addrPattern());
     }
     

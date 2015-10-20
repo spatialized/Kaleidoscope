@@ -474,6 +474,8 @@ void playDrone(int pitch, float duration, int velocity)
 void storeNote(Note3D note)
 {
   stored.add(note);
+  if(isServer && debug)
+  println("stored.size:"+stored.size());
 }
 
 void storeRandomNotes(int numberOfNotes)
@@ -691,7 +693,6 @@ void startMeasure()        // Begin a measure
   
         if (motiveLength > 0 && notesPerMeasure > 0)
           noteLength = constrain( int(tempo) / notesPerMeasure, 2, 1000);
-        //  noteLength = constrain( (int(tempo*2) / motiveLength / notesPerMeasure), 2, 1000);
       }
       break;
   
