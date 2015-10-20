@@ -161,4 +161,5 @@ void setupMusic()
 void stopPiece()
 {
   pieceStopped = true; 
+  background(0);
 }

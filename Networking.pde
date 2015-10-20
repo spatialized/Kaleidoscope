@@ -283,7 +283,11 @@ public void sendStart()         // Send start message to all clients
 public void sendStop()        // Send stop message to all clients
 {
   OscMessage message = new OscMessage("/stop");
-  oscP5.send(message, netAddressList);  
+  if(isServer)
+    oscP5.send(message, netAddressList);  
+  else
+    oscP5.send(message, serverLocation);  
+
   stopPiece = true;
 }
 
