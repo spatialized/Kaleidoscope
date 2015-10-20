@@ -29,7 +29,10 @@ void setupKaleidoscope()
   {
     vizField = new Chain3D();
   }
-  
+  if(currentModule == KaleidoscopeModule.CONTROLLER)
+  {
+    tempoFading = true;
+  }
   if(!isServer)
   {
     connectToServer();                // Attempt to connect to server
@@ -39,6 +42,9 @@ void setupKaleidoscope()
 
 void setupNetworking()
 {
+  ipAddress = getWIFIAddress();     
+  println("ipAddress:"+ipAddress);
+  
   if (ipAddress.equals(serverIPAddress))          // Check if this machine is the OSC server
     isServer = true;
   else

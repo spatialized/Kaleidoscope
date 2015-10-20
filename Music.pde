@@ -43,21 +43,12 @@ class Note3D
     scaleDegree = int(constrain(map(hue, 0, 255, 0, scaleSteps - 1), 0, scaleSteps - 1)); 
 
     setTonic( newTonic );
-    mass = size*100;
-    G = 0.4;
+    mass = size*100.*noteMass;
+    G = noteGravity;
   }
 
   PVector attract(SonificationAgent a) 
   {
-    /*
-    PVector force = PVector.sub(position, a.position); //whats the force direction?
-     float distance = force.mag();
-     distance = constrain(distance, size, 500); //constraint distance
-     force.normalize();
-     float strength = (G*mass*a.mass) / (distance * distance);
-     force.mult(strength); // whats the force magnitude?
-     return force; // return force so it can be ap`plied!
-     */
     ArrayList<PVector> forces = new ArrayList<PVector>();
     for (int i=0; i<4; i++)
     {
@@ -126,7 +117,8 @@ class Note3D
       translate(-position.x, -position.y, position.z);
       sphere(displaySize);
       popMatrix();
-    } else
+    }
+    else
     {
       if (collided)
         stroke(hue, 5, 10, alpha * 0.5);
@@ -153,6 +145,18 @@ class Note3D
       size -= 0.1;
       saturation -= 3;
     }
+  }
+
+  void setMass(float newMass)
+  {
+    mass = size*100.*newMass;
+    println("newMass:"+newMass);
+    println("mass:"+mass);
+  }
+
+  void setGravity(float newGravity)
+  {
+   G = newGravity; 
   }
 
   int getPitch()
@@ -390,7 +394,7 @@ void playCurrentNotes()
 
       if (dronesPlaying < maxDronesPlaying)      
       {
-        playDrone( dronePitch, droneLength + random(-5, 6), droneVelocity );
+        playDrone( dronePitch, droneLength + random(-5, 6), round(droneVelocity * 0.05) );
         int hue = int(map(dronePitch % 12, 0, 11, 0, 255));
         Note3D note = new Note3D(hue, 0, 0, 0, droneVelocity * 0.05, tonicKey, 0, 0, 0);
         drawNote(note);                  // Broadcast current motive to other performers
@@ -518,23 +522,12 @@ void updateMusic()
     if (currentMotive.size() >= motiveLength)        //  Check if we have enough notes
     {
       if ( currentModule == KaleidoscopeModule.SONIFIER)  
-      {
         sendMotive(currentMotive, true);                  // Broadcast current motive to other performers and draw all the notes at once
-      }
 
       active = true;        // Start playing
     }
 
     currentNote = 0;
-
-    /*
-    if(notesPerMeasure != 0)
-     {
-     noteLength = tempo / notesPerMeasure;
-     println("noteLength:"+noteLength);
-     }
-     */
-
     droneLength = noteLength * droneLengthFactor;
   } 
 
@@ -552,7 +545,7 @@ void updateMusic()
   case OSTINATO:
     active = true;        // Always active
 
-      if (gain >= 0.01)
+    if (gain >= 0.01)
       gain -= 0.01;
 
     break;  
@@ -618,9 +611,8 @@ void updateMotiveLength()
   }
   
   if (motiveLength < minMotiveLength)
-  {
     motiveLength += random(1, 4);
-  }
+  
 
   measureNoiseTime += measureNoiseIncrement;
 }

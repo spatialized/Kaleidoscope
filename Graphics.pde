@@ -70,6 +70,30 @@ class Chain3D
       spheres.remove(0);
     }
   }
+  
+  void setNoteMass(float newMass)
+  {
+    if(newMass > minMass && newMass < maxMass)
+    {
+      for (Note3D n : spheres)          
+      {
+        n.setMass(newMass);    
+      }
+      noteMass = newMass;
+    }
+  }
+
+  void setNoteGravity(float newGravity)
+  {
+    if(newGravity > minGravity && newGravity < maxGravity)
+    {
+      for (Note3D n : spheres)          
+      {
+        n.setGravity(newGravity);    
+      }
+      noteGravity = newGravity;
+    }
+  }
 }
 
 void displayInfo()
@@ -326,7 +350,20 @@ void displayInfo()
      fill(255, 255, 255);
 
       text("Waiting to start...", x,  y+=textSpacing*3, -250);
-      text("Press '/' to force start...", x,  y+=textSpacing, -250);
+      text("Current IP Address..."+ipAddress, x,  y+=textSpacing, -250);
+    
+      if(isServer)
+        text("This machine is the server.", x,  y+=textSpacing, -250);
+      else 
+      {
+        if(connected)
+          text("Connected to server.", x,  y+=textSpacing, -250);
+        else
+        {
+          text("Attempting to connect to server... Press SHIFT+C to try manually.", x,  y+=textSpacing, -250);
+          text("Press '/' to force start...", x,  y+=textSpacing*3, -250);
+        }
+      }
       
       if(waitingForPerformers)
       {
@@ -335,7 +372,7 @@ void displayInfo()
       }
       else if (currentModule == KaleidoscopeModule.VISUALIZER)
       {
-         if(sonifierConnected)
+         if(sonifierConnected && controllerConnected)
             text("Push SPACEBAR to begin...", x, y+=textSpacing, -250);
           else
             text("No Sonifier module connected...", x, y+=textSpacing, -250);

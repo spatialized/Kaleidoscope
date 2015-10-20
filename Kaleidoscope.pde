@@ -32,21 +32,11 @@ void setup()
   numPerformers = 3;     
   
   /*************** Network Setup *************/
-  // Set to the IP address of this machine:
-  ipAddress = "192.168.1.138";     
-  // Set to IP address of the server    (Same as ipAddress: designates this machine as the server)
-  serverIPAddress = "192.168.1.128";          
-  //serverIPAddress = ipAddress;          
-
- // ipAddress = "192.168.1.128";  // MacBook Pro     
-  //ipAddress = "192.168.1.126"; // MacBook   
+  serverIPAddress = "192.168.1.138";            // Set to IP address of the server    
  
   /***************** Music Setup ***************/
-  // Set module (performer role): VISUALIZER  (Server Default)  SONIFIER   CONTROLLER                              
-  currentModule = KaleidoscopeModule.CONTROLLER;      
-
-  // Set process (how musical material develops): ARPEGGIO  OSTINATO   ADDITIVE SUBTRACTIVE                                               
-  currentProcess = KaleidoscopeProcess.ADDITIVE;      
+  currentModule = KaleidoscopeModule.VISUALIZER;       // Set module (performer role): VISUALIZER  (Server Default)  SONIFIER   CONTROLLER    
+  currentProcess = KaleidoscopeProcess.ADDITIVE;        // Set process (how musical material develops): ARPEGGIO  OSTINATO   ADDITIVE SUBTRACTIVE    
  
   /************** Music Settings *****************/
   // Set initial parameters of music 
@@ -89,7 +79,15 @@ void draw()
       }
     }
   }
-
+  
+  if(!isServer)
+  {
+      if(frameCount % 60 == 0 && !connected)
+      {
+        connectToServer();
+      }
+  }
+  
   if(pieceStarted && !stopPiece)                // Wait for the server before starting
   {
     switch(currentModule)
@@ -152,7 +150,7 @@ void startPiece()
   if(!serverConnection)
     generateRandomNotes = true;
   
-  goToSection(1); 
+    goToSection(1); 
 }
 void stop()
 {

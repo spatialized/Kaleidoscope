@@ -12,6 +12,7 @@ float moveIncrement = 36. * fieldSize;
 float moveArrayIncrement = 10. * fieldSize;
 float vizRotateSpeed = 1, vizSize = 500;
 float lineWidthFactor = 0.033;
+float  zoomSpeed = 0., zoomIncrement = 0.1;
 
 boolean rotateFading = false;
 float rotateIncrement = PI/64, rotateAcceleration = 0;
@@ -37,6 +38,11 @@ boolean velocityMode = true;
 int minVelocity = 60;
 float timeInc = 1./30.;
 
+float noteMass = 1., massIncrement = 0.05;
+float noteGravity = 0.4, gravityIncrement = 0.12;
+float minMass = 0.2, maxMass = 50.;
+float minGravity = 0.1, maxGravity = 30.;
+
 /****************** Music Settings ******************/
 int numPerformers = 4;      // 1 main performer, 3 auxiliary performers
 int phraseLength = 4;      // How many measures in a phrase?
@@ -45,10 +51,9 @@ int maxNotesPlaying = 5;
 int maxDronesPlaying = 1;
 
 int scaleSteps = 7;
-int minTempo = 10, maxTempo = 30;
-float tempoIncrement = 0.01;
+int minTempo = 6, maxTempo = 30;
+float tempoIncrement = 0.;
 float velocityScalingFactor = 50.;
-int droneVelocity = 24;
 int droneLengthFactor = 50;
 float stretchFactor = 1.5;      // How much to stretch notes from their noteLength
 float stretchFactorMin = 1., stretchFactorMax = 6.;

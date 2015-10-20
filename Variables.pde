@@ -2,6 +2,12 @@
 /*  External Libraries  */
 /************************/
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+ import java.util.Enumeration;
+
 import java.util.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -34,11 +40,12 @@ import netP5.*;
 /**********************/
 
 /******** Debugging ********/
-boolean debug = false;                  // Turn on / off debugging (prints to output window).
+boolean debug = true;                  // Turn on / off debugging (prints to output window).
 boolean generateRandomNotes = false;    // For testing on a single machine
 
 /******** Networking ********/
 String ipAddress, serverIPAddress;
+
 OscP5 oscP5;
 int listeningPort;
 NetAddressList netAddressList;
@@ -47,7 +54,7 @@ NetAddress serverLocation;       // Address of the server
 KaleidoscopeModule  currentModule;    // The role of this performer in the ensemble (See KaleidoscopeModule.java file)
 KaleidoscopeProcess currentProcess;     // How the motive is played by the module
 
-boolean waitingForPerformers = true, sonifierConnected = false;
+boolean waitingForPerformers = true, sonifierConnected = false, controllerConnected = false;
 boolean pieceStarted = false;
 boolean isServer;    
 int numConnected = 1;      // Number of connected machines (includes this one)
@@ -55,6 +62,7 @@ int numConnected = 1;      // Number of connected machines (includes this one)
 String connectPattern = "/server/connect";
 String disconnectPattern = "/server/disconnect";
 boolean serverConnection = false;
+boolean connected = false;
 
 /******* Input *******/
 boolean navigationMode = false;          // Does keyboard navigate around the scene or move the sonification agent array?
@@ -125,7 +133,6 @@ int curPhrase, lastPhrase;
 
 boolean tempoFading, rotationFading, zoomFading, stretchFactorFading;
 int  zoomDirection;
-float  zoomIncrement;
 float  stretchFactorIncrement;
 int visualMode;
 

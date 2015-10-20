@@ -2,23 +2,27 @@ void updateParams()
 {
   if( tempoFading )
   {
-    tempo += tempoIncrement;
+    tempo += tempoIncrement;      // Increment tempo
+    println("Float tempo:"+tempo+" ");
+    if(currentModule == KaleidoscopeModule.CONTROLLER)
+      if(round(tempo) != round(lastTempo))
+      {
+          sendNewTempo(round(tempo));
+          lastTempo = round(tempo);
+          
+          if(debug)
+            println("Int Tempo:"+round(tempo));
+      }
     
-    if(int(tempo) != lastTempo)
-    {
-      sendNewTempo(int(tempo));
-      lastTempo = int(tempo);
-      
-      if(debug)
-        println("Tempo:"+int(tempo));
-    }
-    
-    if(tempoIncrement < 0 && int(tempo) == 1)
+    if(int(tempo) == minTempo)
     {
       if(debug)
         println("Tempo reached min.: Going to section 2...");
 
       goToSection(2);
+      
+      if(currentModule == KaleidoscopeModule.CONTROLLER)
+        sendNewSection(curSection);
     }
   }
   if( zoomFading )
@@ -59,7 +63,7 @@ void goToSection(int newSection)
  {
    case 1:                  // First section
      lineMode = true;
-     setTempoFading(true, -0.0045);
+     setTempoFading(true, -0.0035);
      setVisualMode(1);
 
      if(currentModule == KaleidoscopeModule.VISUALIZER)
@@ -72,7 +76,7 @@ void goToSection(int newSection)
      
      stretchFactor = stretchFactorMax;
      setStretchFactorFading(true, 0.9999);
-     sendNewSection(curSection);
+       
      setStrokeWeightFading(true, 1.001);
      setAlphaFading(true, 0.9998);
 
@@ -113,8 +117,10 @@ void goToSection(int newSection)
 
 void setTempoFading(boolean state, float amount)
 {
-  tempoFading = state;
-  tempoIncrement = amount;
+  if(currentModule == KaleidoscopeModule.CONTROLLER && state)
+  {
+    tempoIncrement = amount;
+  }
 }
 
 void setRotationFading(boolean state, int direction, float init, float amount)

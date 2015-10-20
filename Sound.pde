@@ -78,17 +78,13 @@ class DroneInstrument implements Instrument
     sustain = duration / 6.;
     release = duration / 6.;
     
-   // print("Drone frequency:"+frequency);
-  //  print(" amplitude:"+amplitude);
-  //  println(" duration:"+duration);
-
    if(wave == Waves.TRIANGLE)
     {
-       amplitude *= 0.88;
+       amplitude *= 0.48;
     }
     else if(wave == Waves.SQUARE)
     {
-       amplitude *= 0.24;
+       amplitude *= 0.20;
     }
     else if(wave == Waves.QUARTERPULSE)
     {

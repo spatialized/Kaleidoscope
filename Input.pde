@@ -59,9 +59,10 @@ void keyPressed()
     {
       waitingForPerformers = false;
       sonifierConnected = true;
+      controllerConnected = true;
       startPiece();
     }
-    if (key == ' ' && !waitingForPerformers && sonifierConnected)
+    if (key == ' ' && !waitingForPerformers && sonifierConnected && controllerConnected)
     {
       sendStart();               // Forward "start" message to all clients
       startPiece();
@@ -133,7 +134,31 @@ void keyPressed()
       case 'l':
         lineMode = !lineMode;
         break; 
-        
+
+      case '[':
+        vizField.setNoteMass(noteMass - massIncrement);
+        if(debug)
+        println("noteMass:"+noteMass);
+        break;
+
+      case ']':
+        vizField.setNoteMass(noteMass + massIncrement);
+        if(debug)
+        println("noteMass:"+noteMass);
+        break;
+
+      case '-':
+        vizField.setNoteMass(noteGravity - gravityIncrement);
+        if(debug)
+        println("noteGravity:"+noteGravity);
+        break;
+
+      case '=':
+        vizField.setNoteGravity(noteGravity + gravityIncrement);
+        if(debug)
+        println("noteGravity:"+noteGravity);
+        break;
+
       case 'r':
        // rotateZTransition = true;
        // rotateZDirection = 1;
@@ -383,6 +408,7 @@ void keyReleased()
   if (key == 's') {
     moveZTransition = false;
     moveArrayZTransition = false;
+    zoomFading = false;
   } 
   if (key == 'd') {
     moveXTransition = false;
@@ -391,6 +417,7 @@ void keyReleased()
   if (key == 'w') {
     moveZTransition = false;
     moveArrayZTransition = false;
+    zoomFading = false;
   } 
   if (key == 'e') {
     moveYTransition = false;
