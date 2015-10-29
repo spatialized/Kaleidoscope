@@ -35,7 +35,7 @@ void setup()
   serverIPAddress = "192.168.1.128";            // Set to IP address of the server    
   
   /***************** Music Setup ***************/
-  currentModule = KaleidoscopeModule.SONIFIER;       // Set module (performer role): VISUALIZER  (Server Default)  SONIFIER   CONTROLLER    
+  currentModule = KaleidoscopeModule.CONTROLLER;       // Set module (performer role): VISUALIZER  (Server Default)  SONIFIER   CONTROLLER    
   currentProcess = KaleidoscopeProcess.ADDITIVE;        // Set process (how musical material develops): ARPEGGIO  OSTINATO   ADDITIVE SUBTRACTIVE    
  
   /************** Music Settings *****************/
@@ -117,7 +117,10 @@ void draw()
     }
     
     updateMusic();
-    playMusic();
+    
+    if(musicOn)
+      playMusic();
+
     updateParams();
   }
   else if(!pieceStarted)
@@ -151,7 +154,10 @@ void startPiece()
   if(connected)
     goToSection(1); 
   else
+  {
+    goToSection(1); 
     println("No server connection...");
+  }
 }
 
 

@@ -1,5 +1,10 @@
 void keyPressed()
 { 
+  if (key == 'm')  
+  {
+    musicOn = !musicOn;
+  }
+
   if (key == 'n')  
   {
      if(pieceStarted)

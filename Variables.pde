@@ -118,6 +118,7 @@ int currentStep;
 int curSection = 0;
 int notesPerMeasure, motiveLength;
 int lastTempo;
+boolean musicOn = true;
 
 boolean[] activeMeasures;
 boolean stopPiece = false, pieceStopped = false;

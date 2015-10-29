@@ -55,12 +55,16 @@ int maxDronesPlaying = 1;
 float gainIncrement = 0.025, minGain = 0., maxGain = 1.8;
 
 int scaleSteps = 7;
-int minTempo = 12, maxTempo = 30;
+int minTempo = 10, maxTempo = 40;
 float tempoIncrement = 0.;
 float velocityScalingFactor = 50.;
 int droneLengthFactor = 50;
 float stretchFactor = 1.5;      // How much to stretch notes from their noteLength
 float stretchFactorMin = 1., stretchFactorMax = 6.;
+
+float section1TempoFading = -0.002;
+float section2TempoFading = 0.005;
+float section2RotationFading = 0.9999, section2ZoomFading = -0.000085, section2StretchFactorFading = 1.0015, section2AlphaFading = 1.0002;
 
 /****************** Misc. Settings ******************/
 int maxLength = 120;

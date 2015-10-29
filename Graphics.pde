@@ -113,7 +113,7 @@ class Chain3D
 
 void displayInfo()
 {
-  float x = 300, y = -50, z = -250;
+  float x = 300, y = -100, z = -250;
   int hue = int(constrain(map(currentModule.ordinal(), 0, 5, 0, 255), 0, 255));
   int textSpacing = 40;
 
@@ -201,7 +201,35 @@ void displayInfo()
   else
     text("-", x+750, y, z);
   }
+ 
+  if(currentModule == KaleidoscopeModule.CONTROLLER)
+  {
+    int timeLeft = -1;
+    
+   // println("seconds:"+(( tempo - minTempo ) / abs(section1TempoFading * frameRate)));
+   // println("curSection:"+curSection);
+    
+    if(curSection == 1)
+    {
+      float fadePerSecond = abs(section1TempoFading * frameRate);
+      float seconds = ( tempo - minTempo ) / fadePerSecond;
+      text("Time until Section 2:"+round(seconds/60)+" min., "+round(seconds%60)+" sec.", x, y += textSpacing, z);
+    }
+    else if(curSection == 2)
+    {
+      float fadePerSecond = abs(section2TempoFading * frameRate);
+      float seconds = ( maxTempo - tempo ) / fadePerSecond;
+      text("Time until End:"+round(seconds/60)+" min., "+round(seconds%60)+" sec.", x, y += textSpacing, z);
+    }
 
+      text("Music On ('m'): "+musicOn, x+500, y, z);
+
+    //goToSection(2);
+    
+    if(currentModule == KaleidoscopeModule.CONTROLLER)
+      sendNewSection(curSection);
+  }
+  
   textSize(28);
   fill(hue, 200, 255);
 
@@ -230,7 +258,7 @@ void displayInfo()
 
   text("1-7", x, y += textSpacing, z);
   text("Scale Mode:  "+Modes[scaleMode], x+500, y, z);
-  text("J / K", x, y += textSpacing, z);
+  //text("J / K", x, y += textSpacing, z);
   text("Note Stretching:  "+stretchFactor, x+500, y, z);
   text("; / '", x, y += textSpacing, z);
   text("Drone Timbre:  "+Timbres[droneTimbre], x+500, y, z);
@@ -248,6 +276,7 @@ void displayInfo()
 
   if(!connected)
     text("Currently NO server connection.  Press Shift+C to try to connect.  >>Press 'n' to move to Section 2.<<"+noteLength, x, y += textSpacing, z);
+
  }
  
  void displayIntro()
