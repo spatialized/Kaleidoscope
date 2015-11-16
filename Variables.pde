@@ -40,7 +40,7 @@ import netP5.*;
 /**********************/
 
 /******** Debugging ********/
-boolean debug = false;                  // Turn on / off debugging (prints to output window).
+boolean debug = true;                  // Turn on / off debugging (prints to output window).
 boolean generateRandomNotes = false;    // For testing on a single machine
 
 /******** Networking ********/
@@ -74,6 +74,8 @@ boolean particleMode;
 boolean lineMode = false;
 boolean strokeWeightFading = false, alphaFading = false;
 float strokeWeightIncrement = 0.;
+
+float visualizerZoomFactor = -260.;
 
 boolean decreasingSize = false, increasingSize = false;
 
@@ -139,6 +141,8 @@ int visualMode;
 boolean active;        // Should this machine be playing now?
 float noteLength;        // Length of note in frames
 float droneLength;        // Length of drone in frames
+
+boolean dronesOff = false;
 
 int notesPlaying = 0;
 int dronesPlaying = 0;

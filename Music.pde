@@ -255,24 +255,13 @@ class NoteField
     float lastX = x;
     float lastY = y;
     float lastZ = z;
-    /*
-    h = noise(ht) * 255;    // hue
-     x = noise(xt) * width * fieldSize - fieldSize * 60;  // x pos
-     y = noise(yt) * height * fieldSize - fieldSize * 60; // y pos
-     z = noise(zt) * height + fieldZOffset; // z pos
-     
-     ht+=noiseIncrement;
-     xt+=noiseIncrement;
-     yt+=noiseIncrement;
-     zt+=noiseIncrement;
-     */
 
     h = noise(ht) * 255;    // hue
     x = noise(xt) * width * fieldSize - fieldSize * 20;  // x pos
     y = noise(yt) * height * fieldSize - fieldSize * 20; // y pos
     z = noise(zt) * height + fieldZOffset; // z pos
 
-    ht+=noiseIncrement;
+    ht+=colorNoiseIncrement;
     xt+=noiseIncrement;
     yt+=noiseIncrement;
     zt+=noiseIncrement;
@@ -284,7 +273,7 @@ class NoteField
 
     notes.add(new Note3D(h, x, y, z, curSize, tonicKey, lastX, lastY, lastZ));
 
-    if (notes.size() > maxLength)  
+    if (notes.size() > maxNoteFieldLength)  
       notes.remove(0);
   }
 
@@ -299,7 +288,7 @@ class NoteField
 
 void playCurrentNotes()            
 {
-  float duration = noteLength;
+  float duration = constrain(noteLength, 0, maxNoteLength);
   int velocity = -1, pitch = -1;
   int droneVelocity = -1, dronePitch = -1;
 
@@ -392,7 +381,7 @@ void playCurrentNotes()
         received.add(note);
       }
 
-      if (dronesPlaying < maxDronesPlaying)      
+      if (dronesPlaying < maxDronesPlaying && !dronesOff)      
       {
         playDrone( dronePitch, droneLength + random(-5, 6), round(droneVelocity * 0.06) );
         int hue = int(map(dronePitch % 12, 0, 11, 0, 255));
@@ -474,8 +463,9 @@ void playDrone(int pitch, float duration, int velocity)
 void storeNote(Note3D note)
 {
   stored.add(note);
-  if(isServer && debug)
-  println("stored.size:"+stored.size());
+  
+//  if(debug)
+//    println("No. of stored notes:"+stored.size());
 }
 
 void storeRandomNotes(int numberOfNotes)
@@ -488,28 +478,24 @@ void storeRandomNotes(int numberOfNotes)
   }
 }
 
-void selectNextMotive()
+boolean selectNextMotive()
 {
-  currentMotive = new ArrayList();
+  ArrayList<Note3D> newMotive = new ArrayList();
 
-  for (int i = 0; i <= motiveLength; i++)
+  Note3D last = new Note3D(-1, -1, -1, -1, -1, -1, -1, -1, -1);
+  
+  for (int i = 0; i<motiveLength; i++)
   {
-    if (stored.size() > 0)
-    {
-      currentMotive.add(stored.get(0));
-      if (motiveLength < stored.size())
-      {
-        stored.remove(0);
-      }
-        
-      if (frameCount % (tempo * noteRemovalRate) == 0)    // Remove one note every few seconds
-        stored.remove(0);
-    } 
-    else
-    {
-      if (debug && frameCount % 100 == 0)
-        println("No stored notes.");
-    }
+    if(stored.size() > i)
+      newMotive.add(stored.get(i)); 
+  } 
+
+  if (newMotive.size() < motiveLength)
+    return false;
+  else
+  {
+    currentMotive = newMotive;
+    return true;
   }
 }
 
@@ -519,9 +505,9 @@ void updateMusic()
   {
     updateMotiveLength();
 
-    selectNextMotive();     // Get next motive from collected notes
+    boolean newMotiveSelected = selectNextMotive();     // Get next motive from collected notes
 
-    if (currentMotive.size() >= motiveLength)        //  Check if we have enough notes
+    if (newMotiveSelected && currentMotive.size() >= motiveLength)        //  Check if we have enough notes
     {
       if ( currentModule == KaleidoscopeModule.SONIFIER)  
         sendMotive(currentMotive, true);                  // Broadcast current motive to other performers and draw all the notes at once
@@ -531,6 +517,9 @@ void updateMusic()
 
     currentNote = 0;
     droneLength = noteLength * droneLengthFactor;
+    
+    if(debug)
+    println("Reached end of phrase.");
   } 
 
   if (frameCount < musicStartFrame || frameCount > musicEndFrame)    // Is this performer active?
@@ -613,9 +602,8 @@ void updateMotiveLength()
   }
   
   if (motiveLength < minMotiveLength)
-    motiveLength += random(1, 4);
+    motiveLength += random(1, 3);
   
-
   measureNoiseTime += measureNoiseIncrement;
 }
 
@@ -692,7 +680,9 @@ void startMeasure()        // Begin a measure
         lastPhrase = curPhrase;
   
         if (motiveLength > 0 && notesPerMeasure > 0)
+        {
           noteLength = constrain( int(tempo) / notesPerMeasure, 2, 1000);
+        }
       }
       break;
   
@@ -700,12 +690,10 @@ void startMeasure()        // Begin a measure
   
       if (curPhrase != lastPhrase)
       {
-        println("NEW PHRASE:"+currentStep);
         currentStep -= 1;
         if (currentStep <= 0)
         {
          currentStep = currentMotive.size()-1;
-          println("  reset currentStep:"+currentStep);
       }
         notesPerMeasure = currentStep+1;
         lastPhrase = curPhrase;
@@ -732,16 +720,7 @@ void startMeasure()        // Begin a measure
     curPhrase ++;
     curMeasure = 0;
   }
-/*
-  print("frameCount:"+frameCount);
-  print("   musicStartFrame:"+musicStartFrame);
-  print(" notesPerMeasure:"+notesPerMeasure);
-  print("  musicEndFrame:"+musicEndFrame);
-  print(" noteLength:"+noteLength);
-  print("curMeasure:"+curMeasure);
-  print(" curPhrase:"+curPhrase);
-  println(" phraseLength:"+phraseLength);
-  */
+
   //println("Motive length:"+currentMotive.size());
 }
 

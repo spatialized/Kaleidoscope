@@ -32,11 +32,11 @@ void setup()
   numPerformers = 3;     
   
   /*************** Network Setup *************/
-  serverIPAddress = "192.168.1.128";            // Set to IP address of the server    
+  serverIPAddress = "192.168.1.111";            // Set to IP address of the server    
   
   /***************** Music Setup ***************/
-  currentModule = KaleidoscopeModule.CONTROLLER;       // Set module (performer role): VISUALIZER  (Server Default)  SONIFIER   CONTROLLER    
-  currentProcess = KaleidoscopeProcess.ADDITIVE;        // Set process (how musical material develops): ARPEGGIO  OSTINATO   ADDITIVE SUBTRACTIVE    
+  currentModule = KaleidoscopeModule.SONIFIER;       // Set module (performer role): VISUALIZER  (Server Default)  SONIFIER   CONTROLLER    
+  currentProcess = KaleidoscopeProcess.OSTINATO;        // Set process (how musical material develops): ARPEGGIO  OSTINATO   ADDITIVE SUBTRACTIVE    
  
   /************** Music Settings *****************/
   // Set initial parameters of music 
@@ -90,6 +90,32 @@ void draw()
   
   if(pieceStarted && !stopPiece)                // Wait for the server before starting
   {
+    if(frameCount % noteRemovalRate == 0)
+    {
+      int removalCount = 3;
+        
+      for(int x=0; x<removalCount; x++)
+      {
+        if(stored.size() > motiveLength)
+          stored.remove(0);
+      }
+      
+      if(!debug) 
+      {
+        print("currentNote:"+currentNote);
+        println(" motiveLength:"+motiveLength);
+        print("frameCount:"+frameCount);
+        print("   musicStartFrame:"+musicStartFrame);
+        print(" notesPerMeasure:"+notesPerMeasure);
+        print("  musicEndFrame:"+musicEndFrame);
+        print(" noteLength:"+noteLength);
+        print("curMeasure:"+curMeasure);
+        print(" curPhrase:"+curPhrase);
+        println(" phraseLength:"+phraseLength);
+      }
+   }
+     
+
     switch(currentModule)
     {
       case VISUALIZER:
@@ -142,7 +168,8 @@ void draw()
   
   if(pieceStopped)
   {
-    stop(); 
+    if(notesPlaying == 0)
+      stop(); 
   }
 }
 
@@ -150,7 +177,10 @@ void startPiece()
 {
   sendTestMessage();
   pieceStarted = true;
- 
+
+  if(currentModule == KaleidoscopeModule.VISUALIZER)
+   camera = new Camera(this, 0, 0, zoomFactor / 10 * fieldSize, 0,0,0, PI / 3, float(width)/float(height), 200, 2000 * fieldSize);
+
   if(connected)
     goToSection(1); 
   else

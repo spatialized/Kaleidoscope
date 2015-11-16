@@ -102,11 +102,11 @@ void setupGraphics()
   textFont(font, 32);
   
   if(currentModule == KaleidoscopeModule.VISUALIZER)
-    zoomFactor = -260;
+    camera = new Camera(this, 0, 0, visualizerZoomFactor * fieldSize, 0,0,0, PI / 3, float(width)/float(height), 200, 2000 * fieldSize);
+  else
+    camera = new Camera(this, 0, 0, zoomFactor * fieldSize, 0,0,0, PI / 3, float(width)/float(height), 200, 2000 * fieldSize);
   
-  camera = new Camera(this, 0, 0, zoomFactor * fieldSize, 0,0,0, PI / 3, float(width)/float(height), 200, 2000 * fieldSize);
   particleMode = false;
-
 }
 
 void setupMusic()

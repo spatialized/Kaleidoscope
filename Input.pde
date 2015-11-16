@@ -11,6 +11,13 @@ void keyPressed()
      curSection++;
      goToSection(curSection);
   }
+  
+  if (key == 'v')
+  {
+     dronesOff = !dronesOff;
+     if(debug) println("Drones Off:"+dronesOff);
+  }
+  
   if (key == 'k')  
   {
      if(gain - gainIncrement > minGain)
@@ -155,35 +162,35 @@ void keyPressed()
     {
 
       case '[':
-        /*
+        
         vizField.setNoteMass(noteMass - massIncrement);
         if(debug)
         println("noteMass:"+noteMass);
-        */
+        
         break;
 
       case ']':
-      /*
+      
         vizField.setNoteMass(noteMass + massIncrement);
         if(debug)
         println("noteMass:"+noteMass);
-        */
+        
         break;
 
       case '-':
-      /*
-        vizField.setNoteMass(noteGravity - gravityIncrement);
+      
+        vizField.setNoteGravity(noteGravity - gravityIncrement);
         if(debug)
         println("noteGravity:"+noteGravity);
-        /*
+        
         break;
 
       case '=':
-        /*
+        
         vizField.setNoteGravity(noteGravity + gravityIncrement);
         if(debug)
         println("noteGravity:"+noteGravity);
-        */
+        
         break;
 
       case 'r':
@@ -192,8 +199,6 @@ void keyPressed()
         break;
         
       case 'f':
-      //  rotateZTransition = true;
-      //  rotateZDirection = -1;
         break; 
     }
     
@@ -202,41 +207,38 @@ void keyPressed()
   {
     switch(key)
     {
-      /*
     case '-':
-      changeTempo(0);
       break;
 
     case '=':
-      changeTempo(1);
       break;
-*/
+
     case '1':
-      scaleMode = 0;
+      setScaleMode(0);
       break;
 
     case '2':
-      scaleMode = 1;
+      setScaleMode(1);
       break;
 
     case '3':
-      scaleMode = 2;
+      setScaleMode(2);
       break;
 
     case '4':
-      scaleMode = 3;
+      setScaleMode(3);
       break;
 
     case '5':
-      scaleMode = 4;
+      setScaleMode(4);
       break;
 
     case '6':
-      scaleMode = 5;
+      setScaleMode(5);
       break;
 
     case '7':
-      scaleMode = 6;
+      setScaleMode(6);
       break;
 
     case 'a':

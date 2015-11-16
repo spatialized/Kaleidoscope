@@ -91,8 +91,10 @@ class SonificationAgent
          
          if(curScaleDegree != lastScaleDegree) 
          {
-           storeNote(n); 
-           playTone( n.pitch, noteLength, n.getVelocity() );    
+           storeNote(n);
+
+           if(notesPlaying < 3); 
+             playTone( n.pitch, noteLength, n.getVelocity() );    
          }
 
          lastScaleDegree = curScaleDegree;
@@ -210,7 +212,7 @@ class SonificationArray
   void initialize()
   {
     array = new ArrayList();
-    for(int i = 0; i<arraySize; i++)          // Create Perlin noise based initial configuration 
+    for(int i = 0; i<arraySize; i++)          // Create initial configuration 
     {
       float x, y, z;
 

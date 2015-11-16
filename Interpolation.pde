@@ -83,7 +83,7 @@ void goToSection(int newSection)
      setStrokeWeightFading(true, 1.0002);
      setAlphaFading(true, 0.9998);
 
-     maxLength = 120;
+     maxSpheres = 120;
      break;
      
    case 2:                  // Second section
@@ -107,7 +107,7 @@ void goToSection(int newSection)
      setStrokeWeightFading(false, 0);
      alphaMax = 75;
      setAlphaFading(true, section2AlphaFading);
-     maxLength = 60;
+     maxSpheres = 60;
 
      maxDronesPlaying = 0;
     break;

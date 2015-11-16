@@ -79,11 +79,6 @@ class Chain3D
       n.position.y += n.radius*sin(n.angle); //*h;
       n.update(); 
     }
-    
-    if (spheres.size() > maxLength)            // Remove spheres over max. amount
-    {
-      spheres.remove(0);
-    }
   }
   
   void setNoteMass(float newMass)
@@ -135,6 +130,7 @@ void displayInfo()
     break;
   }
 
+  text("Change Process < >", x-300, y + textSpacing*1.2, z);
   switch(currentProcess.ordinal())
   {
   case 0:
@@ -213,7 +209,7 @@ void displayInfo()
     {
       float fadePerSecond = abs(section1TempoFading * frameRate);
       float seconds = ( tempo - minTempo ) / fadePerSecond;
-      text("Time until Section 2:"+round(seconds/60)+" min., "+round(seconds%60)+" sec.", x, y += textSpacing, z);
+      text("Section Two Start: "+round(seconds/60)+" min., "+round(seconds%60)+" sec.", x, y += textSpacing, z);
     }
     else if(curSection == 2)
     {
@@ -222,12 +218,7 @@ void displayInfo()
       text("Time until End:"+round(seconds/60)+" min., "+round(seconds%60)+" sec.", x, y += textSpacing, z);
     }
 
-      text("Music On ('m'): "+musicOn, x+500, y, z);
-
-    //goToSection(2);
-    
-    if(currentModule == KaleidoscopeModule.CONTROLLER)
-      sendNewSection(curSection);
+    text("Music On ('m'): "+musicOn, x+500, y, z);
   }
   
   textSize(28);
@@ -247,26 +238,27 @@ void displayInfo()
     text("-", x+750, y, z);
 
   text("A-G", x, y += textSpacing, z);
-  text("Tonic Key:  "+Keys[tonicKey], x+500, y, z);
+  text("**Tonic Key:  "+Keys[tonicKey], x+500, y, z);
 
   //text("- / =", x, y += textSpacing, z);
   text("Tempo:  "+tempo, x + 500, y += textSpacing, z);
 
-  text("COMMA / PERIOD", x, y += textSpacing, z);
-  text("Timbre:  "+Timbres[timbre], x + 500, y, z);
-
+  text("COMMA / PERIOD", x, y, z);
+  text("Timbre:  "+Timbres[timbre], x + 500, y+=textSpacing, z);
 
   text("1-7", x, y += textSpacing, z);
-  text("Scale Mode:  "+Modes[scaleMode], x+500, y, z);
+  text("**Scale Mode:  "+Modes[scaleMode], x+500,  y, z);
   //text("J / K", x, y += textSpacing, z);
-  text("Note Stretching:  "+stretchFactor, x+500, y, z);
+  text("Note Stretching:  "+stretchFactor, x+500, y+=textSpacing, z);
   text("; / '", x, y += textSpacing, z);
   text("Drone Timbre:  "+Timbres[droneTimbre], x+500, y, z);
   text("Current Phrase:  "+curPhrase, x + 500, y += textSpacing, z);
   text("Current Measure:  "+curMeasure, x + 500, y += textSpacing, z);
   text("Notes Per Measure:  "+notesPerMeasure, x + 500, y += textSpacing * 2, z);
 //  println(" phraseLength:"+phraseLength);
-  text("Notes Length:  "+noteLength, x + 500, y += textSpacing, z);
+  text("Note Length:  "+noteLength, x + 500, y += textSpacing, z);
+  text("Drones On:  "+(!dronesOff), x + 500, y += textSpacing, z);
+  text("           ** = affects all performers", x + 800, y, z);
 
   textSize(26); 
   fill(5, 250, 250);

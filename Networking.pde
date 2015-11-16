@@ -27,14 +27,14 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
       disconnect(oscMessage);       // Disconnect
     else 
     {
-      if (oscMessage.checkAddrPattern("/play") || oscMessage.checkAddrPattern("/tempo") || oscMessage.checkAddrPattern("/tonic"))     // Forward appropriate messages to all clients
+      if (oscMessage.checkAddrPattern("/play") || oscMessage.checkAddrPattern("/tempo") || oscMessage.checkAddrPattern("/tonic") || oscMessage.checkAddrPattern("/scaleMode"))     // Forward appropriate messages to all clients
       {
         oscP5.send(oscMessage, netAddressList);  
-        printNetAddressList();
+        if(debug)
+          printNetAddressList();
       }
 
-      if(debug)
-      println("Sent message with pattern:"+oscMessage.addrPattern());
+      if(debug)  println("Sent message with pattern:"+oscMessage.addrPattern());
     }
     
     if (oscMessage.checkAddrPattern("/draw"))        // A motive to be drawn by the visualizer (i.e. server)
@@ -127,7 +127,7 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
   } 
 
 
-  if (oscMessage.checkAddrPattern("/section"))        // A message to change the tonic key
+  if (oscMessage.checkAddrPattern("/section"))        // A message to change the section
   {
     if (oscMessage.checkTypetag("i"))
     {
@@ -135,7 +135,7 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
     }
   } 
 
-  if (oscMessage.checkAddrPattern("/scaleMode"))        // A message to change the tonic key
+  if (oscMessage.checkAddrPattern("/scaleMode"))        // A message to change the scale mode
   {
     if (oscMessage.checkTypetag("i"))
     {
@@ -161,7 +161,9 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
         int velocity = oscMessage.get(i+1).intValue();
         int hue = int(map(pitch % 12, 0, 11, 0, 255));
         Note3D note = new Note3D(hue, 0, 0, 0, velocity, tonicKey, 0, 0, 0);
-        stored.add(note);
+        
+        if(stored.size() < maxStoredNotes)
+          stored.add(note);
       }
 
       notesPerMeasure = tagLength/2;
@@ -173,8 +175,9 @@ void sendTestMessage()
 {
   OscMessage message = new OscMessage("/test");
   message.add(currentModule.toString());  // test
+ 
   if (debug) println("Sent test message:"+currentModule.toString());
-  sendMessage(message);
+    sendMessage(message);
 }
 
 /***** Client Methods ******/
@@ -318,6 +321,9 @@ public void sendMotive(ArrayList<Note3D> motive, boolean drawMotive)
   {
     sendMessage(draw);
   }
+  
+  if(debug)
+  println("Sent motive..."+motive.get(0).getPitch()+" "+motive.get(1).getPitch()+" "+motive.get(2).getPitch()+" ");
 }
 
 /************** Controller Methods ***************/

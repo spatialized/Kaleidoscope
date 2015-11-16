@@ -15,19 +15,21 @@ float lineWidthFactor = 0.033;
 float  zoomSpeed = 0., zoomIncrement = 0.1;
 float zoomFactor = -1000;
 
-int maxSpheres = 80;
+int maxSpheres = 120;
+int maxNoteFieldLength = 500;
 
 boolean rotateFading = false;
 float rotateIncrement = PI/64, rotateAcceleration = 0;
 float rotateArrayIncrement = PI/1024;
 float noiseIncrement = 0.015;
+float colorNoiseIncrement = 0.15;
 float measureNoiseIncrement = 0.333;
 
-int minMotiveLength = 1, maxMotiveLength = 8;
+int minMotiveLength = 3, maxMotiveLength = 8;
 int bottomOctave = 2, topOctave = 8;       
 
 float arrayNoiseIncrement = 0.025;
-int backgroundColor = 50;
+int backgroundColor = 0;
 int noteWidth = 28;
 int noteHeight = 12;
 int barlineWidth = 2;
@@ -49,9 +51,12 @@ float minGravity = 0.1, maxGravity = 30.;
 /****************** Music Settings ******************/
 int numPerformers = 4;      // 1 main performer, 3 auxiliary performers
 int phraseLength = 4;      // How many measures in a phrase?
-int noteRemovalRate = 30;
+int noteRemovalRate = 15;
 int maxNotesPlaying = 5;
 int maxDronesPlaying = 1;
+int maxStoredNotes = 20;
+
+float maxNoteLength = 4.; // in sec.
 float gainIncrement = 0.025, minGain = 0., maxGain = 1.8;
 
 int scaleSteps = 7;
@@ -62,12 +67,11 @@ int droneLengthFactor = 50;
 float stretchFactor = 1.5;      // How much to stretch notes from their noteLength
 float stretchFactorMin = 1., stretchFactorMax = 6.;
 
-float section1TempoFading = -0.002;
+float section1TempoFading = -0.0025;
 float section2TempoFading = 0.005;
 float section2RotationFading = 0.9999, section2ZoomFading = -0.000085, section2StretchFactorFading = 1.0015, section2AlphaFading = 1.0002;
 
 /****************** Misc. Settings ******************/
-int maxLength = 120;
 float collisionDistance = 180.;
 float arraySpacing = 0.28;
 int arraySize = 36;
