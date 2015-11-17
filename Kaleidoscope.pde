@@ -35,7 +35,7 @@ void setup()
   serverIPAddress = "192.168.1.111";            // Set to IP address of the server    
   
   /***************** Music Setup ***************/
-  currentModule = KaleidoscopeModule.CONTROLLER;       // Set module (performer role): VISUALIZER  (Server Default)  SONIFIER   CONTROLLER    
+  currentModule = KaleidoscopeModule.SONIFIER;       // Set module (performer role): VISUALIZER  (Server Default)  SONIFIER   CONTROLLER    
   currentProcess = KaleidoscopeProcess.ARPEGGIO;        // Set process (how musical material develops): ARPEGGIO  OSTINATO   ADDITIVE SUBTRACTIVE    
  
   /************** Music Settings *****************/

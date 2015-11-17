@@ -34,10 +34,10 @@ class SonificationAgent
   void display()
   {
     noStroke();
-    float fadeFactor = (1.-constrain(map(centerZDist, 0., 8000., 0., 1.), 0., 1.));
+    float fadeFactor = (1.-constrain(map(centerZDist, 0., 8000., 0., 1.), 0., 0.5));
    
     float alphaVal = alphaMax * fadeFactor * fadeFactor;
-    fill(255, 0, 255, alphaVal);
+    fill(0, 0, 255, alphaVal);
     
     pushMatrix();
     translate(0,0,0);

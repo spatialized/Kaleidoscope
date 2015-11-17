@@ -436,7 +436,6 @@ void keyPressed()
     if (keyCode == ALT)
     {
       optionKey = true;
-      println("option");
     }
   }
     
@@ -512,7 +511,6 @@ void keyReleased()
     if (keyCode == ALT)
     {
       optionKey = false;
-       println("option off");
    }
   }
 }

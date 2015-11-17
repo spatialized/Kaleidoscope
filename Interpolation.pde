@@ -58,8 +58,9 @@ void updateParams()
 
 void goToSection(int newSection)
 {
-  //if(debug)
+  if(debug)
     println("Go To Section:"+newSection);
+    
   curSection = newSection;
 
  switch(newSection)

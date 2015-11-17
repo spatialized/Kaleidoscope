@@ -40,7 +40,7 @@ public enum KaleidoscopeModule
        return "Visualizer";
 
        case 2:
-       return "Note Gatherer";
+       return "Sonifier";
 
        case 3:
        return "Controller";

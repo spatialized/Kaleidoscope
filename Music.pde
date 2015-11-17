@@ -366,9 +366,6 @@ void playCurrentNotes()
         received.add(note);
       }
 
-      println("dronesPlaying:"+dronesPlaying);
-      println("maxDronesPlaying:"+maxDronesPlaying);
-
       if (dronesPlaying < maxDronesPlaying && !dronesOff)      
       {
         playDrone( dronePitch, droneLength + random(-5, 6), round(droneVelocity * 0.06) );
