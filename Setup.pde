@@ -124,6 +124,9 @@ void setupMusic()
   motiveLength = 4;
 
   interlockingMode = false;
+
+  tonicKey = 0;            // Tonic key (0=C, 1=C#, 2=D,...)
+  scaleMode = 0;           // Scale mode (0 = Ionian, 1 = Dorian, 2 = Phrygian...)
   
   switch(currentProcess)
   {

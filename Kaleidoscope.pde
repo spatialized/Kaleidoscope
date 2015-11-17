@@ -9,16 +9,12 @@
 /**************************** Installation ************************/
 /* See Instructions.pdf for installation instructions for the required external libraries:
 /* TheMidiBus, OscP5, Obsessive Camera Direction (OCD) Library
-/****************************************************************/
-
-/**************************** Quick Setup ****************************/
-/* For each machine:
+/*
+/*                         Quick Setup:
 /*    
-/* 1. Follow instructions under General Setup, Network Setup and Music Setup sections below.
+/* 1. Follow instructions in the setup() function below.
 /* 2. Connect to WIFI 
-/* 3. If this machine is the server, turn on File Sharing. 
-/*      If this machine is a client, in the Finder, choose Go > "Connect to Server" and select the server's name.
-/* 4. Run in Present Mode
+/* 3. Run in Present Mode
 /*
 /*  See Instructions.pdf for full setup instructions.
 /*********************************************************************/
@@ -26,25 +22,22 @@
 void setup()
 {
   /************* General Setup ***************/
-  // Set width, height of window (for server, set to screen size):
-  size(1080, 720, P3D);      
-  // Set required number of performers:
-  numPerformers = 3;     
+  size(1080, 720, P3D);      // SETUP: Set width, height of window (for server, set to screen size):
+  numPerformers = 3;         // SETUP: Set required number of performers:
   
   /*************** Network Setup *************/
-  serverIPAddress = "192.168.1.111";            // Set to IP address of the server    
+  serverIPAddress = "192.168.1.111";            // SETUP: Set to IP address of the server    
   
   /***************** Music Setup ***************/
-  currentModule = KaleidoscopeModule.SONIFIER;       // Set module (performer role): VISUALIZER  (Server Default)  SONIFIER   CONTROLLER    
-  currentProcess = KaleidoscopeProcess.ARPEGGIO;        // Set process (how musical material develops): ARPEGGIO  OSTINATO   ADDITIVE SUBTRACTIVE    
+  currentModule = KaleidoscopeModule.SONIFIER;       // SETUP: Set module (performer role): VISUALIZER  (Server Default)  SONIFIER   CONTROLLER    
+  currentProcess = KaleidoscopeProcess.ARPEGGIO;        //  SETUP: Set process (how musical material develops): ARPEGGIO  OSTINATO   ADDITIVE SUBTRACTIVE    
  
   /************** Music Settings *****************/
   // Set initial parameters of music 
-  tonicKey = 0;            // Tonic key (0=C, 1=C#, 2=D,...)
   timbre = 2;              // Timbre (0=SINE, 1=TRIANGLE, 2=SQUARE, 3=QUARTERPULSE)
   droneTimbre = 1;         // Drone timbre (0=SINE, 1=TRIANGLE, 2=SQUARE, 3=QUARTERPULSE)
-  scaleMode = 0;           // Scale mode (0 = Ionian, 1 = Dorian, 2 = Phrygian...)
-  
+
+ 
   setupKaleidoscope();        // Perform the setup functions
 }
 
