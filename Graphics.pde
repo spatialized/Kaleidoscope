@@ -226,19 +226,31 @@ void displayInfo()
 
   text("Keyboard Command ", x, y += textSpacing * 2., z);
   text("Parameter ", x+500, y, z);
+  
 
-  textSize(24); 
+  textSize(18); 
   fill(hue, 100, 220);
   
-  text("SHIFT + COMMA/PERIOD : ", x, y += textSpacing * 1.5, z);
-  text("Current Octave:  ", x+500, y, z);
+  text("           Changes to parameters marked with >> affect all performers", x+750,  y+= textSpacing *1.5, z);
+
+
+  textSize(24); 
+  text("SHIFT + COMMA/PERIOD : ", x, y, z);
+  text("Current Octave:  ", x+500, y+= textSpacing, z);
+
+
+  textSize(18); 
+  text(" and should be used no more than every 15 seconds or so.", x + 805, y, z);
+
+
+  textSize(24); 
   if (active && currentMotive.size() >= notesPerMeasure)
     text(str(curOctave), x+750, y, z);
   else
     text("-", x+750, y, z);
 
   text("A-G", x, y += textSpacing, z);
-  text("**Tonic Key:  "+Keys[tonicKey], x+500, y, z);
+  text(">> Tonic Key:  "+Keys[tonicKey], x+500, y, z);
 
   //text("- / =", x, y += textSpacing, z);
   text("Tempo:  "+tempo, x + 500, y += textSpacing, z);
@@ -247,18 +259,19 @@ void displayInfo()
   text("Timbre:  "+Timbres[timbre], x + 500, y+=textSpacing, z);
 
   text("1-7", x, y += textSpacing, z);
-  text("**Scale Mode:  "+Modes[scaleMode], x+500,  y, z);
+  text(">> Scale Mode:  "+Modes[scaleMode], x+500,  y, z);
   //text("J / K", x, y += textSpacing, z);
   text("Note Stretching:  "+stretchFactor, x+500, y+=textSpacing, z);
-  text("; / ' Change Timbre                                                                                                        V   Turn Drones On/Off", x, y += textSpacing, z);
+  text("; / '", x, y += textSpacing, z);
   text("Drone Timbre:  "+Timbres[droneTimbre], x+500, y, z);
   text("Current Phrase:  "+curPhrase, x + 500, y += textSpacing, z);
   text("Current Measure:  "+curMeasure, x + 500, y += textSpacing, z);
   text("Notes Per Measure:  "+notesPerMeasure, x + 500, y += textSpacing * 2, z);
 //  println(" phraseLength:"+phraseLength);
   text("Note Length:  "+noteLength, x + 500, y += textSpacing, z);
-  text("Drones On:  "+(!dronesOff), x + 500, y += textSpacing, z);
-  text("           ** = affects all performers", x + 800, y, z);
+  
+  text("V    Toggle On/Off", x, y += textSpacing, z);
+  text("Drones On:  "+(!dronesOff), x + 500, y, z);
 
   textSize(26); 
   fill(5, 250, 250);
