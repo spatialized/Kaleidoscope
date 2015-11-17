@@ -250,7 +250,7 @@ void displayInfo()
   text("**Scale Mode:  "+Modes[scaleMode], x+500,  y, z);
   //text("J / K", x, y += textSpacing, z);
   text("Note Stretching:  "+stretchFactor, x+500, y+=textSpacing, z);
-  text("; / '", x, y += textSpacing, z);
+  text("; / ' Change Timbre                                                                                                        V   Turn Drones On/Off", x, y += textSpacing, z);
   text("Drone Timbre:  "+Timbres[droneTimbre], x+500, y, z);
   text("Current Phrase:  "+curPhrase, x + 500, y += textSpacing, z);
   text("Current Measure:  "+curMeasure, x + 500, y += textSpacing, z);
@@ -422,7 +422,7 @@ void displayInfo()
        if(currentModule == KaleidoscopeModule.SONIFIER)
        {
         text("KEYBOARD COMMANDS", x, y+=textSpacing*3, -250); 
-        text("SHIFT+p Change Color Mode", x,  y+=textSpacing, -250); 
+        text("SHIFT+p Toggle Color Mode", x,  y+=textSpacing, -250); 
         text("k l     Change Volume", x,  y+=textSpacing, -250); 
         text("a d w s Move Grid", x,  y+=textSpacing, -250); 
         text("[ ]     Change Grid Spacing", x,  y+=textSpacing, -250); 

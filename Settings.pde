@@ -5,7 +5,7 @@ int serverPort = 12000;                             // Server's broadcast port a
 int broadcastPort = 2000;                           // Port the clients should listen to 
 
 /****************** Graphics Settings ******************/
-boolean perlinColorMode = true;
+boolean perlinColorMode = false;
 float alphaMax = 190.;
 float alphaIncrement = 1.;
 float fieldSize = 10.;                                // Field Size in proportion to window (for SONIFIER module)
@@ -70,7 +70,7 @@ float stretchFactor = 1.5;      // How much to stretch notes from their noteLeng
 float stretchFactorMin = 1., stretchFactorMax = 6.;
 
 float section1TempoFading = -0.0025;
-float section2TempoFading = 0.005;
+float section2TempoFading = 0.004;
 float section2RotationFading = 0.9999, section2ZoomFading = -0.000085, section2StretchFactorFading = 1.0015, section2AlphaFading = 1.0002;
 
 /****************** Misc. Settings ******************/

@@ -40,7 +40,7 @@ import netP5.*;
 /**********************/
 
 /******** Debugging ********/
-boolean debug = true;                  // Turn on / off debugging (prints to output window).
+boolean debug = false;                  // Turn on / off debugging (prints to output window).
 boolean generateRandomNotes = false;    // For testing on a single machine
 
 /******** Networking ********/
