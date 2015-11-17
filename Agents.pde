@@ -93,12 +93,13 @@ class SonificationAgent
          {
            storeNote(n);
 
-           if(notesPlaying < maxNotesPlaying && notesAboutToPlay < 3); 
+           if(notesPlaying < maxNotesPlaying); 
            {
-             playTone( n.pitch, noteLength, n.getVelocity() );    
-             notesAboutToPlay++;
-             println("Sonified note");
-             println("notesAboutToPlay:"+notesAboutToPlay);
+             if(notesAboutToPlay < 3)
+             {
+               playTone( n.pitch, noteLength, n.getVelocity() );    
+               notesAboutToPlay++;
+             }
            }
          }
 
@@ -192,7 +193,8 @@ class SonificationArray
   
   void update()
   {
-    notesAboutToPlay = 0;
+    if(frameCount % notesToPlayUpdateSpeed == 0)
+      notesAboutToPlay = 0;
 
     for(SonificationAgent a : array)
     {

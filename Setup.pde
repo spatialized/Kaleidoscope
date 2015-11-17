@@ -122,6 +122,9 @@ void setupMusic()
   active = false;                             // Is this machine playing?
   droneLength = noteLength * 60;
   motiveLength = 4;
+
+  interlockingMode = false;
+  
   switch(currentProcess)
   {
     case ADDITIVE:

@@ -256,7 +256,11 @@ class NoteField
     float lastY = y;
     float lastZ = z;
 
-    h = noise(ht) * 255;    // hue
+    if(perlinColorMode)
+      h = noise(ht) * 255;    // hue
+    else
+      h = random(0, 255);
+
     x = noise(xt) * width * fieldSize - fieldSize * 20;  // x pos
     y = noise(yt) * height * fieldSize - fieldSize * 20; // y pos
     z = noise(zt) * height + fieldZOffset; // z pos
@@ -314,7 +318,7 @@ void playCurrentNotes()
         }
   
         pitch = currentMotive.get(currentNote % currentMotive.size()).getScaleDegree() + curOctave * 12;
-      } 
+      }
       break;
   
     case OSTINATO:
@@ -323,6 +327,7 @@ void playCurrentNotes()
         pitch = currentMotive.get(currentNote % currentMotive.size()).getPitch();
         velocity = currentMotive.get(currentNote % currentMotive.size()).getVelocity();
       }
+      else if(debug) println("Not enough notes per measure for ostinato...");
       break;
   
     case ADDITIVE:                                       
@@ -344,12 +349,12 @@ void playCurrentNotes()
 
   if (currentMotive.size() > 0)
   {
-    dronePitch = currentMotive.get((currentNote+1) % currentMotive.size()).getScaleDegree() + 12;
+    dronePitch = currentMotive.get((currentNote+1) % currentMotive.size()).getScaleDegree() + 24;
     droneVelocity = currentMotive.get((currentNote+1) % currentMotive.size()).getVelocity();
   }
-  else if(frameCount % 100 == 0)   println("Waiting for notes...");
+  else if(frameCount % 30 == 0)   println("Waiting for notes...");
 
-  if (currentMotive.size() > currentNote)
+  if (currentNote < currentMotive.size())
   {
     if (currentMotive.get(currentNote).getScaleDegree() != -1 && pitch > -1 && velocity > -1)
     {
@@ -360,6 +365,9 @@ void playCurrentNotes()
         drawNote(note);                  // Broadcast current motive to other performers and draw
         received.add(note);
       }
+
+      println("dronesPlaying:"+dronesPlaying);
+      println("maxDronesPlaying:"+maxDronesPlaying);
 
       if (dronesPlaying < maxDronesPlaying && !dronesOff)      
       {
@@ -402,7 +410,7 @@ void playTone(int pitch, float duration, int velocity)
       break;
   
     case 3:
-      output.playNote( 0., dur, new DroneInstrument( freq, dur, volume, Waves.QUARTERPULSE, output ) );
+      output.playNote( 0., dur, new ToneInstrument( freq, dur, volume, Waves.QUARTERPULSE, output ) );
       break;
   }
 }
@@ -416,9 +424,7 @@ void playDrone(int pitch, float duration, int velocity)
   int soundsPlaying = notesPlaying + dronesPlaying;
   int maxSoundsPlaying = maxNotesPlaying + maxDronesPlaying;
 
-  //float curMaxVolume = maxVolume-constrain(map(soundsPlaying, 0, maxSoundsPlaying, 0., maxVolume), 0., maxVolume);
-  //float volume = constrain(map(velocity, 0, 127, 0., curMaxVolume), 0., curMaxVolume);
-  float volume = maxVolume / maxNotesPlaying / maxDronesPlaying;
+  float volume = maxVolume / maxDronesPlaying;
 
   switch(droneTimbre)
   {
@@ -486,7 +492,6 @@ void updateMusic()
     updateMotiveLength();
 
     boolean newMotiveSelected = selectNextMotive();     // Get next motive from collected notes
-    println("newMotiveSelected:"+newMotiveSelected);
     
     if (newMotiveSelected && currentMotive.size() >= motiveLength)        //  Check if we have enough notes
     {
@@ -499,34 +504,33 @@ void updateMusic()
     currentNote = 0;
     droneLength = noteLength * droneLengthFactor;
     
-    if(debug)
-    println("Reached end of phrase.");
+    if(debug)  println("Reached end of phrase.");
   } 
 
   if (frameCount < musicStartFrame || frameCount > musicEndFrame)    // Is this performer active?
-  { 
-    active = false;
+  {
+      active = false;
   }
 
   switch(currentProcess)
   {
-  case ARPEGGIO:
-    active = true;        // Always active
-    break;  
-
-  case OSTINATO:
-    active = true;        // Always active
-
-    if (gain >= 0.01)
-      gain -= 0.01;
-
-    break;  
-
-  case ADDITIVE:
-    break;  
-
-  case SUBTRACTIVE:
-    break;
+    case ARPEGGIO:
+      active = true;        // Always active
+      break;  
+  
+    case OSTINATO:
+      active = true;        // Always active
+  
+      if (gain >= 0.01)
+        gain -= 0.01;
+  
+      break;  
+  
+    case ADDITIVE:
+      break;  
+  
+    case SUBTRACTIVE:
+      break;
   }
 
   if (frameCount >= musicEndFrame)          // If this is the end of current system, start next system
@@ -551,7 +555,6 @@ void updateMusic()
 void playMusic()
 {
   int curFrame = frameCount - musicStartFrame;
-
   if (curFrame % noteLength == 1 && active)    // On this note's active beat, play the current note 
   {
     if (currentNote == motiveLength)
@@ -560,8 +563,7 @@ void playMusic()
     if (currentMotive.size() >= motiveLength)
       playCurrentNotes();
     else 
-      if(debug)
-        println("Waiting for motive...");
+      if(debug)  println("Waiting for motive...");
 
     currentNote++;
 

@@ -91,6 +91,9 @@ class DroneInstrument implements Instrument
        amplitude *= 0.22;
     }
      
+
+    println("DRONE INSTRUMENT CREATED:"+amplitude+" pitch:"+frequency);
+    
     amplitude *= gain;
   
     droneOsc = new Oscil( frequency, amplitude, wave );
@@ -103,14 +106,14 @@ class DroneInstrument implements Instrument
   {
     adsr.noteOn();
     adsr.patch( out );
-    dronesPlaying += 1;
+    dronesPlaying++;
   }
   
   void noteOff()
   {
     adsr.noteOff();
     adsr.unpatchAfterRelease( out );
-    dronesPlaying -= 1;
+    dronesPlaying--;
   }
 }
 

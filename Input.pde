@@ -348,7 +348,12 @@ void keyPressed()
         particleMode = !particleMode;
         if(debug)  println("particleMode:"+particleMode);
         break;
-
+      
+      case 'P':
+        perlinColorMode = !perlinColorMode;
+        if(debug) println("perlinColorMode:"+perlinColorMode);
+        break;
+        
       case  'o': 
         sonificationArray.centerAtOrigin();
         sonificationArray.time = sonificationArray.endTime;

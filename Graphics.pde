@@ -422,6 +422,7 @@ void displayInfo()
        if(currentModule == KaleidoscopeModule.SONIFIER)
        {
         text("KEYBOARD COMMANDS", x, y+=textSpacing*3, -250); 
+        text("SHIFT+p Change Color Mode", x,  y+=textSpacing, -250); 
         text("k l     Change Volume", x,  y+=textSpacing, -250); 
         text("a d w s Move Grid", x,  y+=textSpacing, -250); 
         text("[ ]     Change Grid Spacing", x,  y+=textSpacing, -250); 

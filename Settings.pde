@@ -5,6 +5,7 @@ int serverPort = 12000;                             // Server's broadcast port a
 int broadcastPort = 2000;                           // Port the clients should listen to 
 
 /****************** Graphics Settings ******************/
+boolean perlinColorMode = true;
 float alphaMax = 190.;
 float alphaIncrement = 1.;
 float fieldSize = 10.;                                // Field Size in proportion to window (for SONIFIER module)
@@ -25,7 +26,7 @@ float noiseIncrement = 0.015;
 float colorNoiseIncrement = 0.15;
 float measureNoiseIncrement = 0.333;
 
-int minMotiveLength = 3, maxMotiveLength = 8;
+int minMotiveLength = 4, maxMotiveLength = 12;
 int bottomOctave = 2, topOctave = 8;       
 
 float arrayNoiseIncrement = 0.025;
@@ -58,6 +59,7 @@ int maxStoredNotes = 20;
 
 float maxNoteLength = 4.; // in sec.
 float gainIncrement = 0.025, minGain = 0., maxGain = 1.8;
+int arraySize = 20;    // Number of spheres in grid
 
 int scaleSteps = 7;
 int minTempo = 10, maxTempo = 40;
@@ -74,7 +76,7 @@ float section2RotationFading = 0.9999, section2ZoomFading = -0.000085, section2S
 /****************** Misc. Settings ******************/
 float collisionDistance = 180.;
 float arraySpacing = 0.28;
-int arraySize = 36;
+int notesToPlayUpdateSpeed = 10;
 float minArraySpacing = 0.1, maxArraySpacing = 1., arraySpacingIncrement = 0.025;
 float agentSize = 150., minAgentSize = 20., maxAgentSize = 500., agentSizeIncrement = 5.;
 float fieldZOffset = -500.;

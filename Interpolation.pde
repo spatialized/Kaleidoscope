@@ -87,6 +87,7 @@ void goToSection(int newSection)
      break;
      
    case 2:                  // Second section
+     interlockingMode = true;
      lineMode = false;
      setTempoFading(true, section2TempoFading);
      setVisualMode(2);
@@ -110,7 +111,7 @@ void goToSection(int newSection)
      maxSpheres = 60;
 
      maxDronesPlaying = 0;
-    break;
+     break;
      
    default:
      break;

@@ -148,7 +148,9 @@ void draw()
     updateMusic();
     
     if(musicOn)
+    {
       playMusic();
+    }
 
     updateParams();
   }

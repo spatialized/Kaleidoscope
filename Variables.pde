@@ -40,7 +40,7 @@ import netP5.*;
 /**********************/
 
 /******** Debugging ********/
-boolean debug = false;                  // Turn on / off debugging (prints to output window).
+boolean debug = true;                  // Turn on / off debugging (prints to output window).
 boolean generateRandomNotes = false;    // For testing on a single machine
 
 /******** Networking ********/
@@ -112,6 +112,7 @@ MidiBus midiOut; // The MidiBus
 float gain = 1.;
 
 /************* Music *************/
+boolean interlockingMode;
 NoteField noteField;
 Chain3D vizField;
 SonificationArray sonificationArray;
