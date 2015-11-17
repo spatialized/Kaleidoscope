@@ -315,11 +315,6 @@ void playCurrentNotes()
   
         pitch = currentMotive.get(currentNote % currentMotive.size()).getScaleDegree() + curOctave * 12;
       } 
-      else
-      {
-        if (debug && frameCount % 100 == 0)
-          println("Waiting for notes...");
-      }  
       break;
   
     case OSTINATO:
@@ -328,11 +323,6 @@ void playCurrentNotes()
         pitch = currentMotive.get(currentNote % currentMotive.size()).getPitch();
         velocity = currentMotive.get(currentNote % currentMotive.size()).getVelocity();
       }
-      else
-      {
-        if (debug && frameCount % 100 == 0)
-          println("Waiting for notes...");
-      }  
       break;
   
     case ADDITIVE:                                       
@@ -341,11 +331,6 @@ void playCurrentNotes()
         pitch = currentMotive.get(currentNote % currentMotive.size()).getPitch();
         velocity = currentMotive.get(currentNote % notesPerMeasure).getVelocity();
       } 
-      else
-      {
-        if (debug && frameCount % 100 == 0)
-          println("Waiting for notes...");
-      }
       break;
   
     case SUBTRACTIVE:                                       
@@ -354,11 +339,6 @@ void playCurrentNotes()
         pitch = currentMotive.get(currentNote % currentMotive.size()).getPitch();
         velocity = currentMotive.get(currentNote % notesPerMeasure).getVelocity();
       } 
-      else
-      {
-        if (debug && frameCount % 100 == 0)
-          println("Waiting for notes...");
-      }  
       break;
   }
 
@@ -367,6 +347,7 @@ void playCurrentNotes()
     dronePitch = currentMotive.get((currentNote+1) % currentMotive.size()).getScaleDegree() + 12;
     droneVelocity = currentMotive.get((currentNote+1) % currentMotive.size()).getVelocity();
   }
+  else if(frameCount % 100 == 0)   println("Waiting for notes...");
 
   if (currentMotive.size() > currentNote)
   {
@@ -375,7 +356,6 @@ void playCurrentNotes()
       if (notesPlaying < maxNotesPlaying)
       {
         playTone( pitch, duration, velocity );    
-
         Note3D note = currentMotive.get(currentNote);
         drawNote(note);                  // Broadcast current motive to other performers and draw
         received.add(note);
@@ -506,7 +486,8 @@ void updateMusic()
     updateMotiveLength();
 
     boolean newMotiveSelected = selectNextMotive();     // Get next motive from collected notes
-
+    println("newMotiveSelected:"+newMotiveSelected);
+    
     if (newMotiveSelected && currentMotive.size() >= motiveLength)        //  Check if we have enough notes
     {
       if ( currentModule == KaleidoscopeModule.SONIFIER)  
@@ -576,8 +557,11 @@ void playMusic()
     if (currentNote == motiveLength)
       currentNote = 0;
 
-    if (currentMotive.size()>0)
+    if (currentMotive.size() >= motiveLength)
       playCurrentNotes();
+    else 
+      if(debug)
+        println("Waiting for motive...");
 
     currentNote++;
 
@@ -983,12 +967,11 @@ int getMidiPitch(int scaleDegree, int octave)  // Return MIDI pitch at specified
 
 void setTonicKey(int newTonic)
 {
-  //noteField.setTonic(newTonic);
-  sendNewTonicKey(newTonic);
   for (Note3D n : stored)
   {
     n.setTonic(newTonic);
   }
+
   tonicKey = newTonic;
 }
 

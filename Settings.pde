@@ -53,7 +53,7 @@ int numPerformers = 4;      // 1 main performer, 3 auxiliary performers
 int phraseLength = 4;      // How many measures in a phrase?
 int noteRemovalRate = 15;
 int maxNotesPlaying = 5;
-int maxDronesPlaying = 1;
+int maxDronesPlaying = 2;
 int maxStoredNotes = 20;
 
 float maxNoteLength = 4.; // in sec.

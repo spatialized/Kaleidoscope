@@ -144,7 +144,7 @@ float droneLength;        // Length of drone in frames
 
 boolean dronesOff = false;
 
-int notesPlaying = 0;
+int notesPlaying = 0, notesAboutToPlay = 0;
 int dronesPlaying = 0;
 
 boolean recentNote = false;

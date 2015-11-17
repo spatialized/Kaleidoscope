@@ -126,7 +126,6 @@ void oscEvent(OscMessage oscMessage)        // What to do if an OSC Event is rec
     }
   } 
 
-
   if (oscMessage.checkAddrPattern("/section"))        // A message to change the section
   {
     if (oscMessage.checkTypetag("i"))

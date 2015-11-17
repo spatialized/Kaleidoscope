@@ -93,8 +93,13 @@ class SonificationAgent
          {
            storeNote(n);
 
-           if(notesPlaying < 3); 
+           if(notesPlaying < maxNotesPlaying && notesAboutToPlay < 3); 
+           {
              playTone( n.pitch, noteLength, n.getVelocity() );    
+             notesAboutToPlay++;
+             println("Sonified note");
+             println("notesAboutToPlay:"+notesAboutToPlay);
+           }
          }
 
          lastScaleDegree = curScaleDegree;
@@ -187,6 +192,8 @@ class SonificationArray
   
   void update()
   {
+    notesAboutToPlay = 0;
+
     for(SonificationAgent a : array)
     {
        a.update();

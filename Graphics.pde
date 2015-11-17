@@ -130,7 +130,7 @@ void displayInfo()
     break;
   }
 
-  text("Change Process < >", x-300, y + textSpacing*1.2, z);
+  text("Change Process: Opt + 1-4", x-400, y + textSpacing*1.2, z);
   switch(currentProcess.ordinal())
   {
   case 0:

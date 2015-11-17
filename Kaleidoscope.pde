@@ -100,11 +100,14 @@ void draw()
           stored.remove(0);
       }
       
-      if(!debug) 
+      if(debug) 
       {
         print("currentNote:"+currentNote);
-        println(" motiveLength:"+motiveLength);
-        print("frameCount:"+frameCount);
+        print(" currentMotive.size():"+currentMotive.size());
+        print(" motiveLength:"+motiveLength);
+        print(" notesPlaying:"+notesPlaying);
+        print(" dronesPlaying:"+dronesPlaying);
+        print(" frameCount:"+frameCount);
         print("   musicStartFrame:"+musicStartFrame);
         print(" notesPerMeasure:"+notesPerMeasure);
         print("  musicEndFrame:"+musicEndFrame);

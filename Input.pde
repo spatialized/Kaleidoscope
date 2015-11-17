@@ -243,38 +243,47 @@ void keyPressed()
 
     case 'a':
       setTonicKey(9);
+      sendNewTonicKey(9);
       break;
 
     case 'A':
       setTonicKey(10);
+      sendNewTonicKey(10);
       break;
 
     case 'b':
       setTonicKey(11);
+      sendNewTonicKey(11);
       break;
 
     case 'c':
       setTonicKey(0);
+      sendNewTonicKey(0);
       break;
 
     case 'C':
       setTonicKey(1);
+      sendNewTonicKey(1);
       break;
 
     case 'd':
       setTonicKey(2);
+      sendNewTonicKey(2);
       break;
 
     case 'D':
       setTonicKey(3);
+      sendNewTonicKey(3);
       break;
 
     case 'e':
       setTonicKey(4);
+      sendNewTonicKey(4);
       break;
 
     case 'f':
       setTonicKey(5);
+      sendNewTonicKey(5);
       break;
 
     case 'g':
