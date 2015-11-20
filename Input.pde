@@ -102,8 +102,11 @@ void keyPressed()
     }
     if (key == '|' && pieceStarted)
     {
-      stopPiece = true;
-      sendStop();               // Forward "start" message to all clients
+      if(debug)
+      {
+        stopPiece = true;
+        sendStop();               // Forward "start" message to all clients
+      }
     }
   } else
   {
@@ -527,6 +530,11 @@ void handleScrollbars()
   float newGlobalGain = scrollBar1.getPos();
   float newGlobalPan = scrollBar2.getPos();
   
+  if(debug)
+    println("newGlobalGain:"+newGlobalGain);
+  if(debug)
+    println("newGlobalPan:"+newGlobalPan);
+
   if(!scrollBar1.moving)
   {
     setGlobalGain(newGlobalGain);
@@ -546,6 +554,7 @@ class ScrollBar
   int loose;              // how loose/heavy
   boolean over;           // is the mouse over the slider?
   boolean locked, moving;
+  float outputMin = 0., outputMax = 1.;
   float ratio;
 
   ScrollBar (float xp, float yp, int sw, int sh, int l, float initSPos) {
@@ -596,7 +605,8 @@ class ScrollBar
     }
   }
 
-  void display() {
+  void display()
+  {
     noStroke();
     fill(204);
     rect(xpos, ypos, swidth, sheight);
@@ -609,16 +619,23 @@ class ScrollBar
     rect(spos, ypos, sheight, sheight);
   }
 
+  void setOutputRange(float newMin, float newMax)
+  {
+    outputMin = newMin;
+    outputMax = newMax;
+  }
+  
   void setPos(float newPos) {
     // Convert spos to be values between
     // 0 and the total width of the scrollbar
     spos = constrain(map(newPos, 0., 1., xpos, xpos+swidth), xpos, xpos+swidth);
   }
 
-  float getPos() {
+  float getPos() 
+  {
     // Convert spos to be values between
     // 0 and the total width of the scrollbar
-    return constrain(map(spos, xpos, xpos+swidth, 0., 1.), 0., 1.);
+    return constrain(map(spos, xpos, xpos+swidth, outputMin, outputMax), outputMin, outputMax);
   }
 }
 

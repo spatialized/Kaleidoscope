@@ -155,11 +155,16 @@ void draw()
     updateCamera();
     camera.feed();
   }
+
+  if(curSection == 3 && tempo <= minTempo)
+    stopPiece = true;
   
   if(stopPiece)
   {
-    output.shiftGain(gain,0.,3000);
     stopPiece();
+    
+    if(currentModule == KaleidoscopeModule.CONTROLLER)
+        sendStop();               // Forward "start" message to all clients
   }
   
   if(pieceStopped)

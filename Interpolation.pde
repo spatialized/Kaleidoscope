@@ -53,7 +53,7 @@ void updateParams()
   }
   if( alphaFading )
   {
-    alphaMax *= alphaIncrement; 
+   // alphaMax *= alphaIncrement; 
   }
   if(curSection == 1)
   {
@@ -162,7 +162,7 @@ void goToSection(int newSection)
      setAlphaFading(true, section3AlphaFading);
      maxSpheres = 90;
 
-     maxDronesPlaying = 1;
+     maxDronesPlaying = 0;
      break;
      
    default:

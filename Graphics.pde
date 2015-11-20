@@ -284,7 +284,7 @@ void displayInfo()
 
   textSize(18); 
 
-  text("           Changes to parameters marked with >> affect all performers", x+750, y+= textSpacing *1.5, z);
+  text("           Changes to parameters marked with >> affect all performers", x+750, y, z);
   text(" and should be used no more than every 15 seconds or so.", x + 805, y += textSpacing, z);
 }
 

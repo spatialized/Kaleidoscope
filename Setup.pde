@@ -33,7 +33,9 @@ void setupKaleidoscope()
   {
     tempoFading = true;
     scrollBar1 = new ScrollBar(850, 350, 100, 16, 6, globalGain);
-    scrollBar2 = new ScrollBar(850, 400, 100, 16, 6, map(globalPan, -60, 0, 0., 1.));
+    scrollBar2 = new ScrollBar(850, 400, 100, 16, 6, map(globalPan, -1, 1, 0., 1.));
+    scrollBar1.setOutputRange(0., 1.);
+    scrollBar2.setOutputRange(-1., 1.);
   }
   if(!isServer)
   {
@@ -170,6 +172,10 @@ void setupMusic()
 
 void stopPiece()
 {
+  println("STOPPING PIECE");
+  active = false;
+  output.pauseNotes();
+  dronesOff = true;
   pieceStopped = true; 
   background(0);
 }

@@ -34,11 +34,6 @@ int backgroundColor = 0;
 int noteWidth = 28;
 int noteHeight = 12;
 int barlineWidth = 2;
-int largeTextSize = 26;
-
-float curTime = 0;
-int lastNoteIdx = 0;
-int currentScale = -1;
 
 boolean velocityMode = true;
 int minVelocity = 60;
@@ -56,7 +51,7 @@ int numPerformers = 4;      // 1 main performer, 3 auxiliary performers
 int phraseLength = 4;      // How many measures in a phrase?
 int noteRemovalRate = 15;
 int maxNotesPlaying = 5;
-int maxDronesPlaying = 2;
+int maxDronesPlaying = 1;
 int maxStoredNotes = 20;
 
 float maxNoteLength = 4.; // in sec.
@@ -71,11 +66,11 @@ int droneLengthFactor = 50;
 float stretchFactor = 1.5;      // How much to stretch notes from their noteLength
 float stretchFactorMin = 1., stretchFactorMax = 6.;
 
-float section1TempoFading = -0.0025;
-float section2TempoFading = 0.0033;
-float section3TempoFading = -0.0033;
-float section2RotationFading = 0.9999, section2ZoomFading = -0.000085, section2StretchFactorFading = 1.00033, section2AlphaFading = 1.0002;
-float section3RotationFading = 1.0002, section3ZoomFading = 0.0001, section3StretchFactorFading = 0.9995, section3AlphaFading = 0.9998;
+float section1TempoFading = -0.002;
+float section2TempoFading = 0.003;
+float section3TempoFading = -0.0025;
+float section2RotationFading = 0.9999, section2ZoomFading = -0.000085, section2StretchFactorFading = 1.0003, section2AlphaFading = 1.0002;
+float section3RotationFading = 1.0002, section3ZoomFading = 0.0001, section3StretchFactorFading = 0.99966, section3AlphaFading = 0.9998;
 
 /****************** Misc. Settings ******************/
 float collisionDistance = 180.;
