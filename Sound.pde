@@ -6,6 +6,7 @@ class ToneInstrument implements Instrument
 {
   Oscil oscillator;
   ADSR adsr;
+  Pan pan;
   AudioOutput out;
   float attack, decay, sustain, release;
   
@@ -14,6 +15,7 @@ class ToneInstrument implements Instrument
     out = output;
 
     oscillator = new Oscil( frequency, amplitude, wave );
+    pan = new Pan(globalPan);
     
     attack = duration / 6.;
     decay = duration / 6.;
@@ -40,11 +42,12 @@ class ToneInstrument implements Instrument
        amplitude *= 0.22;
     }
     
-    amplitude *= gain;
+    amplitude *= globalGain;
 
     adsr = new ADSR( amplitude, attack, decay, sustain, release ); /// maxAmp, attTime, decTime, susLv1, relTime
     
-    oscillator.patch( adsr );
+    oscillator.patch( pan );
+    pan.patch( adsr );
   }
   
   void noteOn( float dur )
@@ -91,7 +94,7 @@ class DroneInstrument implements Instrument
        amplitude *= 0.22;
     }
      
-    amplitude *= gain;
+    amplitude *= globalGain;
   
     droneOsc = new Oscil( frequency, amplitude, wave );
     adsr = new ADSR( amplitude, 5, 10, 5, 7.5 ); /// maxAmp, attTime, decTime, susLv1, relTime
@@ -116,13 +119,15 @@ class DroneInstrument implements Instrument
 
 void setGlobalGain(float newGain)
 {
+  globalGain = newGain ;
 //  output.shiftGain(globalGain, map(newGain, 0., 1., -60, 0), 100);
 //  output.setGain(map(newGain, 0., 1., -60, 0));
-  setGainFading(true, 0.05, newGain);
+//  setGainFading(true, 0.05, newGain);
 }
 
 void setGlobalPan(float newPan)
 {
-  output.setPan(newPan);
+  globalPan = newPan;
+  //output.setPan(newPan);
 }
 

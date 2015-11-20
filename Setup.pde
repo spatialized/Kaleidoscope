@@ -32,6 +32,8 @@ void setupKaleidoscope()
   if(currentModule == KaleidoscopeModule.CONTROLLER)
   {
     tempoFading = true;
+    scrollBar1 = new ScrollBar(850, 350, 100, 16, 6, globalGain);
+    scrollBar2 = new ScrollBar(850, 400, 100, 16, 6, map(globalPan, -60, 0, 0., 1.));
   }
   if(!isServer)
   {
@@ -111,7 +113,7 @@ void setupGraphics()
 
 void setupMusic()
 {
-   midiOut = new MidiBus(this, -1, 1);           // Create a new MidiBus with no input device and the default Java Sound Synthesizer as the output device.
+  midiOut = new MidiBus(this, -1, 1);           // Create a new MidiBus with no input device and the default Java Sound Synthesizer as the output device.
 
   currentMotive = new ArrayList();
   currentNote = 0;
@@ -158,7 +160,9 @@ void setupMusic()
   
   audio = new Minim(this); //initialize minim
   output= audio.getLineOut(Minim.STEREO, 1024, 44100, 16); 
- 
+ // output.setGain(0);
+ // output.setPan(0);
+  
   activeMeasures = new boolean[numPerformers];
   measureNoiseTime = 0.0;
  

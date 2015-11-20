@@ -50,6 +50,8 @@ float minMass = 0.2, maxMass = 50.;
 float minGravity = 0.1, maxGravity = 30.;
 
 /****************** Music Settings ******************/
+float globalGain = 1., globalPan = 0.;
+
 int numPerformers = 4;      // 1 main performer, 3 auxiliary performers
 int phraseLength = 4;      // How many measures in a phrase?
 int noteRemovalRate = 15;
@@ -70,8 +72,10 @@ float stretchFactor = 1.5;      // How much to stretch notes from their noteLeng
 float stretchFactorMin = 1., stretchFactorMax = 6.;
 
 float section1TempoFading = -0.0025;
-float section2TempoFading = 0.004;
-float section2RotationFading = 0.9999, section2ZoomFading = -0.000085, section2StretchFactorFading = 1.0015, section2AlphaFading = 1.0002;
+float section2TempoFading = 0.0033;
+float section3TempoFading = -0.0033;
+float section2RotationFading = 0.9999, section2ZoomFading = -0.000085, section2StretchFactorFading = 1.00033, section2AlphaFading = 1.0002;
+float section3RotationFading = 1.0002, section3ZoomFading = 0.0001, section3StretchFactorFading = 0.9995, section3AlphaFading = 0.9998;
 
 /****************** Misc. Settings ******************/
 float collisionDistance = 180.;
