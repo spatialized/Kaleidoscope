@@ -1,6 +1,6 @@
 void updateParams()
 {
-  if(curSection == 2 && tempo > maxTempo)
+  if(curSection == 3 && tempo < minTempo)
   {
     stopPiece = true;
     sendStop();
@@ -17,15 +17,22 @@ void updateParams()
           lastTempo = round(tempo);
       }
     
-    if(int(tempo) == minTempo)
+    if(int(tempo) <= minTempo)
     {
       if(debug)
         println("Tempo reached min.: Going to section 2...");
-
-      goToSection(2);
       
-      if(currentModule == KaleidoscopeModule.CONTROLLER)
-        sendNewSection(curSection);
+      if(curSection == 1)
+        goToSection(2);
+    }
+
+    if(int(tempo) >= maxTempo)
+    {
+      if(debug)
+        println("Tempo reached max.: Going to section 3...");
+      
+      if(curSection == 2)
+        goToSection(3);
     }
   }
   if( zoomFading )
@@ -53,14 +60,33 @@ void updateParams()
     if(random(0, 10) == 0)
        curOctave = int(random(bottomOctave + 1, topOctave));    // Randomize Octave
   }
+  if( gainFading )
+  {
+    if( gainFadingDirection == -1)
+    {
+      if( globalGain > gainFadingTarget )
+      {
+        globalGain -= gainIncrement;
+        output.setGain(globalGain);
+      }
+    }
+    if( gainFadingDirection == 1)
+    {
+      if( globalGain < gainFadingTarget )
+      {
+        globalGain += gainIncrement;
+        output.setGain(globalGain);
+      }
+    }
+  }
 }
 
 
 void goToSection(int newSection)
 {
   if(debug)
-    println("Go To Section:"+newSection);
-    
+    println("Going To Section:"+newSection);
+
   curSection = newSection;
 
  switch(newSection)
@@ -88,7 +114,6 @@ void goToSection(int newSection)
      break;
      
    case 2:                  // Second section
-     interlockingMode = true;
      lineMode = false;
      setTempoFading(true, section2TempoFading);
      setVisualMode(2);
@@ -112,6 +137,32 @@ void goToSection(int newSection)
      maxSpheres = 60;
 
      maxDronesPlaying = 0;
+     break;
+
+   case 3:                  // Second section
+     lineMode = true;
+     setTempoFading(true, section3TempoFading);
+     setVisualMode(1);
+     
+     if(currentModule == KaleidoscopeModule.VISUALIZER)
+     {
+       rotateAcceleration = 0;
+       
+       setRotationFading(true, 1, 0, section3RotationFading);
+       zoomFactor = -160;
+       camera = new Camera(this, 0, 0, zoomFactor * fieldSize, 0,0,0, PI / 3, float(width)/float(height), 200, 2000 * fieldSize);
+
+       setZoomFading(true, section3ZoomFading);
+     }
+  
+     stretchFactor = stretchFactorMax;
+     setStretchFactorFading(true, section3StretchFactorFading);
+     setStrokeWeightFading(true, 0.9995);
+     alphaMax = 120;
+     setAlphaFading(true, section3AlphaFading);
+     maxSpheres = 90;
+
+     maxDronesPlaying = 1;
      break;
      
    default:
@@ -163,5 +214,19 @@ void setStrokeWeightFading(boolean state, float amount)
 {
   strokeWeightFading = state;
   strokeWeightIncrement = amount;
+}
+
+
+void setGainFading(boolean state, float amount, float target)
+{
+  gainFading = state;
+  gainFadingTarget = target;
+  gainIncrement = amount;
+  
+  if(target > globalGain)
+    gainFadingDirection = 1;
+  else if(target < globalGain)
+    gainFadingDirection = -1;
+  else gainFading = false;
 }
 

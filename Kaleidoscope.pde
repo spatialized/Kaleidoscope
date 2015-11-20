@@ -26,10 +26,10 @@ void setup()
   numPerformers = 3;         // SETUP: Set required number of performers:
   
   /*************** Network Setup *************/
-  serverIPAddress = "192.168.1.111";            // SETUP: Set to IP address of the server    
+  serverIPAddress = "192.168.1.103";            // SETUP: Set to IP address of the server    
   
   /***************** Music Setup ***************/
-  currentModule = KaleidoscopeModule.SONIFIER;       // SETUP: Set module (performer role): VISUALIZER  (Server Default)  SONIFIER   CONTROLLER    
+  currentModule = KaleidoscopeModule.CONTROLLER;       // SETUP: Set module (performer role): VISUALIZER  (Server Default)  SONIFIER   CONTROLLER    
   currentProcess = KaleidoscopeProcess.ARPEGGIO;        //  SETUP: Set process (how musical material develops): ARPEGGIO  OSTINATO   ADDITIVE SUBTRACTIVE    
  
   /************** Music Settings *****************/
@@ -75,10 +75,8 @@ void draw()
   
   if(!isServer)
   {
-      if(frameCount % 60 == 0 && !connected)
-      {
-        connectToServer();
-      }
+    if(frameCount % 60 == 0 && !connected)
+      connectToServer();
   }
   
   if(pieceStarted && !stopPiece)                // Wait for the server before starting
@@ -111,7 +109,6 @@ void draw()
       }
    }
      
-
     switch(currentModule)
     {
       case VISUALIZER:
@@ -135,6 +132,7 @@ void draw()
         
       case CONTROLLER:
         displayInfo(); 
+        handleScrollbars();
         break;
     }
     

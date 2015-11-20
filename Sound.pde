@@ -114,3 +114,15 @@ class DroneInstrument implements Instrument
   }
 }
 
+void setGlobalGain(float newGain)
+{
+//  output.shiftGain(globalGain, map(newGain, 0., 1., -60, 0), 100);
+//  output.setGain(map(newGain, 0., 1., -60, 0));
+  setGainFading(true, 0.05, newGain);
+}
+
+void setGlobalPan(float newPan)
+{
+  output.setPan(newPan);
+}
+

@@ -41,7 +41,7 @@ import netP5.*;
 
 /******** Debugging ********/
 boolean debug = false;                  // Turn on / off debugging (prints to output window).
-boolean generateRandomNotes = false;    // For testing on a single machine
+boolean generateRandomNotes = true;    // For testing on a single machine
 
 /******** Networking ********/
 String ipAddress, serverIPAddress;
@@ -67,6 +67,7 @@ boolean connected = false;
 boolean navigationMode = false;          // Does keyboard navigate around the scene or move the sonification agent array?
 boolean shiftKey = false;
 boolean optionKey = false;
+ScrollBar scrollBar1, scrollBar2;  // Two scrollbars
 
 /******* Graphics *******/
 Camera camera;
@@ -104,6 +105,11 @@ float moveArrayYStart, moveArrayYLength = 22, moveArrayYDirection;
 boolean moveArrayYTransition = false;
 float moveArrayZStart, moveArrayZLength = 22, moveArrayZDirection;
 boolean moveArrayZTransition = false;
+
+boolean  gainFading = false;
+float  gainFadingTarget = 0;
+//float  gainIncrement = 0;
+int gainFadingDirection = 0;
 
 /************ Sound *************/
 Minim audio;
