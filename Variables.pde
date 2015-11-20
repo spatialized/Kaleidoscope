@@ -149,7 +149,7 @@ boolean active;        // Should this machine be playing now?
 float noteLength;        // Length of note in frames
 float droneLength;        // Length of drone in frames
 
-boolean dronesOff = false;
+boolean dronesOff = true;
 
 int notesPlaying = 0, notesAboutToPlay = 0;
 int dronesPlaying = 0;

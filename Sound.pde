@@ -46,21 +46,22 @@ class ToneInstrument implements Instrument
 
     adsr = new ADSR( amplitude, attack, decay, sustain, release ); /// maxAmp, attTime, decTime, susLv1, relTime
     
-    oscillator.patch( pan );
-    pan.patch( adsr );
+    oscillator.patch( adsr );
+    adsr.patch( pan );
   }
   
   void noteOn( float dur )
   {
     adsr.noteOn();
-    adsr.patch( out );
+    pan.patch( out );
     notesPlaying += 1;
   }
   
   void noteOff()
   {
     adsr.noteOff();
-    adsr.unpatchAfterRelease( out );
+    adsr.unpatchAfterRelease( pan );
+    pan.unpatch(out);
     notesPlaying -= 1;
   }
 }
