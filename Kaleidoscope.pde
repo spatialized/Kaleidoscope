@@ -23,10 +23,10 @@ void setup()
 {
   /************* General Setup ***************/
   size(1080, 720, P3D);      // SETUP: Set width, height of window (for server, set to screen size):
-  numPerformers = 3;         // SETUP: Set required number of performers:
+  numPerformers = 2;         // SETUP: Set required number of performers:
   
   /*************** Network Setup *************/
-  serverIPAddress = "192.168.1.103";            // SETUP: Set to IP address of the server    
+  serverIPAddress = "192.168.1.111";            // SETUP: Set to IP address of the server    
   
   /***************** Music Setup ***************/
   currentModule = KaleidoscopeModule.CONTROLLER;       // SETUP: Set module (performer role): VISUALIZER  (Server Default)  SONIFIER   CONTROLLER    

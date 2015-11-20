@@ -215,6 +215,12 @@ void displayInfo()
     {
       float fadePerSecond = abs(section2TempoFading * frameRate);
       float seconds = ( maxTempo - tempo ) / fadePerSecond;
+      text("Section Three Start:"+round(seconds/60)+" min., "+round(seconds%60)+" sec.", x, y += textSpacing, z);
+    }
+    else if(curSection == 3)
+    {
+      float fadePerSecond = abs(section3TempoFading * frameRate);
+      float seconds = ( tempo - minTempo ) / fadePerSecond;
       text("Time until End:"+round(seconds/60)+" min., "+round(seconds%60)+" sec.", x, y += textSpacing, z);
     }
 
@@ -228,20 +234,16 @@ void displayInfo()
   text("Parameter ", x+500, y, z);
   
 
-  textSize(18); 
   fill(hue, 100, 220);
   
-  text("           Changes to parameters marked with >> affect all performers", x+750,  y+= textSpacing *1.5, z);
-
 
   textSize(24); 
+
+  text("Volume ", x+800, y, z);
+
   text("SHIFT + COMMA/PERIOD : ", x, y, z);
   text("Current Octave:  ", x+500, y+= textSpacing, z);
-
-
-  textSize(18); 
-  text(" and should be used no more than every 15 seconds or so.", x + 805, y, z);
-
+  text("Pan ", x+800, y, z);
 
   textSize(24); 
   if (active && currentMotive.size() >= notesPerMeasure)
@@ -282,6 +284,11 @@ void displayInfo()
   if(!connected)
     text("Currently NO server connection.  Press Shift+C to try to connect.  >>Press 'n' to move to Section 2.<<"+noteLength, x, y += textSpacing, z);
 
+
+    textSize(18); 
+  
+    text("           Changes to parameters marked with >> affect all performers", x+750,  y+= textSpacing *1.5, z);
+    text(" and should be used no more than every 15 seconds or so.", x + 805, y += textSpacing, z);
  }
  
  void displayIntro()

@@ -41,7 +41,7 @@ import netP5.*;
 
 /******** Debugging ********/
 boolean debug = false;                  // Turn on / off debugging (prints to output window).
-boolean generateRandomNotes = true;    // For testing on a single machine
+boolean generateRandomNotes = false;    // For testing on a single machine
 
 /******** Networking ********/
 String ipAddress, serverIPAddress;
