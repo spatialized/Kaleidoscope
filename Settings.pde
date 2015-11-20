@@ -66,11 +66,11 @@ int droneLengthFactor = 50;
 float stretchFactor = 1.5;      // How much to stretch notes from their noteLength
 float stretchFactorMin = 1., stretchFactorMax = 6.;
 
-float section1TempoFading = -0.002;
-float section2TempoFading = 0.003;
-float section3TempoFading = -0.0025;
-float section2RotationFading = 0.9999, section2ZoomFading = -0.000085, section2StretchFactorFading = 1.0003, section2AlphaFading = 1.0002;
-float section3RotationFading = 1.0002, section3ZoomFading = 0.0001, section3StretchFactorFading = 0.99966, section3AlphaFading = 0.9998;
+float section1TempoFading = -0.0018;
+float section2TempoFading = 0.0025;
+float section3TempoFading = -0.0022;
+float section2RotationFading = 0.9999, section2ZoomFading = -0.00008, section2StretchFactorFading = 1.0002, section2AlphaFading = 1.0002;
+float section3RotationFading = 1.0002, section3ZoomFading = 0.00008, section3StretchFactorFading = 0.99975, section3AlphaFading = 0.9998;
 
 /****************** Misc. Settings ******************/
 float collisionDistance = 180.;
