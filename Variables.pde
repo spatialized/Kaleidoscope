@@ -63,6 +63,8 @@ String connectPattern = "/server/connect";
 String disconnectPattern = "/server/disconnect";
 boolean connected = false;
 
+//int absoluteTime;
+
 /******* Input *******/
 boolean navigationMode = false;          // Does keyboard navigate around the scene or move the sonification agent array?
 boolean shiftKey = false;

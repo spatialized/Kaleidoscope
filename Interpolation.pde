@@ -4,6 +4,7 @@ void updateParams()
   {
     stopPiece = true;
     sendStop();
+    println("Piece ended...");
   }
   
   if( tempoFading )
@@ -11,16 +12,16 @@ void updateParams()
     tempo += tempoIncrement;      // Increment tempo
 
     if(currentModule == KaleidoscopeModule.CONTROLLER)
-      if(round(tempo) != round(lastTempo))
+      if(round(tempo) != round(lastTempo))      // Sync tempo with other machines
       {
-          sendNewTempo(round(tempo));
-          lastTempo = round(tempo);
+        sendNewTempo(round(tempo));
+        lastTempo = round(tempo);
       }
     
     if(int(tempo) <= minTempo)
     {
-      if(debug)
-        println("Tempo reached min.: Going to section 2...");
+      //if(debug)
+        println("Going to section 2...");
       
       if(curSection == 1)
         goToSection(2);
@@ -28,8 +29,8 @@ void updateParams()
 
     if(int(tempo) >= maxTempo)
     {
-      if(debug)
-        println("Tempo reached max.: Going to section 3...");
+      //if(debug)
+        println("Going to section 3...");
       
       if(curSection == 2)
         goToSection(3);

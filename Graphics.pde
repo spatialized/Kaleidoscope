@@ -209,17 +209,20 @@ void displayInfo()
     {
       float fadePerSecond = abs(section1TempoFading * frameRate);
       float seconds = ( tempo - minTempo ) / fadePerSecond;
-      text("Section Two Start: "+round(seconds/60)+" min., "+round(seconds%60)+" sec.", x, y += textSpacing, z);
+//      text("Section Two Start: "+round(seconds/60)+" min., "+round(seconds%60)+" sec.", x, y += textSpacing, z);
+      text("Section Two Start: "+round(seconds)+" sec.", x, y += textSpacing, z);
     } else if (curSection == 2)
     {
       float fadePerSecond = abs(section2TempoFading * frameRate);
       float seconds = ( maxTempo - tempo ) / fadePerSecond;
-      text("Section Three Start:"+round(seconds/60)+" min., "+round(seconds%60)+" sec.", x, y += textSpacing, z);
+      text("Section Three Start: "+round(seconds)+" sec.", x, y += textSpacing, z);
+//      text("Section Three Start:"+round(seconds/60)+" min., "+round(seconds%60)+" sec.", x, y += textSpacing, z);
     } else if (curSection == 3)
     {
       float fadePerSecond = abs(section3TempoFading * frameRate);
       float seconds = ( tempo - minTempo ) / fadePerSecond;
-      text("Time until End:"+round(seconds/60)+" min., "+round(seconds%60)+" sec.", x, y += textSpacing, z);
+      text("Time until End: "+round(seconds)+" sec.", x, y += textSpacing, z);
+//      text("Time until End:"+round(seconds/60)+" min., "+round(seconds%60)+" sec.", x, y += textSpacing, z);
     }
 
     text("Music On ('m'): "+musicOn, x+500, y, z);
@@ -231,31 +234,24 @@ void displayInfo()
   text("Keyboard Command ", x, y += textSpacing * 2., z);
   text("Parameter ", x+500, y, z);
 
-
   fill(hue, 100, 220);
-
 
   textSize(24); 
 
-
-  text("SHIFT + COMMA/PERIOD : ", x, y, z);
-  text("Current Octave:  ", x+500, y+= textSpacing, z);
-
-  if (active && currentMotive.size() >= notesPerMeasure)
-    text(str(curOctave), x+750, y, z);
-  else
-    text("-", x+750, y, z);
-
+  text("SHIFT + COMMA/PERIOD : ", x, y += textSpacing*2, z);
+  text("Current Octave:  ", x+500, y, z);
+  text(str(curOctave), x+750, y, z);
+  
+  text("Volume ", x+900, y, z);
   text("A-G", x, y += textSpacing, z);
   text(">> Tonic Key:  "+Keys[tonicKey], x+500, y, z);
-  text("Volume ", x+900, y, z);
 
   //text("- / =", x, y += textSpacing, z);
   text("Tempo:  "+tempo, x + 500, y += textSpacing, z);
 
   text("COMMA / PERIOD", x, y, z);
-  text("Timbre:  "+Timbres[timbre], x + 500, y+=textSpacing, z);
   text("Pan ", x+900, y, z);
+  text("Timbre:  "+Timbres[timbre], x + 500, y+=textSpacing, z);
 
   text("1-7", x, y += textSpacing, z);
   text(">> Scale Mode:  "+Modes[scaleMode], x+500, y, z);

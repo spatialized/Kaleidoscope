@@ -1,7 +1,7 @@
   /*********************************************************************/
   /*              Kaleidoscope, for Laptop Ensemble                    */
   /*                                                                   */
-  /* Version 1.0                                                       */
+  /* Version 1.01                                                       */
   /* David Gordon                                                      */
   /* http://www.spatializedmusic.com/                                  */
   /*********************************************************************/
@@ -29,7 +29,7 @@ void setup()
   serverIPAddress = "192.168.1.111";            // SETUP: Set to IP address of the server    
   
   /***************** Music Setup ***************/
-  currentModule = KaleidoscopeModule.SONIFIER;       // SETUP: Set module (performer role): VISUALIZER  (Server Default)  SONIFIER   CONTROLLER    
+  currentModule = KaleidoscopeModule.CONTROLLER;       // SETUP: Set module (performer role): VISUALIZER  (Server Default)  SONIFIER   CONTROLLER    
   currentProcess = KaleidoscopeProcess.ARPEGGIO;        //  SETUP: Set process (how musical material develops): ARPEGGIO  OSTINATO   ADDITIVE SUBTRACTIVE    
  
   /************** Music Settings *****************/
@@ -37,7 +37,6 @@ void setup()
   timbre = 2;              // Timbre (0=SINE, 1=TRIANGLE, 2=SQUARE, 3=QUARTERPULSE)
   droneTimbre = 1;         // Drone timbre (0=SINE, 1=TRIANGLE, 2=SQUARE, 3=QUARTERPULSE)
 
- 
   setupKaleidoscope();        // Perform the setup functions
 }
 
@@ -164,7 +163,7 @@ void draw()
     stopPiece();
     
     if(currentModule == KaleidoscopeModule.CONTROLLER)
-        sendStop();               // Forward "start" message to all clients
+        sendStop();               // Forward "stop" message to all clients
   }
   
   if(pieceStopped)
@@ -178,6 +177,7 @@ void startPiece()
 {
   sendTestMessage();
   pieceStarted = true;
+  //absoluteTime = millis();
 
   if(currentModule == KaleidoscopeModule.VISUALIZER)
    camera = new Camera(this, 0, 0, zoomFactor / 10 * fieldSize, 0,0,0, PI / 3, float(width)/float(height), 200, 2000 * fieldSize);

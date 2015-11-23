@@ -172,7 +172,7 @@ void setupMusic()
 
 void stopPiece()
 {
-  println("STOPPING PIECE");
+  println("Stopping Piece...");
   active = false;
   output.pauseNotes();
   dronesOff = true;
